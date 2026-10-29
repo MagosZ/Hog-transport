@@ -209,23 +209,27 @@ all. That's a CE/VF version issue, not this mod's.
 
 ## 4. Art
 
-Placeholders, VVE-style, from `Source/Art/body_views.py` (run `make_textures.py`): three views at 128 px per
-cell, `Body_north` (top-down, nose up), `Body_south` (nose toward the viewer, cockpit front and lights showing)
-and `Body_east` (side profile, nose right; west mirrors it). That's the same set as VVE's helicopters, which
-ship `_north/_south/_east` plus masks. Each has a paint mask (`Body_northm` etc.): red = hull, green = cockpit
-armour and the wing stripe, blue = wings. The shader is `CutoutComplexPattern`, default colours grey / green /
-grey (`color`, `colorTwo`, `colorThree`). Glass, copper fans, lights, hatches and machinery are unpainted.
-drawSize (6,7): the 4×7 footprint plus one cell each side, because the wings are painted one cell past their
-component (A2–A6 / D2–D6), an outer cell that has no hitbox. The blueprint uses the same views (`Graphic_Multi`).
-`Shadow` is the north view's silhouette, and `BuildIcon` the north view.
+Placeholder, from `Source/Art/body_views.py` (run `make_textures.py`): **one top-down view**, `Body.png`, at
+128 px per cell, with its paint mask `Body_m.png`. VTOL Vehicle turns that one picture to the aircraft's heading
+(the Hind ships one top-down view too). A three-view VVE-style set (`_north/_south/_east`) was tried and dropped,
+since in game only the top-down view is used (user). Mask: red = hull and nacelles, green = cockpit armour and the
+wing stripe, blue = wings. Glass, brass intake lips, exhaust rims, the grille, the fuel cap and lights are
+unpainted. `CutoutComplexPattern`, default colours grey / green / grey. Square drawSize (7,7), like the Hind's.
+The wings are painted one cell past their component (A2–A6 / D2–D6) on each side, an outer cell that is art
+only. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
 
-Every feature sits inside the grid cells of its part: cockpit B1–C1, wings A2–A6 / D2–D6 (+1 cell outboard),
-turbofan nacelles A3–A5 / D3–D5 (copper fan at the front, exhaust ring behind), skids B2–C2 and A4–A5 / D4–D5
-(faint, underneath, in the top views), roof panels over the cabin, tank and pumps, fuel intake hatch B6–C6, rear
-door across row 7. In the side view row r spans x 7−r to 8−r. `python make_textures.py <prefix>` also writes
-`<prefix>_north.png` / `<prefix>_east.png` check images with the grid over the views (not shipped).
-Untested: how VTOL Vehicle shows the side and front views while it flies at angles. The Hind ships one
-top-down view, because VTOL turns the airframe to any heading.
+Drawn as seen from straight above: only upward-facing surfaces show, with light from the north-west and shadows
+cast down-right onto lower surfaces.
+- **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
+  width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
+  rim at the back. The fan isn't visible. They cast shadows onto the wings.
+- **Hull:** a roof with lit west and shaded east chamfers. The rear section (row 7) sits a step lower; the rear
+  door is a vertical face, so only its top edge and hinges show.
+- **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
+- **Roof panels:** cabin hatch B2–C2, tank bay B3–C4, grille B5–C5, fuel cap B6–C6.
+- **Skids:** hidden under the hull and wings.
+
+`python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
 Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.
 
 ## 5. Later

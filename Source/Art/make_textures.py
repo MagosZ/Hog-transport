@@ -1,7 +1,7 @@
 """Placeholder textures for the Hog shuttle.
 
-Run from anywhere: python make_textures.py [check-image prefix]
-Writes Textures/HogShuttle/: Body_north/_south/_east (+ m masks, from body_views.py), Shadow, BuildIcon,
+Run from anywhere: python make_textures.py [check-image path]
+Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view, from body_views.py), Shadow, BuildIcon,
 Transparent and the upgrade icons.
 """
 import sys
@@ -77,19 +77,13 @@ def cargo_icon():
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    views = {"north": body_views.north(), "south": body_views.south(), "east": body_views.east()}
-    for name, (img, mask) in views.items():
-        img.save(OUT / f"Body_{name}.png")
-        mask.save(OUT / f"Body_{name}m.png")
-    north_img = views["north"][0]
-    body_views.shadow(north_img).save(OUT / "Shadow.png")
-    icon = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
-    small = north_img.resize((round(256 * body_views.W / body_views.L), 256), Image.LANCZOS)
-    icon.alpha_composite(small, ((256 - small.width) // 2, 0))
-    icon.save(OUT / "BuildIcon.png")
-    if len(sys.argv) > 1:                       # optional check images: <prefix>_north.png, <prefix>_east.png
-        body_views.grid_overlay(north_img, "north").save(f"{sys.argv[1]}_north.png")
-        body_views.grid_overlay(views["east"][0], "east").save(f"{sys.argv[1]}_east.png")
+    img, mask = body_views.top()
+    img.save(OUT / "Body.png")
+    mask.save(OUT / "Body_m.png")
+    body_views.shadow(img).save(OUT / "Shadow.png")
+    img.resize((256, 256), Image.LANCZOS).save(OUT / "BuildIcon.png")
+    if len(sys.argv) > 1:                       # optional check image with the grid names
+        body_views.grid_overlay(img).save(sys.argv[1])
     Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(OUT / "Transparent.png")
     toilet_icon().save(OUT / "Upgrade_ChemicalToilet.png")
     flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
