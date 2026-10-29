@@ -122,6 +122,11 @@ speed per tick, like building.
   Hind Gunship's Plasteel Armour price and work). Unlike the Hind's, it plates the cockpit too. Vehicle
   Framework effects only (no DLL): `VehicleUpgrade` armour, Add, 20% of each component's rating; `StatUpgrade`
   CargoCapacity −200 (1000 → 800).
+- `HogShuttle_CargoOutfit`: "Cargo outfit", *"Swaps six of the passenger seats for tie-down points: 2
+  passenger seats, 1000 kg more cargo space."* No cost, work 500. `VehicleUpgrade` role edit
+  (`editKey` Passenger, slots 2), like the Hind's Cabin Modification; `StatUpgrade` CargoCapacity +1000. Stacks
+  with the plasteel armour (1000 − 200 + 1000 = 1800 kg). Vehicle Framework doesn't unload pawns when a role edit
+  lowers the slots (`VehicleRole.AddUpgrade` only records it), so unload passengers before fitting it.
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).

@@ -1,7 +1,7 @@
 """Placeholder textures for the Hog shuttle (top-down, nose at the top = north).
 
 Run from anywhere: python make_textures.py
-Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer,Upgrade_PlasteelArmour}.png in the mod folder.
+Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer,Upgrade_PlasteelArmour,Upgrade_CargoOutfit}.png in the mod folder.
 """
 from pathlib import Path
 
@@ -96,6 +96,20 @@ def armour_icon():
     return img
 
 
+def cargo_icon():
+    """Upgrade icon: two strapped cargo crates."""
+    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    crate = (170, 130, 80, 255)
+    for box in ([14, 54, 70, 110], [58, 22, 114, 78]):
+        d.rectangle(box, fill=crate, outline=OUTLINE, width=4)
+        x0, y0, x1, y1 = box
+        d.line([(x0, y0), (x1, y1)], fill=(120, 90, 50, 255), width=4)          # brace
+    d.line([(8, 84), (120, 84)], fill=GLOW, width=6)                            # tie-down strap
+    d.line([(64, 14), (64, 118)], fill=GLOW, width=6)
+    return img
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     body = body_image()
@@ -106,6 +120,7 @@ def main():
     toilet_icon().save(OUT / "Upgrade_ChemicalToilet.png")
     flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
     armour_icon().save(OUT / "Upgrade_PlasteelArmour.png")
+    cargo_icon().save(OUT / "Upgrade_CargoOutfit.png")
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 

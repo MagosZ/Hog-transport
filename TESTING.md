@@ -63,6 +63,13 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       upgrade adds the CE amounts. No patch errors either way.
 - [ ] With CE: check CE's own vehicle compatibility loads (the author's log showed a VehiclesCompat error).
 
+## Cargo outfit
+- [ ] The Upgrades tab has "Cargo outfit": no ingredients, 500 work, placeholder icon.
+- [ ] Installed: 2 passenger seats (pilot and co-pilot unchanged), cargo 2000 kg; with plasteel armour too,
+      1800 kg. Removed: 8 seats and 1000 kg again.
+- [ ] Fitting it with more than 2 passengers aboard: see what Vehicle Framework does with the extra pawns.
+      Expected: nothing ejects them; they stay until they get out.
+
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH
       only the flight computer is there.

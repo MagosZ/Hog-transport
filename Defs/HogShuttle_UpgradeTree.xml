@@ -92,6 +92,38 @@
 					</li>
 				</upgrades>
 			</li>
+
+			<!-- Like the Hind Gunship's Cabin Modification / Cargo Conversion: editing the Passenger role's slots (editKey)
+			     and adding cargo. Stacks with the plasteel armour (1000 - 200 + 1000 = 1800 kg). Vehicle Framework
+			     doesn't unload pawns when a role edit lowers the slots, so unload passengers before fitting it. -->
+			<li>
+				<key>HogShuttle_CargoOutfit</key>
+				<label>Cargo outfit</label>
+				<description>Swaps six of the passenger seats for tie-down points: 2 passenger seats, 1000 kg more cargo space.</description>
+				<icon>HogShuttle/Upgrade_CargoOutfit</icon>
+				<gridCoordinate>(22, 4)</gridCoordinate>
+				<work>500</work>
+				<upgrades>
+					<li Class="Vehicles.VehicleUpgrade">
+						<roles>
+							<li>
+								<key>Passenger</key>
+								<editKey>Passenger</editKey>
+								<slots>2</slots>
+							</li>
+						</roles>
+					</li>
+					<li Class="Vehicles.StatUpgrade">
+						<vehicleStats>
+							<li>
+								<def>CargoCapacity</def>
+								<value>1000</value>
+								<type>Add</type>
+							</li>
+						</vehicleStats>
+					</li>
+				</upgrades>
+			</li>
 		</nodes>
 	</Vehicles.UpgradeTreeDef>
 </Defs>
