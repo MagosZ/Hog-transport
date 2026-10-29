@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-	<!-- Loaded only with Dubs Bad Hygiene. The Hog's only upgrade is the chemical toilet, so without DBH it has no
-	     upgrade tree (and no Upgrades tab). -->
+	<!-- Loaded only with Dubs Bad Hygiene: the chemical toilet node in the Hog's upgrade tree
+	     (Defs/HogShuttle_UpgradeTree.xml), and the extension that makes it refill DBH's bladder need. -->
 	<Operation Class="PatchOperationAdd">
-		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/comps</xpath>
+		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes</xpath>
 		<value>
-			<li Class="Vehicles.CompProperties_UpgradeTree">
-				<def>HogShuttle_UpgradeTree</def>
+			<li>
+				<key>HogShuttle_ChemicalToilet</key>
+				<label>Chemical toilet</label>
+				<description>Keeps the bladder of everyone aboard satisfied.</description>
+				<icon>HogShuttle/Upgrade_ChemicalToilet</icon>
+				<gridCoordinate>(10, 4)</gridCoordinate>
+				<!-- A wooden wall's work: 135 (Wall) x 0.7 (wood). -->
+				<work>95</work>
+				<ingredients>
+					<Steel>10</Steel>
+					<Neutroamine>10</Neutroamine>
+				</ingredients>
 			</li>
 		</value>
 	</Operation>

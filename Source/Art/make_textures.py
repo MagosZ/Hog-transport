@@ -1,7 +1,7 @@
 """Placeholder textures for the Hog shuttle (top-down, nose at the top = north).
 
 Run from anywhere: python make_textures.py
-Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet}.png in the mod folder.
+Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer}.png in the mod folder.
 """
 from pathlib import Path
 
@@ -70,6 +70,20 @@ def toilet_icon():
     return img
 
 
+def flight_computer_icon():
+    """Upgrade icon: a cockpit computer with a flight-path screen."""
+    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rectangle([16, 20, 112, 96], fill=HULL, outline=OUTLINE, width=4)        # casing
+    d.rectangle([26, 30, 102, 78], fill=(20, 40, 30, 255))                     # screen
+    d.line([(32, 70), (52, 56), (72, 62), (96, 36)], fill=(90, 220, 120, 255), width=4)  # flight path
+    d.ellipse([90, 30, 102, 42], fill=GLOW)                                    # waypoint
+    for x in (34, 54, 74, 94):
+        d.rectangle([x - 6, 84, x + 6, 90], fill=PANEL)                        # buttons
+    d.rectangle([52, 96, 76, 110], fill=HULL_DARK, outline=OUTLINE, width=3)   # mount
+    return img
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     body = body_image()
@@ -78,6 +92,7 @@ def main():
     body.resize((256, 256), Image.LANCZOS).save(OUT / "BuildIcon.png")
     Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(OUT / "Transparent.png")
     toilet_icon().save(OUT / "Upgrade_ChemicalToilet.png")
+    flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 

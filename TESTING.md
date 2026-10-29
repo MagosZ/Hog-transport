@@ -42,13 +42,26 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Save mid-flight to orbit, load: no second 50 is taken.
 - [ ] Other Vehicle Framework aircraft (VVE, the Hind) keep their old fuel costs.
 
+## Pilot skill and flight computer
+- [ ] A pilot with Intellectual 5 or less: the Hog can't move, take off or launch (Vehicle Framework's "not
+      enough crew" state). With Intellectual 6+: it flies.
+- [ ] Boarding through Vehicle Framework (the gizmo, a caravan) never puts an under-skilled pawn in the pilot
+      seat; they take the co-pilot or passenger seats.
+- [ ] VTOL Vehicle's "board nearby": check whether it can still seat an under-skilled pilot (the Hog should
+      then just stay grounded).
+- [ ] The Upgrades tab has "Auxiliary flight computer": 1 advanced component, 200 work, placeholder icon.
+- [ ] With it installed, a pilot below Intellectual 6 can fly. If the state doesn't update at once, check
+      after the pilot gets out and back in (Vehicle Framework may cache it).
+- [ ] Removing it brings the requirement back. Co-pilot and passengers never need the skill.
+
 ## Chemical toilet (with Dubs Bad Hygiene)
-- [ ] The Hog has an Upgrades tab with one node, "Chemical toilet", with the description and the placeholder icon.
+- [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH
+      only the flight computer is there.
 - [ ] Installing it needs 10 steel and 10 neutroamine and takes about as long as building a wooden wall.
 - [ ] With it installed, the bladder need of everyone aboard (pilot, co-pilot, passengers) stays full, on the
       map and on the world map; nobody wets themselves on a long trip.
 - [ ] Without it, bladder drains as before. Removing it refunds half the cost.
-- [ ] Without DBH: no Upgrades tab and no errors.
+- [ ] Without DBH: no toilet node and no errors.
 
 ## Sealed cabin
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`; no error about `HogShuttle.StatPart_SealedCabinVacuum`.

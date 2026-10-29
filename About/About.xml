@@ -11,7 +11,7 @@
 
 THE SHUTTLE
 - Footprint 4×8 (the body is a box once its wings are out).
-- Crew: 1 pilot (required) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,000 kg.
+- Crew: 1 pilot (required, Intellectual 6 or more) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,000 kg.
 - Fuel: chemfuel.
 - No weapons yet.
 
@@ -21,8 +21,9 @@ FLIGHT
 - With Odyssey: flies to space (gravships, orbital sites, asteroids) and back. Each climb into space or drop back down costs 50 chemfuel, and flying between places in space burns fuel 10 times faster than in the air. A full tank (1200) covers about 720 tiles in the air.
 - Sealed cabin: everything aboard, crew, passengers and cargo, stays at 21°C wherever the shuttle is, and pawns aboard take no vacuum (with Odyssey). Passengers still get hungry, heal and so on as in any Vehicle Framework vehicle, and food in the hold ages as in a 21°C room.
 
-UPGRADES (with Dubs Bad Hygiene)
-- Chemical toilet: 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
+UPGRADES
+- Auxiliary flight computer: 1 advanced component, 200 work. Lets anyone who can fly a vehicle pilot the shuttle, whatever their Intellectual skill.
+- Chemical toilet (with Dubs Bad Hygiene): 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
 
 RESEARCH
 - "Hog shuttle" in the Vehicles research tab (Vanilla Vehicles Expanded). Needs aerial vehicles and, with Odyssey, shuttle.

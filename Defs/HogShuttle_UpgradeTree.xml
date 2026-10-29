@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- The Hog's Upgrades tab. With Dubs Bad Hygiene, Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml adds the
+	     chemical toilet node.
+	     Nodes here have no Vehicle Framework effect of their own; HogShuttle.dll checks whether they're installed.
+	     Vehicle Framework's turret code reads every node's upgrades list without a null check, so give each
+	     node an empty <upgrades /> once the Hog gets turrets. -->
+	<Vehicles.UpgradeTreeDef>
+		<defName>HogShuttle_UpgradeTree</defName>
+		<nodes>
+			<!-- Waives the pilot's Intellectual requirement (PilotSkillExtension on the Hog). -->
+			<li>
+				<key>HogShuttle_FlightComputer</key>
+				<label>Auxiliary flight computer</label>
+				<description>Lets anyone who can fly a vehicle pilot the shuttle, whatever their Intellectual skill.</description>
+				<icon>HogShuttle/Upgrade_FlightComputer</icon>
+				<gridCoordinate>(4, 4)</gridCoordinate>
+				<work>200</work>
+				<ingredients>
+					<ComponentSpacer>1</ComponentSpacer>
+				</ingredients>
+			</li>
+		</nodes>
+	</Vehicles.UpgradeTreeDef>
+</Defs>

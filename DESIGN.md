@@ -17,7 +17,8 @@ the cabin.
 ## 2. The shuttle (`HogShuttle`, `Defs/VehicleDefs/HogShuttle.xml`)
 
 - Footprint 4×8 (`size (4,8)`); the body is a box once its wings are out. Facing east or west it takes 8×4.
-- Roles: pilot ×1 (Movement, needed to fly), co-pilot ×1 (no handling, optional), passenger ×8.
+- Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
+  skill), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
 - Components: hull (all cells), cockpit (front edge), port and starboard thrusters (side edges; flight speed
   and control), fuel tank (back edge, internal; leaks, may explode below 20% health).
@@ -91,20 +92,35 @@ tick their contents (stasis). The Hog keeps Vehicle Framework's way and seals th
 - Known Vehicle Framework bug: a passenger who dies aboard throws "Collection was modified" in
   `TickHandlers`. The sealed cabin prevents the deaths that triggered it.
 
-### Upgrades (with Dubs Bad Hygiene)
+### Pilot skill
 
-Loaded only with `Dubwise.DubsBadHygiene` (`Mods/DubsBadHygiene/`, LoadFolders.xml). Without DBH the Hog has
-no upgrade tree and no Upgrades tab.
+- The pilot seat (`Pilot` role) only counts a pawn with **Intellectual 6** or more (`PilotSkillExtension` on the
+  Hog: `role`, `skill`, `minLevel`, `waivedByUpgradeNode`). A postfix on Vehicle Framework's per-seat check,
+  `VehicleRoleHandler.CanOperateRole(Pawn)`, refuses anyone below that. A pawn with the skill disabled, or no
+  skills at all, is refused too.
+- That check decides whether the seat is crewed (`RoleFulfilled` → `HasEnoughOperators`), so an under-skilled
+  pilot leaves the Hog unable to move or fly. It also decides seat picking, so boarding pawns aren't given the
+  pilot seat. The co-pilot and passenger seats have no requirement.
+- The auxiliary flight computer upgrade waives it.
+- Untested: VTOL Vehicle's own "board nearby" might still seat an under-skilled pawn as pilot (the Hind needed
+  extra code for a similar case). The Hog then stays grounded, which is safe; move the pawn by hand.
 
-- `HogShuttle_UpgradeTree`, one node `HogShuttle_ChemicalToilet`: "Chemical toilet", *"Keeps the bladder of
-  everyone aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7;
-  Vehicle Framework spends upgrade work at construction speed per tick, like building). Vehicle Framework's
-  defaults for removal: 50% refund, 30% of the work.
-- The node has no Vehicle Framework effect. `UpgradeNeedRefillExtension` on the Hog (`upgradeNode`, `need` =
+### Upgrades (`Defs/HogShuttle_UpgradeTree.xml`)
+
+Upgrade nodes have no Vehicle Framework effect of their own; HogShuttle.dll checks whether they're installed.
+Vehicle Framework's removal defaults apply: 50% refund, 30% of the work. Upgrade work is spent at construction
+speed per tick, like building.
+
+- `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Lets anyone who can fly a vehicle pilot the
+  shuttle, whatever their Intellectual skill."* 1 advanced component, work 200. Waives the pilot skill check.
+- `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
+  `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
+  aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).
+- Toilet effect: `UpgradeNeedRefillExtension` on the Hog (`upgradeNode`, `need` =
   DBH's `Bladder`) and a postfix on `VehiclePawn.TickRare` (every 250 ticks, on the map and in flight) fill
   that need for everyone in `AllPawnsAboard` while the node is installed. The NeedDef is named in XML, so the
   DLL doesn't reference DBH.
-- When the Hog gets turrets: give this node an empty `<upgrades />`. Vehicle Framework's turret code
+- When the Hog gets turrets: give every node an empty `<upgrades />`. Vehicle Framework's turret code
   (`CompVehicleTurrets`) reads every node's upgrades list without a null check.
 
 ## 3. Building and research

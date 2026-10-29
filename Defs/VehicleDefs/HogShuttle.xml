@@ -6,7 +6,7 @@
 	<Vehicles.VehicleDef ParentName="BaseVehiclePawn">
 		<defName>HogShuttle</defName>
 		<label>Hog shuttle</label>
-		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1 (Intellectual 6+, or any pilot with the auxiliary flight computer), co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
 		<thingClass>VTOLVehicle.VtolVehiclePawn</thingClass>
 		<buildDef>HogShuttle_Blueprint</buildDef>
 
@@ -183,6 +183,10 @@
 				<autoRefuelPercent>1</autoRefuelPercent>
 				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
 			</li>
+			<!-- Upgrades tab (Defs/HogShuttle_UpgradeTree.xml). -->
+			<li Class="Vehicles.CompProperties_UpgradeTree">
+				<def>HogShuttle_UpgradeTree</def>
+			</li>
 		</comps>
 
 		<properties>
@@ -234,6 +238,15 @@
 			</li>
 			<!-- Orbit costs (HogShuttle.dll): 50 fuel per change between surface and space, and legs that end in
 			     space cost 10x per tile (vanilla's orbit rangeDistanceFactor is 20, but part of that may be its larger orbit tiles). -->
+			<!-- Pilot skill (HogShuttle.dll): the pilot seat only counts a pawn with Intellectual 6 or more, unless the
+			     auxiliary flight computer upgrade is installed. Vehicle Framework then treats the Hog as having no
+			     pilot: it can't move or fly, and boarding won't seat an under-skilled pawn there. -->
+			<li Class="HogShuttle.PilotSkillExtension">
+				<role>Pilot</role>
+				<skill>Intellectual</skill>
+				<minLevel>6</minLevel>
+				<waivedByUpgradeNode>HogShuttle_FlightComputer</waivedByUpgradeNode>
+			</li>
 			<li Class="HogShuttle.OrbitTransitExtension">
 				<transitFuel>50</transitFuel>
 				<spaceDistanceFactor>10</spaceDistanceFactor>
@@ -373,7 +386,7 @@
 	<Vehicles.VehicleBuildDef ParentName="VehicleBaseBuildable">
 		<defName>HogShuttle_Blueprint</defName>
 		<label>Hog shuttle</label>
-		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1 (Intellectual 6+, or any pilot with the auxiliary flight computer), co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
 		<uiIconPath>HogShuttle/BuildIcon</uiIconPath>
 
 		<graphicData>
