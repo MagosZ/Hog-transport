@@ -34,6 +34,10 @@ the cabin.
   Helicopter Gunship, the only open example (`Model mods/_Mod_Source_Reference/Mi24HindHelicopter`).
   VTOL Vehicle is built for helicopters; the Hog has one invisible, non-spinning "rotor"
   (`HogShuttle/Transparent`) so it stays on the path the Hind uses. Its rotor sound is VVE's rocket engine.
+  Fuel on the local map is all VTOL Vehicle's: `fuelConsumptionPerTick` 0.006 the whole time it's airborne,
+  hovering included (15 chemfuel per in-game hour; a full tank hovers about 80 hours). Vehicle Framework burns
+  nothing on the map, since its condition is `Flying`, which it applies only on the world map. Kept on purpose
+  (user): VTOL craft burn fuel to hover. A half-rate hover discount was considered and turned down.
 - **World map:** Vehicle Framework's `CompProperties_VehicleLauncher`, 1-tick launch and landing like the
   Hind (VTOL Vehicle animates take-off and landing on the map).
 - **Range:** Vehicle Framework charges the whole trip's fuel at launch:
