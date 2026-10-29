@@ -50,9 +50,11 @@ def grid(*names):
 # key, label, health, depth, hitWeight, priorityStatEfficiency, categories, reactors, armour, hitbox, note
 # Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, wings along the
 # sides (rows 2-6) with the two turbofans on them (rows 3-5), three skids (one under the nose, two at the rear
-# sides), cargo bay with the fuel tank in the middle, fuel intake behind it, rear door across the tail.
+# sides), cargo bay with the fuel tank in the middle, fuel intake behind it, rear door across the two-column tail
+# (B7-C7; A7 and D7 are empty).
 PARTS = [
-    ("Hull", "hull", 900, "External", 3, False, [], [], HULL, "Body", "Covers every cell."),
+    ("Hull", "hull", 900, "External", 3, False, [], [], HULL, grid("A1-D6", "B7-C7"),
+     "Every cell except A7 and D7, which are empty: the tail is two columns wide."),
     ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C1"),
      "The cockpit box at the front centre."),
     ("ThrusterPort", "port turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
@@ -69,8 +71,8 @@ PARTS = [
     ("SkidPort", "port skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("A4-A5"), None),
     ("SkidStarboard", "starboard skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("D4-D5"),
      None),
-    ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("A7-D7"),
-     "The cargo bay's rear door."),
+    ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("B7-C7"),
+     "The cargo bay's rear door, across the two-column tail."),
     ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B6-C6"), None),
     ("FuelPumps", "fuel pumps", 75, "Internal", 1, False, ["FlightSpeed"], [], INTERNAL, grid("B5-C5"),
      "VVE's transmission."),

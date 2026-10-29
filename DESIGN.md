@@ -31,7 +31,7 @@ the cabin.
 
   **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
   2), rows **1–7** run nose to tail (z 3 down to −3), with the Hog facing north. So B3 = (0, 1). The hull
-  covers every cell.
+  covers every cell except A7 and D7, which are empty, physically and in the art: the tail is two columns wide.
 
   | Row | A (port) | B | C | D (starboard) |
   |---|---|---|---|---|
@@ -41,19 +41,19 @@ the cabin.
   | 4 | turbofan, wing, rear skid | fuel tank | fuel tank | turbofan, wing, rear skid |
   | 5 | turbofan, wing, rear skid | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, rear skid |
   | 6 | wing | fuel intake | fuel intake | wing |
-  | 7 tail | rear door | rear door | rear door | rear door |
+  | 7 tail | *(empty)* | rear door | rear door | *(empty)* |
 
   In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
 
   | Part (key) | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
-  | Hull | 900 (hit weight 3) | outer | – | all | side panels |
+  | Hull | 900 (hit weight 3) | outer | – | all but A7, D7 | side panels |
   | Cockpit | 200 | outer | – | B1–C1 | – |
   | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A5 / D3–D5 | engine, rotor mast |
   | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A6 / D2–D6 | stabilizers, rudder |
   | Front skid (`SkidFront`) | 120 | outer | flight speed | B2–C2 | landing skids |
   | Port / starboard rear skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A4–A5 / D4–D5 | landing skids |
-  | Rear door | 150 | outer | – | A7–D7 | – |
+  | Rear door | 150 | outer | – | B7–C7 | – |
   | Fuel intake | 75 | outer | flight speed | B6–C6 | fuel intake |
   | Fuel pumps | 75 | inner | flight speed | B5–C5 | transmission |
   | Fuel tank | 180 | inner, leaks, may explode | – | **B3–C4** (centre) | chemtank |
@@ -223,8 +223,8 @@ cast down-right onto lower surfaces.
 - **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
   width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
   rim at the back. The fan isn't visible. They cast shadows onto the wings.
-- **Hull:** a roof with lit west and shaded east chamfers. The rear section (row 7) sits a step lower and shows
-  only its roof; the rear door is a vertical face at the tail, so it isn't visible from above.
+- **Hull:** a roof with lit west and shaded east chamfers. The rear section (B7–C7; A7 and D7 are empty) sits a
+  step lower and shows only its roof; the rear door is a vertical face at the tail, so it isn't visible from above.
 - **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
 - **Roof panels:** cabin hatch B2–C2, tank bay B3–C4, grille B5–C5, fuel cap B6–C6.
 - **Skids:** hidden under the hull and wings.

@@ -131,8 +131,7 @@ def wing_outline(side):
     return [(root, 1.1), (tip, 2.35), (tip, 5.2), (back, 5.95), (root, 5.95)], root, tip
 
 
-HULL_PTS = [(B - 0.15, 1.0), (D + 0.15, 1.0), (D + 0.15, 6.0), (END - 0.06, 6.0), (END - 0.06, 6.96),
-            (A + 0.06, 6.96), (A + 0.06, 6.0), (B - 0.15, 6.0)]
+HULL_PTS = [(B - 0.15, 1.0), (D + 0.15, 1.0), (D + 0.15, 6.96), (B - 0.15, 6.96)]   # A7 and D7 stay empty
 
 
 def top():
@@ -160,14 +159,15 @@ def top():
     v.poly([(B - 0.15, 1.0), (B + 0.12, 1.12), (B + 0.12, 5.98), (B - 0.15, 6.0)], 226, HULL, outline=False)
     v.poly([(D + 0.15, 1.0), (D - 0.12, 1.12), (D - 0.12, 5.98), (D + 0.15, 6.0)], 150, HULL, outline=False)
     v.poly([(B - 0.15, 1.0), (D + 0.15, 1.0), (D - 0.12, 1.12), (B + 0.12, 1.12)], 232, HULL, outline=False)
-    # Rear section, row 7, full width and a step lower: only its roof shows. The rear door below it is a
-    # vertical face at the tail, so it isn't visible from above.
-    v.poly([(A + 0.06, 6.0), (END - 0.06, 6.0), (END - 0.06, 6.96), (A + 0.06, 6.96)], 186, HULL)
-    v.poly([(A + 0.06, 6.0), (END - 0.06, 6.0), (END - 0.16, 6.1), (A + 0.16, 6.1)], 214, HULL, outline=False)
+    # Rear section, row 7 (B7-C7 only; A7 and D7 are empty), a step lower: only its roof shows. The rear door
+    # below it is a vertical face at the tail, so it isn't visible from above.
+    v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.15, 6.96), (B - 0.15, 6.96)], 186, HULL)
+    v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.05, 6.1), (B - 0.05, 6.1)], 214, HULL, outline=False)
+    v.poly([(B - 0.15, 6.0), (B - 0.05, 6.1), (B - 0.05, 6.96), (B - 0.15, 6.96)], 226, HULL, outline=False)
+    v.poly([(D + 0.15, 6.0), (D + 0.05, 6.1), (D + 0.05, 6.96), (D + 0.15, 6.96)], 150, HULL, outline=False)
     v.groove([(B - 0.15, 6.0), (D + 0.15, 6.0)], 196)
-    for x in (A + 0.5, END - 0.5):
-        v.groove([(x - 0.3, 6.5), (x + 0.3, 6.5)], 186)                     # roof panel seams
-    for x in (A + 0.25, A + 0.75, END - 0.75, END - 0.25):
+    v.groove([(B + 0.2, 6.5), (D - 0.2, 6.5)], 186)                         # roof panel seam
+    for x in (B + 0.15, D - 0.15):
         v.rivet(x, 6.3)
     for y in (1.6, 2.6, 3.6, 4.6, 5.6):
         v.rivet(B - 0.02, y)
