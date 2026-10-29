@@ -5,6 +5,7 @@ HogShuttle_CombatExtended.xml.
 Run from anywhere: python components.py
 
 Cells: a 4x8 footprint facing north spans x -1..2, z -3..4 (north = z 4), as GenAdj.OccupiedRect.
+Grid names (DESIGN.md): columns A-D = x -1, 0, 1, 2 (port to starboard), rows 1-8 = z 4 down to -3 (nose to tail).
 Parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts: engine -> engine core,
 fuel intake, transmission -> fuel pumps, chemtank -> fuel tank, rotor mast -> lift jets, skids -> landing gear,
 dashboard -> avionics, upholstery -> cabin seats, servos -> control servos. VVE's stabilizers and rudder are the

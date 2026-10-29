@@ -25,6 +25,23 @@ the cabin.
   helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at the Louie's × 1.5 (32
   cells to its 21). Cells: a 4×8 footprint facing north spans x −1..2, z −3..4 (north = z 4).
 
+  **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
+  2), rows **1–8** run nose to tail (z 4 down to −3), with the Hog facing north. So B4 = (0, 1). The hull
+  covers every cell.
+
+  | Row | A (port) | B | C | D (starboard) |
+  |---|---|---|---|---|
+  | 1 nose | cockpit | cockpit, avionics | cockpit, avionics | cockpit |
+  | 2 | landing gear | cabin seats | cabin seats | landing gear |
+  | 3 | landing gear | cabin seats | cabin seats | landing gear |
+  | 4 | wing | fuel tank | fuel tank | wing |
+  | 5 | wing, lift jets | fuel tank | fuel tank | wing, lift jets |
+  | 6 | wing | fuel pumps, control servos | fuel pumps, control servos | wing |
+  | 7 | – | engine core, fuel intake | engine core, fuel intake | – |
+  | 8 tail | thruster | thruster | thruster | thruster |
+
+  In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
+
   | Part | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
   | Hull | 900 (hit weight 3) | outer | – | all | side panels |
