@@ -75,6 +75,33 @@ def cargo_icon():
     return img
 
 
+def door_gun(kind):
+    """Placeholder door gun seen from above, barrel pointing north (Vehicle Framework turns it). The pivot is the
+    texture's centre. Only used without "VVE - Secondary Weapons", whose own gun art replaces these."""
+    img = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    dark, mid, light = (40, 42, 46, 255), (78, 80, 86, 255), (130, 132, 138, 255)
+    if kind == "minigun":
+        for x in (118, 124, 130, 136):                                   # six-barrel cluster, four visible
+            d.rectangle([x - 2, 14, x + 2, 118], fill=dark)
+        d.rectangle([112, 40, 144, 48], fill=mid, outline=OUTLINE)     # barrel clamps
+        d.rectangle([112, 96, 144, 104], fill=mid, outline=OUTLINE)
+        d.rounded_rectangle([108, 112, 148, 176], radius=8, fill=mid, outline=OUTLINE, width=3)   # motor housing
+        d.rectangle([120, 176, 136, 200], fill=dark)                    # spade grips
+        d.rectangle([104, 196, 152, 204], fill=dark)
+    else:
+        heavy = kind == "hmg"
+        w = 5 if heavy else 3
+        d.rectangle([128 - w, 6 if heavy else 18, 128 + w, 130], fill=dark)             # barrel
+        if heavy:
+            d.rectangle([122, 60, 134, 110], fill=mid, outline=OUTLINE)                # barrel jacket
+        d.rectangle([52, 108, 204, 124], fill=light, outline=OUTLINE, width=3)          # gun shield, seen edge-on
+        d.rectangle([116, 116, 140, 190], fill=mid, outline=OUTLINE, width=3)           # receiver
+        d.rectangle([90, 128, 116, 150], fill=(176, 150, 90, 255), outline=OUTLINE)     # ammo box (left)
+        d.rectangle([124, 190, 132, 206], fill=dark)                                    # grip
+    return img
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     img, mask = body_views.top()
@@ -89,6 +116,8 @@ def main():
     flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
     armour_icon().save(OUT / "Upgrade_PlasteelArmour.png")
     cargo_icon().save(OUT / "Upgrade_CargoOutfit.png")
+    for kind, name in (("mmg", "Gun_MMG"), ("hmg", "Gun_HMG"), ("minigun", "Gun_Minigun")):
+        door_gun(kind).save(OUT / f"{name}.png")
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 

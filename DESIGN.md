@@ -169,6 +169,28 @@ speed per tick, like building.
   (`editKey` Passenger, slots 2), like the Hind's Cabin Modification; `StatUpgrade` CargoCapacity +1000. Stacks
   with the plasteel armour (1000 − 200 + 1000 = 1800 kg). Vehicle Framework doesn't unload pawns when a role edit
   lowers the slots (`VehicleRole.AddUpgrade` only records it), so unload passengers before fitting it.
+- **Rear door gun** (only one can be fitted): `HogShuttle_DoorGunMMG` / `HogShuttle_DoorGunHMG` /
+  `HogShuttle_DoorGunMinigun`. These are the Louie's three door-gun options in "VVE - Secondary Weapons"
+  (`tgbm.vve.secondary.weapons`, workshop 3459650108), with one gun instead of two, so half its price and work:
+
+  | Option | Turret def | Range | Fire | Box | Cost | CE |
+  |---|---|---|---|---|---|---|
+  | Medium machine gun | `HogShuttle_DoorMMG` | 28.9 | 6 per burst | 75 (steel) | 150 steel, 5 components | 7.62×51 NATO, range 62, 100 |
+  | Heavy machine gun | `HogShuttle_DoorHMG` | 32.9 | 6 per burst, slower | 75 (steel) | 205 steel, 6 components | .50 BMG, range 75, 100 |
+  | Minigun | `HogShuttle_DoorMinigun` | 30.9 | 25 per burst | 200 (steel) | 135 steel, 11 components | 7.62×51 NATO, range 62, 2000 |
+
+  All take 5000 work. Fitting one adds a **door gunner** role (1 seat, Turret, needed to fire, at B7–C7,
+  exposed because the door is open). The role comes first, then a `VTOLVehicle.VtolVehicleTurret`, so the gun
+  follows the aircraft's heading as the Hind's do. It is mounted at the tail centre (north offset (0, −3.1)),
+  defaultAngleRotated 180, angleRestricted (120, 240): 60° either side of straight back (0 = the nose). The
+  turret defs are our own copies of that mod's stats (TGBM_WisentMMG / TGBM_WisentHMG / TGBM_ExposedMinigun),
+  with vanilla bullets and sounds and our own `HogShuttle_Bullet_HMG`, so the Hog doesn't need that mod. With it
+  active, `Mods/VVESecondaryWeapons/Patches/HogShuttle_DoorGunArt.xml` switches the guns to its art (by path,
+  nothing copied), its shot sounds and its turret icon. With CE,
+  `Mods/CombatExtended/Patches/HogShuttle_DoorGuns_CE.xml` sets that mod's CE values (calibre, range, box,
+  reload, fire modes, `CETurretDataDefModExtension`). The Hog has an empty `CompProperties_VehicleTurrets` for
+  the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
+  Framework's turret code reads it without a null check.
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).

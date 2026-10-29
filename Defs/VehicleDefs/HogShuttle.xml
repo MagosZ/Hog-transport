@@ -451,6 +451,11 @@
 				<autoRefuelPercent>1</autoRefuelPercent>
 				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
 			</li>
+			<!-- Turrets: none built in; the door gun upgrades add one (Defs/HogShuttle_UpgradeTree.xml). -->
+			<li Class="Vehicles.CompProperties_VehicleTurrets">
+				<turrets />
+			</li>
+
 			<!-- Upgrades tab (Defs/HogShuttle_UpgradeTree.xml). -->
 			<li Class="Vehicles.CompProperties_UpgradeTree">
 				<def>HogShuttle_UpgradeTree</def>

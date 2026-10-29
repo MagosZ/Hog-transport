@@ -79,6 +79,18 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Fitting it with more than 2 passengers aboard: see what Vehicle Framework does with the extra pawns.
       Expected: nothing ejects them; they stay until they get out.
 
+## Rear door gun
+- [ ] Three door gun nodes; fitting one greys out the other two. Costs and work as in DESIGN.md.
+- [ ] Fitted: a "door gunner" seat appears (1 slot). A gunner can fire; nobody else can. A pawn incapable of
+      violence can't take the seat.
+- [ ] The gun sits at the tail and points straight back when idle; it only swings 60 degrees to each side.
+- [ ] In flight the gun turns with the aircraft's heading (VTOL turret class). Check that a newly fitted gun
+      starts pointing back, not north (the Hind needed a fix for new turrets).
+- [ ] Reloads from steel; without CE the box is 75 (minigun 200). With CE: 7.62x51 NATO / .50 BMG ammo.
+- [ ] With VVE - Secondary Weapons active: that mod's gun art, sounds and turret icon; without it, the
+      placeholder guns and vanilla sounds, and no errors.
+- [ ] Removing the upgrade removes the gun and the gunner seat (the gunner gets out).
+
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH
       only the flight computer is there.

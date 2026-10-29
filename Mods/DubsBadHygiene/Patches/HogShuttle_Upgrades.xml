@@ -17,6 +17,7 @@
 					<Steel>10</Steel>
 					<Neutroamine>10</Neutroamine>
 				</ingredients>
+				<upgrades />
 			</li>
 		</value>
 	</Operation>
