@@ -3,7 +3,7 @@ green = cockpit armour and the wing stripe, blue = wings). VTOL Vehicle turns th
 heading, as the Hind's single top-down view.
 
 What shows from above, and what doesn't:
-- Only upward-facing surfaces. Vertical faces (the cockpit's sides, the rear door) don't show: row 7 is roof.
+- Only upward-facing surfaces. Vertical faces (the cockpit's sides, the rear door) don't show: row 7 is plain roof.
 - The turbofans face forward, so from above each is a cylinder lying lengthwise: a long nacelle shaded across its
   width, the intake lip as a thin band at the front, the exhaust nozzle's rim at the back. The fan isn't visible.
 - The cockpit windscreen slopes back, so it shows as a short, foreshortened band at the front of the cockpit roof.
@@ -187,24 +187,14 @@ def top():
     v.shadow(HULL_PTS, 0.16, 0.16)
     v.poly(HULL_PTS, 196, HULL)
     # Roof facets: flat top, lit west chamfer, shaded east chamfer, lit front edge.
-    v.poly([(B + 0.12, 1.12), (D - 0.12, 1.12), (D - 0.12, 5.98), (B + 0.12, 5.98)], 204, HULL, outline=False)
-    v.poly([(B - 0.15, 1.0), (B + 0.12, 1.12), (B + 0.12, 5.98), (B - 0.15, 6.0)], 226, HULL, outline=False)
-    v.poly([(D + 0.15, 1.0), (D - 0.12, 1.12), (D - 0.12, 5.98), (D + 0.15, 6.0)], 150, HULL, outline=False)
+    # One roof from row 2 to the tail (row 7 is ordinary roof; the rear door below it is a vertical face, so it
+    # isn't visible from above).
+    v.poly([(B + 0.12, 1.12), (D - 0.12, 1.12), (D - 0.12, 6.84), (B + 0.12, 6.84)], 204, HULL, outline=False)
+    v.poly([(B - 0.15, 1.0), (B + 0.12, 1.12), (B + 0.12, 6.84), (B - 0.15, 6.96)], 226, HULL, outline=False)
+    v.poly([(D + 0.15, 1.0), (D - 0.12, 1.12), (D - 0.12, 6.84), (D + 0.15, 6.96)], 150, HULL, outline=False)
     v.poly([(B - 0.15, 1.0), (D + 0.15, 1.0), (D - 0.12, 1.12), (B + 0.12, 1.12)], 232, HULL, outline=False)
-    # Rear section, row 7 (B7-C7 only; the corners are empty), a step lower: only its roof shows. The rear door
-    # below it is a vertical face at the tail, so it isn't visible from above.
-    v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.15, 6.96), (B - 0.15, 6.96)], 186, HULL)
-    v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.05, 6.1), (B - 0.05, 6.1)], 214, HULL, outline=False)
-    v.poly([(B - 0.15, 6.0), (B - 0.05, 6.1), (B - 0.05, 6.96), (B - 0.15, 6.96)], 226, HULL, outline=False)
-    v.poly([(D + 0.15, 6.0), (D + 0.05, 6.1), (D + 0.05, 6.96), (D + 0.15, 6.96)], 150, HULL, outline=False)
-    v.groove([(B - 0.15, 6.0), (D + 0.15, 6.0)], 196)
-    for y in (6.35, 6.6):                                                   # roof vents over the cargo bay's rear
-        v.rect(B + 0.2, y, B + 0.75, y + 0.12, GRILLE, NONE)
-        v.rect(D - 0.75, y, D - 0.2, y + 0.12, GRILLE, NONE)
-    for x in (B + 0.1, D - 0.1):
-        for y in (6.25, 6.85):
-            v.rivet(x, y)
-    for y in (1.6, 2.6, 3.6, 4.6, 5.6):
+    v.poly([(B - 0.15, 6.96), (D + 0.15, 6.96), (D - 0.12, 6.84), (B + 0.12, 6.84)], 140, HULL, outline=False)
+    for y in (1.6, 2.6, 3.6, 4.6, 5.6, 6.6):
         v.rivet(B - 0.02, y)
         v.rivet(D + 0.02, y)
     # Copper pipes along both roof edges, rows 3-5 (the pipework on the kit), cylinders lying lengthwise.
@@ -234,8 +224,9 @@ def top():
 
     # 4. Roof details.
     #    Row 2: a raised sensor housing just behind the cockpit (its roof, a dome sensor on top, its shadow), then
-    #    the cabin hatch. Rows 3-4: the fuel tank bay (two filler plates). Row 5: vent grille. Row 6: refuelling
-    #    hatch on the port side. Rows 6-7: the dorsal fin on the centre line, seen edge-on from above.
+    #    the cabin hatch. Rows 3-4: the fuel tank bay (two filler plates). Row 5: vent grille. Row 6: the
+    #    refuelling cap at the front of B6, roof vents behind it in B6 and C6. Rows 6-7: the dorsal fin on the
+    #    centre line, seen edge-on from above.
     box = [(B + 0.3, 1.1), (D - 0.3, 1.1), (D - 0.3, 1.52), (B + 0.3, 1.52)]
     v.shadow(box, 0.07, 0.07, 0.4)
     v.poly(box, 214, HULL)
@@ -260,10 +251,13 @@ def top():
     for y in (4.25, 4.4, 4.55, 4.7):
         v.line([(B + 0.34, y), (D - 0.34, y)], 120, 0.02)
     hx = B + 0.45
-    v.rect(hx - 0.3, 5.2, hx + 0.3, 5.8, 150, HULL)
-    v.groove([(hx - 0.3, 5.8), (hx - 0.3, 5.2), (hx + 0.3, 5.2)], 150)
-    v.dot(hx, 5.5, 0.16, CAP)
-    v.dot(hx - 0.05, 5.45, 0.055, (240, 215, 140))
+    v.rect(hx - 0.22, 5.1, hx + 0.22, 5.46, 150, HULL)
+    v.groove([(hx - 0.22, 5.46), (hx - 0.22, 5.1), (hx + 0.22, 5.1)], 150)
+    v.dot(hx, 5.28, 0.12, CAP)
+    v.dot(hx - 0.04, 5.24, 0.04, (240, 215, 140))
+    for y in (5.58, 5.78):                                                  # roof vents, B6 and C6
+        v.rect(B + 0.2, y, C - 0.18, y + 0.1, GRILLE, NONE)
+        v.rect(C + 0.18, y, D - 0.2, y + 0.1, GRILLE, NONE)
     fin = [(C - 0.05, 5.1), (C + 0.05, 5.1), (C + 0.05, 6.9), (C - 0.05, 6.9)]
     v.shadow(fin, 0.22, 0.22, 0.45)
     v.poly(fin, 200, ARMOUR)

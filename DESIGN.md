@@ -224,13 +224,14 @@ cast down-right onto lower surfaces.
 - **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
   width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
   rim at the back. The fan isn't visible. They cast shadows onto the wings.
-- **Hull:** a roof with lit west and shaded east chamfers. The rear section (B7–C7; A7 and D7 are empty) sits a
-  step lower and shows only its roof; the rear door is a vertical face at the tail, so it isn't visible from above.
+- **Hull:** one roof from row 2 to the tail, with lit west and shaded east chamfers and a shaded tail edge. Row 7
+  (B7–C7; A7 and D7 are empty) is ordinary roof; the rear door is a vertical face at the tail, so it isn't
+  visible from above.
 - **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
 - **Roof details**, after the kit photo: a raised sensor housing with a grille and a red dome right behind the
   cockpit (B2–C2), then the cabin hatch; the fuel tank bay's two filler plates (B3–C4); the vent grille (B5–C5);
-  the refuelling hatch and cap on the port side (B6); the green dorsal fin on the centre line (C6–C7), seen
-  edge-on as a thin strip with its shadow; roof vents over the rear section (B7–C7); copper pipes with clamps
+  the refuelling cap at the front of B6 with roof vents behind it in B6 and C6; the green dorsal fin on the
+  centre line (C6–C7), seen edge-on as a thin strip with its shadow; copper pipes with clamps
   along both roof edges (rows 3–5); rivets along the seams.
 - **Cockpit:** riveted green armour, a three-pane windscreen, a roof escape hatch, red (port) and green
   (starboard) lamp domes at its rear corners.
