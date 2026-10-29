@@ -117,6 +117,11 @@ speed per tick, like building.
 
 - `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Lets anyone who can fly a vehicle pilot the
   shuttle, whatever their Intellectual skill."* 1 advanced component, work 200. Waives the pilot skill check.
+- `HogShuttle_PlasteelArmour`: "Plasteel armour", *"Plasteel plates over the whole airframe: about 20% more
+  armour on every part, at the cost of 200 kg of cargo space."* 150 plasteel + 4 components, work 6000 (the
+  Hind Gunship's Plasteel Armour price and work). Unlike the Hind's, it plates the cockpit too. Vehicle
+  Framework effects only (no DLL): `VehicleUpgrade` armour, Add, 20% of each component's rating; `StatUpgrade`
+  CargoCapacity −200 (1000 → 800).
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).
@@ -126,6 +131,25 @@ speed per tick, like building.
   DLL doesn't reference DBH.
 - When the Hog gets turrets: give every node an empty `<upgrades />`. Vehicle Framework's turret code
   (`CompVehicleTurrets`) reads every node's upgrades list without a null check.
+
+### Combat Extended (optional)
+
+`Mods/CombatExtended/Patches/HogShuttle_CombatExtended.xml`, loaded only with `CETeam.CombatExtended`. Without
+CE the vanilla ratings in Defs/ apply. With CE, each component's rating is the Hind Gunship's CE rating for the
+matching part × (Hog vanilla / Hind vanilla). That's the same ratio rule as the VGE CE patch. Hull = Hind body,
+thrusters = Hind engines. The plasteel armour upgrade's amounts become 20% of these.
+
+| Part | Vanilla (blunt / sharp) | + upgrade | CE (blunt / sharp) | + upgrade (CE) |
+|---|---|---|---|---|
+| Hull | 0.50 / 0.90 | +0.10 / +0.18 | 22.5 / 11.6 | +4.5 / +2.32 |
+| Cockpit | 0.45 / 0.80 | +0.09 / +0.16 | 13.8 / 8.6 | +2.76 / +1.72 |
+| Port, starboard thruster | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
+| Fuel tank | 0.25 / 0.40 | +0.05 / +0.08 | 10 / 5.3 | +2 / +1.06 |
+
+Not covered: the Hind's CE patch also gives its airframe CE's real collision width (CE treats every vehicle as
+a one-cell-wide target). On the author's machine CE's own `VehiclesCompat` assembly fails to load (a
+TypeLoadException for `VehiclePartDepth` from Vehicles 1.6), which may stop CE's vehicle armour from working at
+all. That's a CE/VF version issue, not this mod's.
 
 ## 3. Building and research
 

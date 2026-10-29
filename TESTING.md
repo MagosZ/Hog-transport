@@ -54,6 +54,15 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       after the pilot gets out and back in (Vehicle Framework may cache it).
 - [ ] Removing it brings the requirement back. Co-pilot and passengers never need the skill.
 
+## Plasteel armour
+- [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
+- [ ] Installed: every part's armour (hull, cockpit, both thrusters, fuel tank) rises by about 20% in the
+      Health tab, and cargo capacity drops from 1000 to 800 kg.
+- [ ] Removed: armour and cargo return to normal; half the cost is refunded.
+- [ ] Without CE: vanilla ratings (hull 0.50 / 0.90). With CE: CE ratings (hull 22.5 / 11.6) and the
+      upgrade adds the CE amounts. No patch errors either way.
+- [ ] With CE: check CE's own vehicle compatibility loads (the author's log showed a VehiclesCompat error).
+
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH
       only the flight computer is there.

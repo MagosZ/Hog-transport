@@ -23,7 +23,11 @@ FLIGHT
 
 UPGRADES
 - Auxiliary flight computer: 1 advanced component, 200 work. Lets anyone who can fly a vehicle pilot the shuttle, whatever their Intellectual skill.
+- Plasteel armour: 150 plasteel, 4 components, 6000 work. About 20% more armour on every part, cockpit included, but 200 kg less cargo (800 kg).
 - Chemical toilet (with Dubs Bad Hygiene): 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
+
+COMBAT EXTENDED
+- Optional. With CE, the shuttle's armour uses CE-scale ratings (based on the Hind Gunship's), and the plasteel armour upgrade adds 20% of those. Without CE, vanilla ratings apply.
 
 RESEARCH
 - "Hog shuttle" in the Vehicles research tab (Vanilla Vehicles Expanded). Needs aerial vehicles and, with Odyssey, shuttle.

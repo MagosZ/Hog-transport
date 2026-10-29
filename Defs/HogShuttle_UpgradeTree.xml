@@ -20,6 +20,78 @@
 					<ComponentSpacer>1</ComponentSpacer>
 				</ingredients>
 			</li>
+
+			<!-- Like the Hind Gunship's Plasteel Armour (same cost and work), but the cockpit is plated too. Adds 20% of
+			     each component's own rating (Defs/VehicleDefs/HogShuttle.xml); the plates cost 200 kg of cargo.
+			     Combat Extended swaps the amounts for 20% of its ratings
+			     (Mods/CombatExtended/Patches/HogShuttle_CombatExtended.xml). -->
+			<li>
+				<key>HogShuttle_PlasteelArmour</key>
+				<label>Plasteel armour</label>
+				<description>Plasteel plates over the whole airframe: about 20% more armour on every part, at the cost of 200 kg of cargo space.</description>
+				<icon>HogShuttle/Upgrade_PlasteelArmour</icon>
+				<gridCoordinate>(16, 4)</gridCoordinate>
+				<work>6000</work>
+				<ingredients>
+					<Plasteel>150</Plasteel>
+					<ComponentIndustrial>4</ComponentIndustrial>
+				</ingredients>
+				<upgrades>
+					<li Class="Vehicles.VehicleUpgrade">
+						<armor>
+							<li>
+								<key>Hull</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.10</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.18</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>Cockpit</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>ThrusterPort</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>ThrusterStarboard</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>FuelTank</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+						</armor>
+					</li>
+					<li Class="Vehicles.StatUpgrade">
+						<vehicleStats>
+							<li>
+								<def>CargoCapacity</def>
+								<value>-200</value>
+								<type>Add</type>
+							</li>
+						</vehicleStats>
+					</li>
+				</upgrades>
+			</li>
 		</nodes>
 	</Vehicles.UpgradeTreeDef>
 </Defs>

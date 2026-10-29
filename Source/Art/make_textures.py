@@ -1,7 +1,7 @@
 """Placeholder textures for the Hog shuttle (top-down, nose at the top = north).
 
 Run from anywhere: python make_textures.py
-Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer}.png in the mod folder.
+Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer,Upgrade_PlasteelArmour}.png in the mod folder.
 """
 from pathlib import Path
 
@@ -84,6 +84,18 @@ def flight_computer_icon():
     return img
 
 
+def armour_icon():
+    """Upgrade icon: a riveted plasteel plate."""
+    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    plasteel = (150, 170, 190, 255)
+    d.polygon([(64, 10), (112, 30), (104, 92), (64, 118), (24, 92), (16, 30)], fill=plasteel, outline=OUTLINE)
+    d.polygon([(64, 22), (100, 37), (94, 86), (64, 106), (34, 86), (28, 37)], outline=HULL_DARK)
+    for x, y in ((40, 40), (88, 40), (40, 80), (88, 80), (64, 30), (64, 98)):
+        d.ellipse([x - 4, y - 4, x + 4, y + 4], fill=HULL_DARK)            # rivets
+    return img
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     body = body_image()
@@ -93,6 +105,7 @@ def main():
     Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(OUT / "Transparent.png")
     toilet_icon().save(OUT / "Upgrade_ChemicalToilet.png")
     flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
+    armour_icon().save(OUT / "Upgrade_PlasteelArmour.png")
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 
