@@ -48,29 +48,30 @@ def grid(*names):
 
 
 # key, label, health, depth, hitWeight, priorityStatEfficiency, categories, reactors, armour, hitbox, note
-# Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, two turbofans, the
-# wings and the two landing skids on the sides of the middle (rows 2-5), cargo bay with the fuel tank in the middle,
-# rear door at the tail.
+# Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, wings along the
+# sides (rows 2-6) with the two turbofans on them (rows 3-5), three skids (one under the nose, two at the rear
+# sides), cargo bay with the fuel tank in the middle, fuel intake behind it, rear door across the tail.
 PARTS = [
     ("Hull", "hull", 900, "External", 3, False, [], [], HULL, "Body", "Covers every cell."),
     ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C1"),
      "The cockpit box at the front centre."),
     ("ThrusterPort", "port turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
-     grid("A2-A5"), "The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines "
+     grid("A3-A5"), "The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines "
      "(VVE's engine and rotor mast). Priority: flight speed and control never exceed what the fans' state allows. "
      "They don't explode."),
     ("ThrusterStarboard", "starboard turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [],
-     EXTERNAL, grid("D2-D5"), None),
-    ("WingPort", "port wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("A2-A5"),
+     EXTERNAL, grid("D3-D5"), None),
+    ("WingPort", "port wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("A2-A6"),
      "Wings: the hull's armour (VVE's stabilizers and rudder)."),
-    ("WingStarboard", "starboard wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("D2-D5"), None),
-    ("SkidPort", "port skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("A2-A5"),
-     "The Arvus lands on two skids, one each side (VVE's landing skids)."),
-    ("SkidStarboard", "starboard skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("D2-D5"),
+    ("WingStarboard", "starboard wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("D2-D6"), None),
+    ("SkidFront", "front skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B2-C2"),
+     "The Arvus lands on three skids (VVE's landing skids): one under the nose, two at the rear sides."),
+    ("SkidPort", "port skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("A4-A5"), None),
+    ("SkidStarboard", "starboard skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("D4-D5"),
      None),
     ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("A7-D7"),
      "The cargo bay's rear door."),
-    ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B7-C7"), None),
+    ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B6-C6"), None),
     ("FuelPumps", "fuel pumps", 75, "Internal", 1, False, ["FlightSpeed"], [], INTERNAL, grid("B5-C5"),
      "VVE's transmission."),
     ("FuelTank", "fuel tank", 180, "Internal", 1, False, [], [LEAK, EXPLOSIVE], INTERNAL, grid("B3-C4"),

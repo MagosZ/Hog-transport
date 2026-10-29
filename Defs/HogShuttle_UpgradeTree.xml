@@ -88,6 +88,14 @@
 								</statModifiers>
 							</li>
 							<li>
+								<key>SkidFront</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
 								<key>SkidPort</key>
 								<type>Add</type>
 								<statModifiers>

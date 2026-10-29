@@ -21,12 +21,12 @@ the cabin.
 - Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
   skill), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
-- Components: 15 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
+- Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
   it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
   the Louie's × 1.5 (28 cells to its 21). Their positions follow the Arvus lighter (Warhammer Community pictures):
-  cockpit box at the front centre, two ducted turbofans, the wings and two landing skids on the sides, cargo bay
-  with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×7 footprint
+  cockpit box at the front centre, wings along the sides with the two ducted turbofans on them, three skids (one
+  under the nose, two at the rear sides), cargo bay with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×7 footprint
   facing north spans x −1..2, z −3..3 (north = z 3).
 
   **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
@@ -36,12 +36,12 @@ the cabin.
   | Row | A (port) | B | C | D (starboard) |
   |---|---|---|---|---|
   | 1 nose | – | cockpit, avionics | cockpit, avionics | – |
-  | 2 | turbofan, wing, skid | cabin seats | cabin seats | turbofan, wing, skid |
-  | 3 | turbofan, wing, skid | fuel tank | fuel tank | turbofan, wing, skid |
-  | 4 | turbofan, wing, skid | fuel tank | fuel tank | turbofan, wing, skid |
-  | 5 | turbofan, wing, skid | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, skid |
-  | 6 | – | – | – | – |
-  | 7 tail | rear door | rear door, fuel intake | rear door, fuel intake | rear door |
+  | 2 | wing | cabin seats, front skid | cabin seats, front skid | wing |
+  | 3 | turbofan, wing | fuel tank | fuel tank | turbofan, wing |
+  | 4 | turbofan, wing, rear skid | fuel tank | fuel tank | turbofan, wing, rear skid |
+  | 5 | turbofan, wing, rear skid | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, rear skid |
+  | 6 | wing | fuel intake | fuel intake | wing |
+  | 7 tail | rear door | rear door | rear door | rear door |
 
   In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
 
@@ -49,11 +49,12 @@ the cabin.
   |---|---|---|---|---|---|
   | Hull | 900 (hit weight 3) | outer | – | all | side panels |
   | Cockpit | 200 | outer | – | B1–C1 | – |
-  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A2–A5 / D2–D5 | engine, rotor mast |
-  | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A5 / D2–D5 | stabilizers, rudder |
-  | Port / starboard skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A2–A5 / D2–D5 | landing skids |
+  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A5 / D3–D5 | engine, rotor mast |
+  | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A6 / D2–D6 | stabilizers, rudder |
+  | Front skid (`SkidFront`) | 120 | outer | flight speed | B2–C2 | landing skids |
+  | Port / starboard rear skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A4–A5 / D4–D5 | landing skids |
   | Rear door | 150 | outer | – | A7–D7 | – |
-  | Fuel intake | 75 | outer | flight speed | B7–C7 | fuel intake |
+  | Fuel intake | 75 | outer | flight speed | B6–C6 | fuel intake |
   | Fuel pumps | 75 | inner | flight speed | B5–C5 | transmission |
   | Fuel tank | 180 | inner, leaks, may explode | – | **B3–C4** (centre) | chemtank |
   | Avionics | 75 (hit weight 2) | inner | – | B1–C1 | dashboard |
@@ -209,7 +210,12 @@ all. That's a CE/VF version issue, not this mod's.
 ## 4. Art
 
 Placeholders from `Source/Art/make_textures.py` (top-down, nose north, 64 px per cell): `Body` (8×8 cells
-texture, body 4×7), `Shadow`, `BuildIcon`, `Transparent`.
+texture, body 4×7), `Shadow`, `BuildIcon`, `Transparent`, and the upgrade icons. Every feature in `Body` is drawn
+inside the grid cells of the part it shows: cockpit B1–C1, wings A2–A6 / D2–D6, turbofan nacelles A3–A5 / D3–D5
+(fan intake at the front), skids see-through underneath (B2–C2, A4–A5 / D4–D5), roof panels over the cabin, tank
+and pumps, fuel intake hatch B6–C6, rear door across row 7. A1 and D1 are empty space beside the cockpit.
+`python make_textures.py <path.png>` also writes a check image with the grid names over the body (not shipped).
+Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.
 
 ## 5. Later
 

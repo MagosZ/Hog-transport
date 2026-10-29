@@ -56,8 +56,8 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
-- [ ] Health tab lists all 15 parts (DESIGN.md table). Shots at the sides (A2-A5, D2-D5) hit the turbofans,
-      wings or skids; shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
+- [ ] Health tab lists all 16 parts (DESIGN.md table). Shots at the sides (A2-A6, D2-D6) hit the wings, and in
+      rows 3-5 also the turbofans (rows 4-5 the rear skids); shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
       when hit). Damaged turbofans, wings, skids, fuel intake or fuel pumps lower flight speed or
       control; badly damaged turbofans cap both, and they never explode.
 - [ ] Installed: every part's armour rises by about 20% in the

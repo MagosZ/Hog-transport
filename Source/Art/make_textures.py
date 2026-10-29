@@ -3,6 +3,7 @@
 Run from anywhere: python make_textures.py
 Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet,Upgrade_FlightComputer,Upgrade_PlasteelArmour,Upgrade_CargoOutfit}.png in the mod folder.
 """
+import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -26,37 +27,89 @@ def cells(x, y):
 
 
 def body_image():
+    """Top-down, nose up. Every feature is drawn inside the grid cells of the part it shows (components.py)."""
     size = CANVAS * PX
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    under = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     left = (CANVAS - BODY_W) / 2
     top = (CANVAS - BODY_L) / 2
-    # Grid names (DESIGN.md): columns A-D from `left`, rows 1-7 from `top`; the parts in components.py sit here.
+    # Grid names (DESIGN.md): column A is x 0-1, B 1-2, C 2-3, D 3-4; row r is y r-1 to r (from the nose).
 
-    def c(x, row_y):
-        """A point `x` cells from the body's left edge and `row_y` cells down from its nose."""
-        return cells(left + x, top + row_y)
+    def c(x, y):
+        """A point `x` cells from the body's port edge and `y` cells back from its nose."""
+        return cells(left + x, top + y)
 
-    # Wings, swept back, on the sides of rows 2-5 (columns A and D).
-    for inner, outer in ((1.0, 0.0), (3.0, 4.0)):
-        d.polygon([c(inner, 1.2), c(outer, 2.4), c(outer, 5.0), c(inner, 4.6)], fill=HULL_DARK, outline=OUTLINE)
-    # Boxy hull over columns B-C, widening behind the cockpit.
-    d.polygon([c(1.0, 0.1), c(3.0, 0.1), c(3.4, 1.0), c(3.4, 6.9), c(0.6, 6.9), c(0.6, 1.0)],
-              fill=HULL, outline=OUTLINE)
-    # Cockpit box at the front centre (B1-C1), canopy at the nose.
-    d.rectangle([c(1.1, 0.2), c(2.9, 1.0)], fill=PANEL, outline=OUTLINE, width=3)
-    d.rectangle([c(1.3, 0.3), c(2.7, 0.8)], fill=WINDOW, outline=OUTLINE, width=3)
-    # Hull panels over the cargo bay.
-    for y in (2.0, 3.0, 4.0, 5.0, 6.0):
-        d.line([c(0.7, y), c(3.3, y)], fill=PANEL, width=3)
-    # Ducted turbofans on the upper sides (columns A and D, rows 2-5).
-    for x in (0.05, BODY_W - 0.95):
-        for y in (1.6, 3.4):
-            d.ellipse([c(x, y), c(x + 0.9, y + 0.9)], fill=THRUSTER, outline=OUTLINE, width=3)
-            d.ellipse([c(x + 0.15, y + 0.15), c(x + 0.75, y + 0.75)], outline=GLOW, width=4)
-    # Rear door across row 7, with the fuel intake in its middle.
-    d.rectangle([c(0.6, 6.1), c(3.4, 6.9)], fill=HULL_DARK, outline=OUTLINE, width=3)
-    d.rectangle([c(1.7, 6.3), c(2.3, 6.7)], fill=(200, 160, 60, 255))
+    # Skids (underneath; drawn see-through so they read through the hull). Front skid B2-C2: a crossbar with
+    # two runners. Rear skids A4-A5 / D4-D5: runners outboard of the turbofans.
+    u = ImageDraw.Draw(under)
+    skid = (20, 20, 24, 255)
+    u.rectangle([c(1.15, 1.15), c(1.35, 1.85)], fill=skid)
+    u.rectangle([c(2.65, 1.15), c(2.85, 1.85)], fill=skid)
+    u.rectangle([c(1.15, 1.42), c(2.85, 1.58)], fill=skid)
+    for x in (0.06, 3.74):
+        u.rectangle([c(x, 3.1), c(x + 0.2, 4.9)], fill=skid)
+        u.rectangle([c(x - 0.02, 3.05), c(x + 0.22, 3.2)], fill=skid)
+        u.rectangle([c(x - 0.02, 4.8), c(x + 0.22, 4.95)], fill=skid)
+
+    # Wings A2-A6 / D2-D6: flat angular plates, swept, with a light on each tip.
+    for root, tip in ((1.0, 0.0), (3.0, 4.0)):
+        d.polygon([c(root, 1.05), c(tip, 2.0), c(tip, 5.4), c((root + tip) / 2, 5.95), c(root, 5.95)],
+                  fill=HULL_DARK, outline=OUTLINE)
+        d.ellipse([c(tip - 0.18 if tip else 0.04, 5.15), c(tip - 0.04 if tip else 0.18, 5.29)], fill=GLOW)
+
+    # Hull: the body over columns B-C, the rear section full width (row 7, the rear door).
+    d.polygon([c(1.0, 0.95), c(3.0, 0.95), c(3.15, 1.2), c(3.15, 6.0), c(3.95, 6.05), c(3.95, 6.95),
+               c(0.05, 6.95), c(0.05, 6.05), c(0.85, 6.0), c(0.85, 1.2)], fill=HULL, outline=OUTLINE)
+    # Cockpit B1-C1: a faceted armoured box, canopy at the front.
+    d.polygon([c(1.25, 0.05), c(2.75, 0.05), c(2.95, 0.3), c(2.95, 1.0), c(1.05, 1.0), c(1.05, 0.3)],
+              fill=PANEL, outline=OUTLINE)
+    d.polygon([c(1.35, 0.15), c(2.65, 0.15), c(2.8, 0.35), c(2.8, 0.6), c(1.2, 0.6), c(1.2, 0.35)],
+              fill=WINDOW, outline=OUTLINE)
+    # Roof panels: cabin hatch (B2-C2), fuel tank bay (B3-C4), pumps and servos (B5-C5).
+    d.rectangle([c(1.3, 1.25), c(2.7, 1.8)], outline=PANEL, width=3)
+    d.rectangle([c(1.2, 2.15), c(2.8, 3.85)], outline=PANEL, width=3)
+    d.line([c(1.2, 3.0), c(2.8, 3.0)], fill=PANEL, width=2)
+    for y in (4.25, 4.5, 4.75):
+        d.line([c(1.3, y), c(2.7, y)], fill=PANEL, width=2)
+    # Fuel intake B6-C6: refuelling hatch with its cap.
+    d.rectangle([c(1.4, 5.15), c(2.6, 5.85)], fill=HULL_DARK, outline=OUTLINE, width=3)
+    d.ellipse([c(1.8, 5.3), c(2.2, 5.7)], fill=(200, 160, 60, 255), outline=OUTLINE)
+    # Rear door across row 7: hinge line and the two door leaves.
+    d.line([c(0.1, 6.12), c(3.9, 6.12)], fill=OUTLINE, width=4)
+    d.line([c(2.0, 6.15), c(2.0, 6.9)], fill=OUTLINE, width=3)
+    for x in (0.4, 3.6):
+        d.rectangle([c(x - 0.12, 6.4), c(x + 0.12, 6.65)], fill=PANEL, outline=OUTLINE)
+
+    # Turbofans A3-A5 / D3-D5: long nacelles on the hull's shoulders, fan intake at the front, ribbed housing.
+    for x0 in (0.06, 3.04):   # inside columns A and D
+        x1 = x0 + 0.9
+        d.rounded_rectangle([c(x0, 2.35), c(x1, 4.95)], radius=int(0.2 * PX), fill=THRUSTER, outline=OUTLINE,
+                            width=3)
+        for y in (3.4, 3.8, 4.2, 4.6):
+            d.line([c(x0 + 0.1, y), c(x1 - 0.1, y)], fill=HULL_DARK, width=3)
+        d.ellipse([c(x0, 2.05), c(x1, 3.0)], fill=(176, 120, 70, 255), outline=OUTLINE, width=4)   # copper fan
+        d.ellipse([c(x0 + 0.3, 2.35), c(x1 - 0.3, 2.7)], fill=OUTLINE)
+
+    # Skids show faintly through everything above them.
+    faint = under.copy()
+    faint.putalpha(under.getchannel("A").point(lambda a: 110 if a else 0))
+    return Image.alpha_composite(img, faint)
+
+
+def grid_overlay(body):
+    """Check image (not shipped): the grid names drawn over the body."""
+    img = body.copy()
+    d = ImageDraw.Draw(img)
+    left = (CANVAS - BODY_W) / 2
+    top = (CANVAS - BODY_L) / 2
+    for i in range(BODY_W + 1):
+        d.line([cells(left + i, top), cells(left + i, top + BODY_L)], fill=(255, 0, 0, 255), width=2)
+    for j in range(BODY_L + 1):
+        d.line([cells(left, top + j), cells(left + BODY_W, top + j)], fill=(255, 0, 0, 255), width=2)
+    for i in range(BODY_W):
+        for j in range(BODY_L):
+            d.text(cells(left + i + 0.05, top + j + 0.05), f"{'ABCD'[i]}{j + 1}", fill=(255, 0, 0, 255))
     return img
 
 
@@ -124,6 +177,8 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     body = body_image()
     body.save(OUT / "Body.png")
+    if len(sys.argv) > 1:
+        grid_overlay(body).save(sys.argv[1])   # optional check image path
     shadow_image(body).save(OUT / "Shadow.png")
     body.resize((256, 256), Image.LANCZOS).save(OUT / "BuildIcon.png")
     Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(OUT / "Transparent.png")
