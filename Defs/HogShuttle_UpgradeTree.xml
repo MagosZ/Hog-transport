@@ -88,7 +88,79 @@
 								</statModifiers>
 							</li>
 							<li>
+								<key>LiftJets</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>LandingGearPort</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>LandingGearStarboard</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>FuelIntake</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>EngineCore</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>FuelPumps</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
 								<key>FuelTank</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>Avionics</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>CabinSeats</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>ControlServos</key>
 								<type>Add</type>
 								<statModifiers>
 									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>

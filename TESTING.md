@@ -56,9 +56,11 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
-- [ ] Health tab lists both wings (300 health, the hull's armour); shots at the middle of the long sides can
-      hit them, and damaged wings lower flight control.
-- [ ] Installed: every part's armour (hull, cockpit, both thrusters, both wings, fuel tank) rises by about 20% in the
+- [ ] Health tab lists all 16 parts (DESIGN.md table). Shots at the rear hit the thrusters, shots at the
+      middle of the long sides can hit the wings, and the fuel tank sits in the centre (it leaks when hit).
+      Damaged thrusters, wings, lift jets, landing gear, fuel intake, engine core or fuel pumps lower flight
+      speed or control.
+- [ ] Installed: every part's armour rises by about 20% in the
       Health tab, and cargo capacity drops from 1000 to 800 kg.
 - [ ] Removed: armour and cargo return to normal; half the cost is refunded.
 - [ ] Without CE: vanilla ratings (hull 0.50 / 0.90). With CE: CE ratings (hull 22.5 / 11.6) and the
