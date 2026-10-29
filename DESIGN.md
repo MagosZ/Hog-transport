@@ -20,7 +20,7 @@ airtight, and hovers on the local map like a VTOL aircraft. XML only for now: no
 - Cargo 1000 kg, mass 1800, flight speed 20.
 - Components: hull (all cells), cockpit (front edge), port and starboard thrusters (side edges; flight speed
   and control), fuel tank (back edge, internal; leaks, may explode below 20% health).
-- Fuel: chemfuel, 600 capacity, used only while flying. Placeholder numbers.
+- Fuel: chemfuel, 600 capacity, used only while flying. Sized so one tank crosses the planet (see Range).
 - No weapons yet. When they come: VTOL Vehicle's `VtolVehicleTurret` in `CompProperties_VehicleTurrets`,
   as the Hind does.
 
@@ -33,6 +33,21 @@ airtight, and hovers on the local map like a VTOL aircraft. XML only for now: no
   (`HogShuttle/Transparent`) so it stays on the path the Hind uses. Its rotor sound is VVE's rocket engine.
 - **World map:** Vehicle Framework's `CompProperties_VehicleLauncher`, 1-tick launch and landing like the
   Hind (VTOL Vehicle animates take-off and landing on the map).
+- **Range:** Vehicle Framework charges the whole trip's fuel at launch:
+  fuel per tile = `fuelConsumptionRate` × launcher `fuelConsumptionWorldMultiplier` / (60 × `FlightSpeed`).
+  The distance is the great-circle angle in tiles (SmashTools `Ext_Math.SphericalDistance`), so a target in
+  orbit costs about as much as the surface point under it. Hog: 200 × 10 / (60 × 20) = 1.67 per tile, 360
+  tiles on 600 fuel. Half the planet's circumference is about 330 tiles (100% coverage; estimate), so a
+  full tank flies pole to pole, and reaching orbit costs far less.
+
+  | Aircraft (full tank) | Flight speed | Fuel | Fuel per tile | Range |
+  |---|---|---|---|---|
+  | VVE Mosquito (helicopter) | 10.5 | 120 | 0.39 | 309 tiles |
+  | VVE Louie (helicopter) | 9.95 | 360 | 0.81 | 443 tiles |
+  | VVE Cherokee (helicopter) | 4.5 | 420 | 2.76 | 152 tiles |
+  | VVE Smuggler (plane) | 22 | 120 | 0.85 | 141 tiles |
+  | Odyssey passenger shuttle | – | 400 | 3 | 133 tiles |
+  | **Hog shuttle** | 20 | 600 | 1.67 | **360 tiles** |
 - **Space:** `spaceFlight true`. With Odyssey, Vehicle Framework (1.6.2064 and later) lets the vehicle target
   the world objects it marks as space objects: Gravship, SpaceBase, SpaceSite, GeneratedAsteroid.
 
@@ -45,9 +60,10 @@ for passengers later, this mod needs a small patch to keep the Hog sealed.
 
 ## 3. Building and research
 
-- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components, 3 advanced components; work 48000,
-  construction 10. About 1.7× Odyssey's passenger shuttle, with advanced components instead of its shuttle
-  engine so it builds without Odyssey.
+- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components and, with Odyssey, 3 advanced components
+  + 2 shuttle engines; without Odyssey, 9 advanced components. Work 48000, construction 10. About 1.7×
+  Odyssey's passenger shuttle. The base def has the no-Odyssey cost; `Mods/Odyssey/Patches/HogShuttle_Cost.xml`
+  (loaded only with Odyssey via LoadFolders.xml) replaces the 9 advanced components with 3 + 2 shuttle engines.
 - `HogShuttle_Research` in VVE's `Vehicles` tab at (3, 0): Spacer, 3000, hi-tech research bench and
   multi-analyzer. Prerequisites `VVE_AerialVehicles` and, only with Odyssey, `Shuttles`.
 
@@ -60,4 +76,4 @@ texture, body 4×8), `Shadow`, `BuildIcon`, `Transparent`.
 
 - Weapons.
 - Real art.
-- Tune fuel against an actual surface-to-orbit trip.
+- Check the range against an actual pole-to-pole flight and a surface-to-orbit trip.

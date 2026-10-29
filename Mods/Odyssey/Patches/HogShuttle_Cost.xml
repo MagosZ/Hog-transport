@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!-- Loaded only with Odyssey (LoadFolders.xml): 2 shuttle engines instead of the 6 extra advanced
+	     components the base cost has. -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleBuildDef[defName="HogShuttle_Blueprint"]/costList/ComponentSpacer</xpath>
+		<value>
+			<ComponentSpacer>3</ComponentSpacer>
+			<ShuttleEngine>2</ShuttleEngine>
+		</value>
+	</Operation>
+</Patch>

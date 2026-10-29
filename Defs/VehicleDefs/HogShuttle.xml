@@ -153,7 +153,8 @@
 			     Vehicle draws the take-off and landing on the map itself. -->
 			<li Class="Vehicles.CompProperties_VehicleLauncher">
 				<spaceFlight>true</spaceFlight>
-				<fuelConsumptionWorldMultiplier>0.8</fuelConsumptionWorldMultiplier>
+				<!-- Vehicle Framework's default (10), as VVE's aircraft use. -->
+				<fuelConsumptionWorldMultiplier>10</fuelConsumptionWorldMultiplier>
 				<launchProtocol Class="Vehicles.DefaultTakeoff">
 					<launchProperties>
 						<maxTicks>1</maxTicks>
@@ -166,13 +167,16 @@
 				</launchProtocol>
 			</li>
 
-			<!-- Placeholder numbers, to tune in game (see TESTING.md). -->
+			<!-- World-map range on a full tank, from Vehicle Framework's launch cost:
+			     fuel per tile = fuelConsumptionRate x launcher multiplier / (60 x FlightSpeed)
+			     = 200 x 10 / (60 x 20) = 1.67, so 600 fuel = 360 tiles. Half the planet's circumference
+			     is about 330 tiles (100% coverage, estimate), so one tank flies pole to pole.
+			     VVE's helicopters on a full tank: Mosquito 309, Louie 443, Cherokee 152 tiles. -->
 			<li Class="Vehicles.CompProperties_FueledTravel">
 				<fuelType>Chemfuel</fuelType>
 				<leakDef>Filth_Fuel</leakDef>
 				<fuelCapacity>600</fuelCapacity>
-				<fuelConsumptionRate>60</fuelConsumptionRate>
-				<fuelConsumptionWorldMultiplier>0.8</fuelConsumptionWorldMultiplier>
+				<fuelConsumptionRate>200</fuelConsumptionRate>
 				<fuelConsumptionCondition>Flying</fuelConsumptionCondition>
 				<autoRefuelPercent>1</autoRefuelPercent>
 				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
@@ -378,12 +382,13 @@
 		</researchPrerequisites>
 
 		<!-- About 1.7x Odyssey's passenger shuttle (250 steel, 150 plasteel, 6 components, 1 shuttle
-		     engine); spacer components stand in for the engine so it builds without Odyssey. -->
+		     engine). Without Odyssey: 3 + 6 advanced components. With Odyssey,
+		     Mods/Odyssey/Patches/HogShuttle_Cost.xml turns the 6 extra into 2 shuttle engines. -->
 		<costList>
 			<Steel>450</Steel>
 			<Plasteel>250</Plasteel>
 			<ComponentIndustrial>10</ComponentIndustrial>
-			<ComponentSpacer>3</ComponentSpacer>
+			<ComponentSpacer>9</ComponentSpacer>
 		</costList>
 
 		<soundImpactDefault>BulletImpact_Metal</soundImpactDefault>

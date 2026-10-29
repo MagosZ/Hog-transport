@@ -13,7 +13,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Needs a hi-tech research bench with a multi-analyzer.
 
 ## Building
-- [ ] Blueprint appears in the Vehicles architect tab after the research, costs as in DESIGN.md.
+- [ ] Blueprint appears in the Vehicles architect tab after the research.
+- [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
+- [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
 - [ ] Footprint is 4×8 and rotates to 8×4; the placeholder art lines up with it.
 
 ## Crew and cargo
@@ -30,8 +32,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 ## World map and space (Odyssey)
 - [ ] Launch to another surface tile and land.
 - [ ] Launch to orbit: a gravship, an orbital site, an asteroid. Land there and come back.
-- [ ] Fuel: 600 chemfuel covers a surface-to-orbit trip and back? Tune `fuelCapacity` /
-      `fuelConsumptionRate` / `FlightSpeed`.
+- [ ] Range: on a full tank the launch targeter reaches about 360 tiles (1.67 fuel per tile), enough to
+      cross a 100% planet pole to pole.
+- [ ] Orbit: launching to an orbital target right overhead costs little fuel, and the trip back is affordable.
 
 ## Airtight
 - [ ] On a space map, pawns inside take no vacuum exposure; the shuttle takes no vacuum damage.
