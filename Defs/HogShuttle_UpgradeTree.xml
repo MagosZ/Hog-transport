@@ -88,7 +88,7 @@
 								</statModifiers>
 							</li>
 							<li>
-								<key>LandingGearFront</key>
+								<key>SkidPort</key>
 								<type>Add</type>
 								<statModifiers>
 									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
@@ -96,15 +96,7 @@
 								</statModifiers>
 							</li>
 							<li>
-								<key>LandingGearPort</key>
-								<type>Add</type>
-								<statModifiers>
-									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
-									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
-								</statModifiers>
-							</li>
-							<li>
-								<key>LandingGearStarboard</key>
+								<key>SkidStarboard</key>
 								<type>Add</type>
 								<statModifiers>
 									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>

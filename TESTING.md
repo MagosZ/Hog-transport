@@ -16,7 +16,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Blueprint appears in the Vehicles architect tab after the research.
 - [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
 - [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
-- [ ] Footprint is 4×8 and rotates to 8×4; the placeholder art lines up with it.
+- [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it.
 
 ## Crew and cargo
 - [ ] Pilot seat needed to fly; co-pilot optional; 8 passenger seats.
@@ -56,9 +56,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
-- [ ] Health tab lists all 16 parts (DESIGN.md table). Shots at the sides (A3-A6, D3-D6) hit the turbofans,
-      wings or landing gear; shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
-      when hit). Damaged turbofans, wings, landing gear, fuel intake or fuel pumps lower flight speed or
+- [ ] Health tab lists all 15 parts (DESIGN.md table). Shots at the sides (A2-A5, D2-D5) hit the turbofans,
+      wings or skids; shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
+      when hit). Damaged turbofans, wings, skids, fuel intake or fuel pumps lower flight speed or
       control; badly damaged turbofans cap both, and they never explode.
 - [ ] Installed: every part's armour rises by about 20% in the
       Health tab, and cargo capacity drops from 1000 to 800 kg.

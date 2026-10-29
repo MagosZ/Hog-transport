@@ -16,50 +16,49 @@ the cabin.
 
 ## 2. The shuttle (`HogShuttle`, `Defs/VehicleDefs/HogShuttle.xml`)
 
-- Footprint 4×8 (`size (4,8)`); the body is a box once its wings are out. Facing east or west it takes 8×4.
+- Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
+  east or west it takes 7×4.
 - Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
   skill), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
-- Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
+- Components: 15 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
   it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
-  the Louie's × 1.5 (32 cells to its 21). Their positions follow the Arvus lighter (Warhammer Community pictures):
-  cockpit box at the front centre, two ducted turbofans and the wings on the sides, three landing legs, cargo bay
-  with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×8 footprint
-  facing north spans x −1..2, z −3..4 (north = z 4).
+  the Louie's × 1.5 (28 cells to its 21). Their positions follow the Arvus lighter (Warhammer Community pictures):
+  cockpit box at the front centre, two ducted turbofans, the wings and two landing skids on the sides, cargo bay
+  with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×7 footprint
+  facing north spans x −1..2, z −3..3 (north = z 3).
 
   **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
-  2), rows **1–8** run nose to tail (z 4 down to −3), with the Hog facing north. So B4 = (0, 1). The hull
+  2), rows **1–7** run nose to tail (z 3 down to −3), with the Hog facing north. So B3 = (0, 1). The hull
   covers every cell.
 
   | Row | A (port) | B | C | D (starboard) |
   |---|---|---|---|---|
   | 1 nose | – | cockpit, avionics | cockpit, avionics | – |
-  | 2 | – | cockpit, front landing gear | cockpit, front landing gear | – |
-  | 3 | turbofan, wing, landing gear | cabin seats | cabin seats | turbofan, wing, landing gear |
-  | 4 | turbofan, wing, landing gear | fuel tank | fuel tank | turbofan, wing, landing gear |
-  | 5 | turbofan, wing, landing gear | fuel tank | fuel tank | turbofan, wing, landing gear |
-  | 6 | turbofan, wing, landing gear | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, landing gear |
-  | 7 | – | – | – | – |
-  | 8 tail | rear door | rear door, fuel intake | rear door, fuel intake | rear door |
+  | 2 | turbofan, wing, skid | cabin seats | cabin seats | turbofan, wing, skid |
+  | 3 | turbofan, wing, skid | fuel tank | fuel tank | turbofan, wing, skid |
+  | 4 | turbofan, wing, skid | fuel tank | fuel tank | turbofan, wing, skid |
+  | 5 | turbofan, wing, skid | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, skid |
+  | 6 | – | – | – | – |
+  | 7 tail | rear door | rear door, fuel intake | rear door, fuel intake | rear door |
 
   In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
 
   | Part (key) | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
   | Hull | 900 (hit weight 3) | outer | – | all | side panels |
-  | Cockpit | 200 | outer | – | B1–C2 | – |
-  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A6 / D3–D6 | engine, rotor mast |
-  | Port / starboard wing | 300 each | outer, hull armour | flight control | A3–A6 / D3–D6 | stabilizers, rudder |
-  | Front landing gear | 120 | outer | flight speed | B2–C2 | landing skids |
-  | Port / starboard landing gear | 120 each | outer | flight speed | A3–A6 / D3–D6 | landing skids |
-  | Rear door | 150 | outer | – | A8–D8 | – |
-  | Fuel intake | 75 | outer | flight speed | B8–C8 | fuel intake |
-  | Fuel pumps | 75 | inner | flight speed | B6–C6 | transmission |
-  | Fuel tank | 180 | inner, leaks, may explode | – | **B4–C5** (centre) | chemtank |
+  | Cockpit | 200 | outer | – | B1–C1 | – |
+  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A2–A5 / D2–D5 | engine, rotor mast |
+  | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A5 / D2–D5 | stabilizers, rudder |
+  | Port / starboard skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A2–A5 / D2–D5 | landing skids |
+  | Rear door | 150 | outer | – | A7–D7 | – |
+  | Fuel intake | 75 | outer | flight speed | B7–C7 | fuel intake |
+  | Fuel pumps | 75 | inner | flight speed | B5–C5 | transmission |
+  | Fuel tank | 180 | inner, leaks, may explode | – | **B3–C4** (centre) | chemtank |
   | Avionics | 75 (hit weight 2) | inner | – | B1–C1 | dashboard |
-  | Cabin seats | 75 (hit weight 2) | inner | – | B3–C3 | upholstery |
-  | Control servos | 105 (hit weight 2) | inner | – | B6–C6 | servos |
+  | Cabin seats | 75 (hit weight 2) | inner | – | B2–C2 | upholstery |
+  | Control servos | 105 (hit weight 2) | inner | – | B5–C5 | servos |
 
   Armour classes: hull and wings 0.50 / 0.90, cockpit 0.45 / 0.80, other outer parts 0.45 / 0.80, inner parts
   0.25 / 0.40. VVE puts armour on the vehicle, not the parts, so these follow the Hog's first parts.
@@ -190,7 +189,7 @@ of these. Generated by `Source/Art/components.py`.
 |---|---|---|---|---|
 | Hull, wings | 0.50 / 0.90 | +0.10 / +0.18 | 22.5 / 11.6 | +4.5 / +2.32 |
 | Cockpit | 0.45 / 0.80 | +0.09 / +0.16 | 13.8 / 8.6 | +2.76 / +1.72 |
-| Outer: turbofans, landing gear, rear door, fuel intake | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
+| Outer: turbofans, skids, rear door, fuel intake | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
 | Inner: fuel pumps, fuel tank, avionics, cabin seats, control servos | 0.25 / 0.40 | +0.05 / +0.08 | 10 / 5.3 | +2 / +1.06 |
 
 Not covered: the Hind's CE patch also gives its airframe CE's real collision width (CE treats every vehicle as
@@ -210,7 +209,7 @@ all. That's a CE/VF version issue, not this mod's.
 ## 4. Art
 
 Placeholders from `Source/Art/make_textures.py` (top-down, nose north, 64 px per cell): `Body` (8×8 cells
-texture, body 4×8), `Shadow`, `BuildIcon`, `Transparent`.
+texture, body 4×7), `Shadow`, `BuildIcon`, `Transparent`.
 
 ## 5. Later
 

@@ -60,7 +60,7 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="LandingGearFront"]/armor</xpath>
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="SkidPort"]/armor</xpath>
 		<value>
 			<armor>
 				<ArmorRating_Blunt>17.9</ArmorRating_Blunt>
@@ -69,16 +69,7 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="LandingGearPort"]/armor</xpath>
-		<value>
-			<armor>
-				<ArmorRating_Blunt>17.9</ArmorRating_Blunt>
-				<ArmorRating_Sharp>9.3</ArmorRating_Sharp>
-			</armor>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="LandingGearStarboard"]/armor</xpath>
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="SkidStarboard"]/armor</xpath>
 		<value>
 			<armor>
 				<ArmorRating_Blunt>17.9</ArmorRating_Blunt>
@@ -206,7 +197,7 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="LandingGearFront"]/statModifiers</xpath>
+		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="SkidPort"]/statModifiers</xpath>
 		<value>
 			<statModifiers>
 				<ArmorRating_Blunt>3.58</ArmorRating_Blunt>
@@ -215,16 +206,7 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="LandingGearPort"]/statModifiers</xpath>
-		<value>
-			<statModifiers>
-				<ArmorRating_Blunt>3.58</ArmorRating_Blunt>
-				<ArmorRating_Sharp>1.86</ArmorRating_Sharp>
-			</statModifiers>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="LandingGearStarboard"]/statModifiers</xpath>
+		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="SkidStarboard"]/statModifiers</xpath>
 		<value>
 			<statModifiers>
 				<ArmorRating_Blunt>3.58</ArmorRating_Blunt>

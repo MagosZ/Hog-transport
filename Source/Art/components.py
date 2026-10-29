@@ -4,12 +4,12 @@ HogShuttle_CombatExtended.xml.
 
 Run from anywhere: python components.py
 
-Cells: a 4x8 footprint facing north spans x -1..2, z -3..4 (north = z 4), as GenAdj.OccupiedRect.
-Grid names (DESIGN.md): columns A-D = x -1, 0, 1, 2 (port to starboard), rows 1-8 = z 4 down to -3 (nose to tail).
+Cells: a 4x7 footprint facing north spans x -1..2, z -3..3 (north = z 3), as GenAdj.OccupiedRect.
+Grid names (DESIGN.md): columns A-D = x -1, 0, 1, 2 (port to starboard), rows 1-7 = z 3 down to -3 (nose to tail).
 Parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts: engine and rotor mast -> the turbofans,
-fuel intake, transmission -> fuel pumps, chemtank -> fuel tank, skids -> landing gear,
+fuel intake, transmission -> fuel pumps, chemtank -> fuel tank, skids -> skids,
 dashboard -> avionics, upholstery -> cabin seats, servos -> control servos. VVE's stabilizers and rudder are the
-Hog's wings; VVE's side panels are its hull. Health is the Louie's x1.5 (the Hog has 32 cells to its 21). Positions
+Hog's wings; VVE's side panels are its hull. Health is the Louie's x1.5 (the Hog has 28 cells to its 21). Positions
 follow the Arvus lighter; a part may cover several cells, and cells may hold several parts.
 """
 import re
@@ -43,44 +43,42 @@ def grid(*names):
         b = b or a
         for col in range(ord(a[0]), ord(b[0]) + 1):
             for row in range(int(a[1:]), int(b[1:]) + 1):
-                out.append((col - ord("A") - 1, 5 - row))   # A..D -> x -1..2, rows 1..8 -> z 4..-3
+                out.append((col - ord("A") - 1, 4 - row))   # A..D -> x -1..2, rows 1..7 -> z 3..-3
     return out
 
 
 # key, label, health, depth, hitWeight, priorityStatEfficiency, categories, reactors, armour, hitbox, note
-# Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, two turbofans and
-# the wings on the sides of the middle (rows 3-6), three landing legs (nose, and both sides), cargo bay with the
-# fuel tank in the middle, rear door at the tail.
+# Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, two turbofans, the
+# wings and the two landing skids on the sides of the middle (rows 2-5), cargo bay with the fuel tank in the middle,
+# rear door at the tail.
 PARTS = [
     ("Hull", "hull", 900, "External", 3, False, [], [], HULL, "Body", "Covers every cell."),
-    ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C2"),
+    ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C1"),
      "The cockpit box at the front centre."),
     ("ThrusterPort", "port turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
-     grid("A3-A6"), "The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines "
+     grid("A2-A5"), "The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines "
      "(VVE's engine and rotor mast). Priority: flight speed and control never exceed what the fans' state allows. "
      "They don't explode."),
     ("ThrusterStarboard", "starboard turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [],
-     EXTERNAL, grid("D3-D6"), None),
-    ("WingPort", "port wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("A3-A6"),
+     EXTERNAL, grid("D2-D5"), None),
+    ("WingPort", "port wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("A2-A5"),
      "Wings: the hull's armour (VVE's stabilizers and rudder)."),
-    ("WingStarboard", "starboard wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("D3-D6"), None),
-    ("LandingGearFront", "front landing gear", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL,
-     grid("B2-C2"), "Three landing legs (VVE's skids): one under the nose, one each side."),
-    ("LandingGearPort", "port landing gear", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL,
-     grid("A3-A6"), None),
-    ("LandingGearStarboard", "starboard landing gear", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL,
-     grid("D3-D6"), None),
-    ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("A8-D8"),
+    ("WingStarboard", "starboard wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("D2-D5"), None),
+    ("SkidPort", "port skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("A2-A5"),
+     "The Arvus lands on two skids, one each side (VVE's landing skids)."),
+    ("SkidStarboard", "starboard skid", 120, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("D2-D5"),
+     None),
+    ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("A7-D7"),
      "The cargo bay's rear door."),
-    ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B8-C8"), None),
-    ("FuelPumps", "fuel pumps", 75, "Internal", 1, False, ["FlightSpeed"], [], INTERNAL, grid("B6-C6"),
+    ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B7-C7"), None),
+    ("FuelPumps", "fuel pumps", 75, "Internal", 1, False, ["FlightSpeed"], [], INTERNAL, grid("B5-C5"),
      "VVE's transmission."),
-    ("FuelTank", "fuel tank", 180, "Internal", 1, False, [], [LEAK, EXPLOSIVE], INTERNAL, grid("B4-C5"),
+    ("FuelTank", "fuel tank", 180, "Internal", 1, False, [], [LEAK, EXPLOSIVE], INTERNAL, grid("B3-C4"),
      "In the centre. A critically damaged tank (20% health or less) can blow on a hit."),
     ("Avionics", "avionics", 75, "Internal", 2, False, [], [], INTERNAL, grid("B1-C1"),
      "VVE's dashboard, behind the cockpit glass."),
-    ("CabinSeats", "cabin seats", 75, "Internal", 2, False, [], [], INTERNAL, grid("B3-C3"), "VVE's upholstery."),
-    ("ControlServos", "control servos", 105, "Internal", 2, False, [], [], INTERNAL, grid("B6-C6"), "VVE's servos."),
+    ("CabinSeats", "cabin seats", 75, "Internal", 2, False, [], [], INTERNAL, grid("B2-C2"), "VVE's upholstery."),
+    ("ControlServos", "control servos", 105, "Internal", 2, False, [], [], INTERNAL, grid("B5-C5"), "VVE's servos."),
 ]
 
 

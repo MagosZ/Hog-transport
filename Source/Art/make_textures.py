@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 
 PX = 64                      # pixels per map cell
 CANVAS = 8                   # square texture, drawSize (8,8)
-BODY_W, BODY_L = 4, 8        # footprint (4,8)
+BODY_W, BODY_L = 4, 7        # footprint (4,7)
 OUT = Path(__file__).resolve().parents[2] / "Textures" / "HogShuttle"
 
 HULL = (120, 124, 130, 255)
@@ -30,32 +30,33 @@ def body_image():
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     left = (CANVAS - BODY_W) / 2
-    # Grid names (DESIGN.md): columns A-D from `left`, rows 1-8 from the top; the parts in components.py sit here.
+    top = (CANVAS - BODY_L) / 2
+    # Grid names (DESIGN.md): columns A-D from `left`, rows 1-7 from `top`; the parts in components.py sit here.
 
-    # Wings, swept back, on the sides of rows 3-6 (columns A and D).
-    for x0, x1 in ((left, left + 1.0), (left + BODY_W - 1.0, left + BODY_W)):
-        inner = x1 if x0 == left else x0
-        outer = x0 if x0 == left else x1
-        d.polygon([cells(inner, 2.2), cells(outer, 3.4), cells(outer, 6.0), cells(inner, 5.6)],
-                  fill=HULL_DARK, outline=OUTLINE)
+    def c(x, row_y):
+        """A point `x` cells from the body's left edge and `row_y` cells down from its nose."""
+        return cells(left + x, top + row_y)
+
+    # Wings, swept back, on the sides of rows 2-5 (columns A and D).
+    for inner, outer in ((1.0, 0.0), (3.0, 4.0)):
+        d.polygon([c(inner, 1.2), c(outer, 2.4), c(outer, 5.0), c(inner, 4.6)], fill=HULL_DARK, outline=OUTLINE)
     # Boxy hull over columns B-C, widening behind the cockpit.
-    d.polygon([cells(left + 1.0, 0.2), cells(left + 3.0, 0.2), cells(left + 3.4, 2.0), cells(left + 3.4, 7.9),
-               cells(left + 0.6, 7.9), cells(left + 0.6, 2.0)], fill=HULL, outline=OUTLINE)
-    # Cockpit box at the front centre (B1-C2), canopy at the nose.
-    d.rectangle([cells(left + 1.1, 0.3), cells(left + 2.9, 2.0)], fill=PANEL, outline=OUTLINE, width=3)
-    d.rectangle([cells(left + 1.3, 0.45), cells(left + 2.7, 1.2)], fill=WINDOW, outline=OUTLINE, width=3)
+    d.polygon([c(1.0, 0.1), c(3.0, 0.1), c(3.4, 1.0), c(3.4, 6.9), c(0.6, 6.9), c(0.6, 1.0)],
+              fill=HULL, outline=OUTLINE)
+    # Cockpit box at the front centre (B1-C1), canopy at the nose.
+    d.rectangle([c(1.1, 0.2), c(2.9, 1.0)], fill=PANEL, outline=OUTLINE, width=3)
+    d.rectangle([c(1.3, 0.3), c(2.7, 0.8)], fill=WINDOW, outline=OUTLINE, width=3)
     # Hull panels over the cargo bay.
-    for y in (3.0, 4.0, 5.0, 6.0, 7.0):
-        d.line([cells(left + 0.7, y), cells(left + 3.3, y)], fill=PANEL, width=3)
-    # Ducted turbofans on the upper sides (columns A and D, rows 3-6).
-    for x in (left + 0.05, left + BODY_W - 0.95):
-        d.ellipse([cells(x, 3.1), cells(x + 0.9, 4.0)], fill=THRUSTER, outline=OUTLINE, width=3)
-        d.ellipse([cells(x + 0.15, 3.25), cells(x + 0.75, 3.85)], outline=GLOW, width=4)
-        d.ellipse([cells(x, 4.6), cells(x + 0.9, 5.5)], fill=THRUSTER, outline=OUTLINE, width=3)
-        d.ellipse([cells(x + 0.15, 4.75), cells(x + 0.75, 5.35)], outline=GLOW, width=4)
-    # Rear door across row 8, with the fuel intake in its middle.
-    d.rectangle([cells(left + 0.6, 7.1), cells(left + 3.4, 7.9)], fill=HULL_DARK, outline=OUTLINE, width=3)
-    d.rectangle([cells(left + 1.7, 7.3), cells(left + 2.3, 7.7)], fill=(200, 160, 60, 255))
+    for y in (2.0, 3.0, 4.0, 5.0, 6.0):
+        d.line([c(0.7, y), c(3.3, y)], fill=PANEL, width=3)
+    # Ducted turbofans on the upper sides (columns A and D, rows 2-5).
+    for x in (0.05, BODY_W - 0.95):
+        for y in (1.6, 3.4):
+            d.ellipse([c(x, y), c(x + 0.9, y + 0.9)], fill=THRUSTER, outline=OUTLINE, width=3)
+            d.ellipse([c(x + 0.15, y + 0.15), c(x + 0.75, y + 0.75)], outline=GLOW, width=4)
+    # Rear door across row 7, with the fuel intake in its middle.
+    d.rectangle([c(0.6, 6.1), c(3.4, 6.9)], fill=HULL_DARK, outline=OUTLINE, width=3)
+    d.rectangle([c(1.7, 6.3), c(2.3, 6.7)], fill=(200, 160, 60, 255))
     return img
 
 

@@ -10,7 +10,7 @@
 	<description>A small, boxy spacer shuttle built on Vehicle Framework and VTOL Vehicle.
 
 THE SHUTTLE
-- Footprint 4×8 (the body is a box once its wings are out).
+- Footprint 4×7 (the body is a box once its wings are out). Lands on two skids.
 - Crew: 1 pilot (required, Intellectual 6 or more) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,000 kg.
 - Fuel: chemfuel.
 - No weapons yet.
