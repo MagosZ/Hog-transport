@@ -20,10 +20,13 @@ the cabin.
 - Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
   skill), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
-- Components: 16 parts, generated from one table by `Source/Art/components.py`. The script writes the
-  components, the armour upgrade's entries and the CE patch, so edit the table and re-run it. They follow VVE's
-  helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at the Louie's × 1.5 (32
-  cells to its 21). Cells: a 4×8 footprint facing north spans x −1..2, z −3..4 (north = z 4).
+- Components: 17 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
+  The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
+  it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
+  the Louie's × 1.5 (32 cells to its 21). Their positions follow the Arvus lighter (Warhammer Community pictures):
+  cockpit box at the front centre, two ducted turbofans and the wings on the sides, three landing legs, cargo bay
+  with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×8 footprint
+  facing north spans x −1..2, z −3..4 (north = z 4).
 
   **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
   2), rows **1–8** run nose to tail (z 4 down to −3), with the Hog facing north. So B4 = (0, 1). The hull
@@ -31,32 +34,33 @@ the cabin.
 
   | Row | A (port) | B | C | D (starboard) |
   |---|---|---|---|---|
-  | 1 nose | cockpit | cockpit, avionics | cockpit, avionics | cockpit |
-  | 2 | landing gear | cabin seats | cabin seats | landing gear |
-  | 3 | landing gear | cabin seats | cabin seats | landing gear |
-  | 4 | wing | fuel tank | fuel tank | wing |
-  | 5 | wing, lift jets | fuel tank | fuel tank | wing, lift jets |
-  | 6 | wing | fuel pumps, control servos | fuel pumps, control servos | wing |
-  | 7 | – | engine core, fuel intake | engine core, fuel intake | – |
-  | 8 tail | thruster | thruster | thruster | thruster |
+  | 1 nose | – | cockpit, avionics | cockpit, avionics | – |
+  | 2 | – | cockpit, front landing gear | cockpit, front landing gear | – |
+  | 3 | turbofan, wing, landing gear | cabin seats | cabin seats | turbofan, wing, landing gear |
+  | 4 | turbofan, wing, landing gear | fuel tank | fuel tank | turbofan, wing, landing gear |
+  | 5 | turbofan, wing, landing gear | fuel tank | fuel tank | turbofan, wing, landing gear |
+  | 6 | turbofan, wing, landing gear | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, landing gear |
+  | 7 | – | engine core | engine core | – |
+  | 8 tail | rear door | rear door, fuel intake | rear door, fuel intake | rear door |
 
   In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
 
-  | Part | Health | Depth | Affects | Cells | VVE counterpart |
+  | Part (key) | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
   | Hull | 900 (hit weight 3) | outer | – | all | side panels |
-  | Cockpit | 200 | outer | – | front row | – |
-  | Port / starboard thruster | 220 each | outer | flight speed, control | rear row (z −3), left / right half | – |
-  | Port / starboard wing | 300 each | outer, hull armour | flight control | outer columns, z 1..−1 | stabilizers, rudder |
-  | Lift jets | 150 | outer | flight speed | wingtips (−1, 0), (2, 0) | rotor mast |
-  | Port / starboard landing gear | 120 each | outer | flight speed | outer columns, z 3..2 | landing skids |
-  | Fuel intake | 75 | outer | flight speed | (0..1, −2) | fuel intake |
-  | Engine core | 180 | inner, leads the flight stats, may explode | flight speed, control | (0..1, −2) | engine |
-  | Fuel pumps | 75 | inner | flight speed | (0..1, −1) | transmission |
-  | Fuel tank | 180 | inner, leaks, may explode | – | **centre** (0..1, 0..1) | chemtank |
-  | Avionics | 75 (hit weight 2) | inner | – | (0..1, 4) | dashboard |
-  | Cabin seats | 75 (hit weight 2) | inner | – | (0..1, 2..3) | upholstery |
-  | Control servos | 105 (hit weight 2) | inner | – | (0..1, −1) | servos |
+  | Cockpit | 200 | outer | – | B1–C2 | – |
+  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer | flight speed, control | A3–A6 / D3–D6 | rotor mast |
+  | Port / starboard wing | 300 each | outer, hull armour | flight control | A3–A6 / D3–D6 | stabilizers, rudder |
+  | Front landing gear | 120 | outer | flight speed | B2–C2 | landing skids |
+  | Port / starboard landing gear | 120 each | outer | flight speed | A3–A6 / D3–D6 | landing skids |
+  | Rear door | 150 | outer | – | A8–D8 | – |
+  | Fuel intake | 75 | outer | flight speed | B8–C8 | fuel intake |
+  | Engine core | 180 | inner, leads the flight stats, may explode | flight speed, control | B7–C7 | engine |
+  | Fuel pumps | 75 | inner | flight speed | B6–C6 | transmission |
+  | Fuel tank | 180 | inner, leaks, may explode | – | **B4–C5** (centre) | chemtank |
+  | Avionics | 75 (hit weight 2) | inner | – | B1–C1 | dashboard |
+  | Cabin seats | 75 (hit weight 2) | inner | – | B3–C3 | upholstery |
+  | Control servos | 105 (hit weight 2) | inner | – | B6–C6 | servos |
 
   Armour classes: hull and wings 0.50 / 0.90, cockpit 0.45 / 0.80, other outer parts 0.45 / 0.80, inner parts
   0.25 / 0.40. VVE puts armour on the vehicle, not the parts, so these follow the Hog's first parts.
@@ -187,7 +191,7 @@ of these. Generated by `Source/Art/components.py`.
 |---|---|---|---|---|
 | Hull, wings | 0.50 / 0.90 | +0.10 / +0.18 | 22.5 / 11.6 | +4.5 / +2.32 |
 | Cockpit | 0.45 / 0.80 | +0.09 / +0.16 | 13.8 / 8.6 | +2.76 / +1.72 |
-| Outer: thrusters, lift jets, landing gear, fuel intake | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
+| Outer: turbofans, landing gear, rear door, fuel intake | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
 | Inner: engine core, fuel pumps, fuel tank, avionics, cabin seats, control servos | 0.25 / 0.40 | +0.05 / +0.08 | 10 / 5.3 | +2 / +1.06 |
 
 Not covered: the Hind's CE patch also gives its airframe CE's real collision width (CE treats every vehicle as

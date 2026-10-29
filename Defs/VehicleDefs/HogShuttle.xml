@@ -63,6 +63,7 @@
 					<side>Body</side>
 				</hitbox>
 			</li>
+			<!-- The cockpit box at the front centre. -->
 			<li>
 				<key>Cockpit</key>
 				<label>cockpit</label>
@@ -73,13 +74,18 @@
 					<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
 				</armor>
 				<hitbox>
-					<side>Front</side>
+					<cells>
+						<li>(0, 4)</li>
+						<li>(0, 3)</li>
+						<li>(1, 4)</li>
+						<li>(1, 3)</li>
+					</cells>
 				</hitbox>
 			</li>
-			<!-- Main thrusters, at the rear. -->
+			<!-- The Arvus' two ducted turbofans, on the sides: they lift and push. -->
 			<li>
 				<key>ThrusterPort</key>
-				<label>port thruster</label>
+				<label>port turbofan</label>
 				<health>220</health>
 				<depth>External</depth>
 				<armor>
@@ -88,8 +94,10 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(-1, -3)</li>
-						<li>(0, -3)</li>
+						<li>(-1, 2)</li>
+						<li>(-1, 1)</li>
+						<li>(-1, 0)</li>
+						<li>(-1, -1)</li>
 					</cells>
 				</hitbox>
 				<categories>
@@ -99,7 +107,7 @@
 			</li>
 			<li>
 				<key>ThrusterStarboard</key>
-				<label>starboard thruster</label>
+				<label>starboard turbofan</label>
 				<health>220</health>
 				<depth>External</depth>
 				<armor>
@@ -108,8 +116,10 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(1, -3)</li>
-						<li>(2, -3)</li>
+						<li>(2, 2)</li>
+						<li>(2, 1)</li>
+						<li>(2, 0)</li>
+						<li>(2, -1)</li>
 					</cells>
 				</hitbox>
 				<categories>
@@ -117,7 +127,7 @@
 					<li>FlightControl</li>
 				</categories>
 			</li>
-			<!-- Wings: the hull's armour, where the art draws them. -->
+			<!-- Wings: the hull's armour (VVE's stabilizers and rudder). -->
 			<li>
 				<key>WingPort</key>
 				<label>port wing</label>
@@ -129,6 +139,7 @@
 				</armor>
 				<hitbox>
 					<cells>
+						<li>(-1, 2)</li>
 						<li>(-1, 1)</li>
 						<li>(-1, 0)</li>
 						<li>(-1, -1)</li>
@@ -149,6 +160,7 @@
 				</armor>
 				<hitbox>
 					<cells>
+						<li>(2, 2)</li>
 						<li>(2, 1)</li>
 						<li>(2, 0)</li>
 						<li>(2, -1)</li>
@@ -158,11 +170,11 @@
 					<li>FlightControl</li>
 				</categories>
 			</li>
-			<!-- VTOL jets on the wingtips (VVE's rotor mast). -->
+			<!-- Three landing legs (VVE's skids): one under the nose, one each side. -->
 			<li>
-				<key>LiftJets</key>
-				<label>lift jets</label>
-				<health>150</health>
+				<key>LandingGearFront</key>
+				<label>front landing gear</label>
+				<health>120</health>
 				<depth>External</depth>
 				<armor>
 					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
@@ -170,15 +182,14 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(-1, 0)</li>
-						<li>(2, 0)</li>
+						<li>(0, 3)</li>
+						<li>(1, 3)</li>
 					</cells>
 				</hitbox>
 				<categories>
 					<li>FlightSpeed</li>
 				</categories>
 			</li>
-			<!-- VVE's landing skids. -->
 			<li>
 				<key>LandingGearPort</key>
 				<label>port landing gear</label>
@@ -190,8 +201,10 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(-1, 3)</li>
 						<li>(-1, 2)</li>
+						<li>(-1, 1)</li>
+						<li>(-1, 0)</li>
+						<li>(-1, -1)</li>
 					</cells>
 				</hitbox>
 				<categories>
@@ -209,13 +222,34 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(2, 3)</li>
 						<li>(2, 2)</li>
+						<li>(2, 1)</li>
+						<li>(2, 0)</li>
+						<li>(2, -1)</li>
 					</cells>
 				</hitbox>
 				<categories>
 					<li>FlightSpeed</li>
 				</categories>
+			</li>
+			<!-- The cargo bay's rear door. -->
+			<li>
+				<key>RearDoor</key>
+				<label>rear door</label>
+				<health>150</health>
+				<depth>External</depth>
+				<armor>
+					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<cells>
+						<li>(-1, -3)</li>
+						<li>(0, -3)</li>
+						<li>(1, -3)</li>
+						<li>(2, -3)</li>
+					</cells>
+				</hitbox>
 			</li>
 			<li>
 				<key>FuelIntake</key>
@@ -228,8 +262,8 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(0, -2)</li>
-						<li>(1, -2)</li>
+						<li>(0, -3)</li>
+						<li>(1, -3)</li>
 					</cells>
 				</hitbox>
 				<categories>
@@ -301,8 +335,8 @@
 				<hitbox>
 					<cells>
 						<li>(0, 1)</li>
-						<li>(1, 1)</li>
 						<li>(0, 0)</li>
+						<li>(1, 1)</li>
 						<li>(1, 0)</li>
 					</cells>
 				</hitbox>
@@ -349,8 +383,6 @@
 				</armor>
 				<hitbox>
 					<cells>
-						<li>(0, 3)</li>
-						<li>(1, 3)</li>
 						<li>(0, 2)</li>
 						<li>(1, 2)</li>
 					</cells>

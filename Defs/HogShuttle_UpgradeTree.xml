@@ -88,7 +88,7 @@
 								</statModifiers>
 							</li>
 							<li>
-								<key>LiftJets</key>
+								<key>LandingGearFront</key>
 								<type>Add</type>
 								<statModifiers>
 									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
@@ -105,6 +105,14 @@
 							</li>
 							<li>
 								<key>LandingGearStarboard</key>
+								<type>Add</type>
+								<statModifiers>
+									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
+									<ArmorRating_Sharp>0.16</ArmorRating_Sharp>
+								</statModifiers>
+							</li>
+							<li>
+								<key>RearDoor</key>
 								<type>Add</type>
 								<statModifiers>
 									<ArmorRating_Blunt>0.09</ArmorRating_Blunt>
