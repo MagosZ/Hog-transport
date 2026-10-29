@@ -50,18 +50,19 @@ the cabin.
   | VVE Smuggler (plane) | 22 | 120 | 0.85 | 141 tiles |
   | Odyssey passenger shuttle | – | 400 | 3 | 133 tiles |
   | **Hog shuttle**, in the air | 30 | 1200 | 1.67 | **720 tiles** |
-  | **Hog shuttle**, legs ending in space | 30 | 1200 | 33.3 | 36 tiles, less 50 per surface/space change |
+  | **Hog shuttle**, legs ending in space | 30 | 1200 | 16.7 | 72 tiles, less 50 per surface/space change |
 - **Orbit costs** (`OrbitTransit.cs`, `OrbitTransitExtension` on the Hog: `transitFuel` 50,
-  `spaceDistanceFactor` 20). Vanilla gravships (which VGE only adjusts, through
+  `spaceDistanceFactor` 10). Vanilla gravships (which VGE only adjusts, through
   `GravshipUtility.TryGetPathFuelCost`) pay a layer-change cost and price distance on the destination layer
   × its `rangeDistanceFactor` (orbit 20). The Hog does the same with fixed numbers:
-  - a leg ending on a space layer costs 20× the distance cost;
+  - a leg ending on a space layer costs 10× the distance cost. Vanilla's orbit factor is 20, but VF already
+    measures in surface tiles and orbit tiles may be larger, so 20 was judged too much (user);
   - each leg that changes layer (surface ↔ orbit) costs 50 more. Surface → orbit straight overhead costs 50,
     and a round trip costs 100.
   - Estimates: postfix on `CompVehicleLauncher.FuelNeededToLaunchAtDist(Vector3, PlanetTile)` (launch checks)
     and on `FuelTargetUpdater.TargeterUpdate`, which re-prices the drawn path leg by leg. Vehicle Framework
     prices it by total distance.
-  - Spending: postfix on `AerialVehicleInFlight.SpendFuel` burns the extra 19× while the current leg ends in
+  - Spending: postfix on `AerialVehicleInFlight.SpendFuel` burns the extra 9× while the current leg ends in
     space. Running dry there crashes the shuttle the normal Vehicle Framework way. A postfix on
     `InitializeNextFlight` takes the 50 when a leg changing layer starts. The layer a paid leg heads to counts
     as current, so re-routing mid-leg doesn't pay twice, and resuming a flight after loading is never charged.

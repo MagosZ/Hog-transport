@@ -36,7 +36,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       per tile).
 - [ ] Orbit, straight up: the targeter shows about 50 fuel for an orbital target overhead, and about 50 is
       spent; the trip back down costs about 50 plus distance.
-- [ ] Orbit to orbit: a hop between two orbital sites costs about 33 fuel per tile (20×), and the tank drains
+- [ ] Orbit to orbit: a hop between two orbital sites costs about 17 fuel per tile (10×), and the tank drains
       that fast in flight.
 - [ ] A multi-stop path (surface → orbit → surface) shows and spends 50 for each change.
 - [ ] Save mid-flight to orbit, load: no second 50 is taken.
