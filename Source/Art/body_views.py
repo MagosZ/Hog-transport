@@ -3,7 +3,7 @@ green = cockpit armour and the wing stripe, blue = wings). VTOL Vehicle turns th
 heading, as the Hind's single top-down view.
 
 What shows from above, and what doesn't:
-- Only upward-facing surfaces. Vertical faces (the cockpit's sides, the rear door) show as at most an edge.
+- Only upward-facing surfaces. Vertical faces (the cockpit's sides, the rear door) don't show: row 7 is roof.
 - The turbofans face forward, so from above each is a cylinder lying lengthwise: a long nacelle shaded across its
   width, the intake lip as a thin band at the front, the exhaust nozzle's rim at the back. The fan isn't visible.
 - The cockpit windscreen slopes back, so it shows as a short, foreshortened band at the front of the cockpit roof.
@@ -160,14 +160,13 @@ def top():
     v.poly([(B - 0.15, 1.0), (B + 0.12, 1.12), (B + 0.12, 5.98), (B - 0.15, 6.0)], 226, HULL, outline=False)
     v.poly([(D + 0.15, 1.0), (D - 0.12, 1.12), (D - 0.12, 5.98), (D + 0.15, 6.0)], 150, HULL, outline=False)
     v.poly([(B - 0.15, 1.0), (D + 0.15, 1.0), (D - 0.12, 1.12), (B + 0.12, 1.12)], 232, HULL, outline=False)
-    # Rear section, row 7, full width and a step lower: its own roof, the rear door's top edge at the tail.
+    # Rear section, row 7, full width and a step lower: only its roof shows. The rear door below it is a
+    # vertical face at the tail, so it isn't visible from above.
     v.poly([(A + 0.06, 6.0), (END - 0.06, 6.0), (END - 0.06, 6.96), (A + 0.06, 6.96)], 186, HULL)
     v.poly([(A + 0.06, 6.0), (END - 0.06, 6.0), (END - 0.16, 6.1), (A + 0.16, 6.1)], 214, HULL, outline=False)
-    v.poly([(A + 0.06, 6.84), (END - 0.06, 6.84), (END - 0.06, 6.96), (A + 0.06, 6.96)], 132, HULL, outline=False)
-    v.groove([(C, 6.84), (C, 6.95)], 132)                                  # the door's two leaves meet here
-    for x in (A + 0.5, END - 0.5):
-        v.rect(x - 0.1, 6.9, x + 0.1, 6.96, 90, NONE, outline=False)        # hinge blocks on the door's top edge
     v.groove([(B - 0.15, 6.0), (D + 0.15, 6.0)], 196)
+    for x in (A + 0.5, END - 0.5):
+        v.groove([(x - 0.3, 6.5), (x + 0.3, 6.5)], 186)                     # roof panel seams
     for x in (A + 0.25, A + 0.75, END - 0.75, END - 0.25):
         v.rivet(x, 6.3)
     for y in (1.6, 2.6, 3.6, 4.6, 5.6):

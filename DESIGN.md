@@ -223,8 +223,8 @@ cast down-right onto lower surfaces.
 - **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
   width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
   rim at the back. The fan isn't visible. They cast shadows onto the wings.
-- **Hull:** a roof with lit west and shaded east chamfers. The rear section (row 7) sits a step lower; the rear
-  door is a vertical face, so only its top edge and hinges show.
+- **Hull:** a roof with lit west and shaded east chamfers. The rear section (row 7) sits a step lower and shows
+  only its roof; the rear door is a vertical face at the tail, so it isn't visible from above.
 - **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
 - **Roof panels:** cabin hatch B2–C2, tank bay B3–C4, grille B5–C5, fuel cap B6–C6.
 - **Skids:** hidden under the hull and wings.
