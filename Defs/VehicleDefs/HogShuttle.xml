@@ -82,11 +82,12 @@
 					</cells>
 				</hitbox>
 			</li>
-			<!-- The Arvus' two ducted turbofans, on the sides: they lift and push. -->
+			<!-- The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines (VVE's engine and rotor mast). Priority: flight speed and control never exceed what the fans' state allows. They don't explode. -->
 			<li>
 				<key>ThrusterPort</key>
 				<label>port turbofan</label>
 				<health>220</health>
+				<priorityStatEfficiency>true</priorityStatEfficiency>
 				<depth>External</depth>
 				<armor>
 					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
@@ -109,6 +110,7 @@
 				<key>ThrusterStarboard</key>
 				<label>starboard turbofan</label>
 				<health>220</health>
+				<priorityStatEfficiency>true</priorityStatEfficiency>
 				<depth>External</depth>
 				<armor>
 					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
@@ -269,38 +271,6 @@
 				<categories>
 					<li>FlightSpeed</li>
 				</categories>
-			</li>
-			<!-- VVE's engine: its efficiency leads the flight stats. -->
-			<li>
-				<key>EngineCore</key>
-				<label>engine core</label>
-				<health>180</health>
-				<priorityStatEfficiency>true</priorityStatEfficiency>
-				<depth>Internal</depth>
-				<armor>
-					<ArmorRating_Blunt>0.25</ArmorRating_Blunt>
-					<ArmorRating_Sharp>0.40</ArmorRating_Sharp>
-				</armor>
-				<hitbox>
-					<cells>
-						<li>(0, -2)</li>
-						<li>(1, -2)</li>
-					</cells>
-				</hitbox>
-				<categories>
-					<li>FlightSpeed</li>
-					<li>FlightControl</li>
-				</categories>
-				<reactors>
-					<li Class="Vehicles.Reactor_Explosive">
-						<indicator>VF_Explosive</indicator>
-						<chance>0.08</chance>
-						<maxHealth>0.2</maxHealth>
-						<radius>3</radius>
-						<damageDef>Bomb</damageDef>
-						<damage>10</damage>
-					</li>
-				</reactors>
 			</li>
 			<!-- VVE's transmission. -->
 			<li>

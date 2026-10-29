@@ -6,8 +6,8 @@ Run from anywhere: python components.py
 
 Cells: a 4x8 footprint facing north spans x -1..2, z -3..4 (north = z 4), as GenAdj.OccupiedRect.
 Grid names (DESIGN.md): columns A-D = x -1, 0, 1, 2 (port to starboard), rows 1-8 = z 4 down to -3 (nose to tail).
-Parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts: engine -> engine core,
-fuel intake, transmission -> fuel pumps, chemtank -> fuel tank, rotor mast -> the turbofans, skids -> landing gear,
+Parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts: engine and rotor mast -> the turbofans,
+fuel intake, transmission -> fuel pumps, chemtank -> fuel tank, skids -> landing gear,
 dashboard -> avionics, upholstery -> cabin seats, servos -> control servos. VVE's stabilizers and rudder are the
 Hog's wings; VVE's side panels are its hull. Health is the Louie's x1.5 (the Hog has 32 cells to its 21). Positions
 follow the Arvus lighter; a part may cover several cells, and cells may hold several parts.
@@ -50,14 +50,16 @@ def grid(*names):
 # key, label, health, depth, hitWeight, priorityStatEfficiency, categories, reactors, armour, hitbox, note
 # Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, two turbofans and
 # the wings on the sides of the middle (rows 3-6), three landing legs (nose, and both sides), cargo bay with the
-# fuel tank in the middle, engine core behind it, rear door at the tail.
+# fuel tank in the middle, rear door at the tail.
 PARTS = [
     ("Hull", "hull", 900, "External", 3, False, [], [], HULL, "Body", "Covers every cell."),
     ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C2"),
      "The cockpit box at the front centre."),
-    ("ThrusterPort", "port turbofan", 220, "External", 1, False, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
-     grid("A3-A6"), "The Arvus' two ducted turbofans, on the sides: they lift and push."),
-    ("ThrusterStarboard", "starboard turbofan", 220, "External", 1, False, ["FlightSpeed", "FlightControl"], [],
+    ("ThrusterPort", "port turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
+     grid("A3-A6"), "The Arvus' two ducted turbofans, on the sides: they lift and push, and they are the engines "
+     "(VVE's engine and rotor mast). Priority: flight speed and control never exceed what the fans' state allows. "
+     "They don't explode."),
+    ("ThrusterStarboard", "starboard turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [],
      EXTERNAL, grid("D3-D6"), None),
     ("WingPort", "port wing", 300, "External", 1, False, ["FlightControl"], [], HULL, grid("A3-A6"),
      "Wings: the hull's armour (VVE's stabilizers and rudder)."),
@@ -71,8 +73,6 @@ PARTS = [
     ("RearDoor", "rear door", 150, "External", 1, False, [], [], EXTERNAL, grid("A8-D8"),
      "The cargo bay's rear door."),
     ("FuelIntake", "fuel intake", 75, "External", 1, False, ["FlightSpeed"], [], EXTERNAL, grid("B8-C8"), None),
-    ("EngineCore", "engine core", 180, "Internal", 1, True, ["FlightSpeed", "FlightControl"], [EXPLOSIVE], INTERNAL,
-     grid("B7-C7"), "VVE's engine: its efficiency leads the flight stats."),
     ("FuelPumps", "fuel pumps", 75, "Internal", 1, False, ["FlightSpeed"], [], INTERNAL, grid("B6-C6"),
      "VVE's transmission."),
     ("FuelTank", "fuel tank", 180, "Internal", 1, False, [], [LEAK, EXPLOSIVE], INTERNAL, grid("B4-C5"),

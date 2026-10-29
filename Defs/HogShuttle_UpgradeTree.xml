@@ -128,14 +128,6 @@
 								</statModifiers>
 							</li>
 							<li>
-								<key>EngineCore</key>
-								<type>Add</type>
-								<statModifiers>
-									<ArmorRating_Blunt>0.05</ArmorRating_Blunt>
-									<ArmorRating_Sharp>0.08</ArmorRating_Sharp>
-								</statModifiers>
-							</li>
-							<li>
 								<key>FuelPumps</key>
 								<type>Add</type>
 								<statModifiers>

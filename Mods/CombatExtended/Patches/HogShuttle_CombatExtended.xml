@@ -105,15 +105,6 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="EngineCore"]/armor</xpath>
-		<value>
-			<armor>
-				<ArmorRating_Blunt>10</ArmorRating_Blunt>
-				<ArmorRating_Sharp>5.3</ArmorRating_Sharp>
-			</armor>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="FuelPumps"]/armor</xpath>
 		<value>
 			<armor>
@@ -256,15 +247,6 @@
 			<statModifiers>
 				<ArmorRating_Blunt>3.58</ArmorRating_Blunt>
 				<ArmorRating_Sharp>1.86</ArmorRating_Sharp>
-			</statModifiers>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="EngineCore"]/statModifiers</xpath>
-		<value>
-			<statModifiers>
-				<ArmorRating_Blunt>2</ArmorRating_Blunt>
-				<ArmorRating_Sharp>1.06</ArmorRating_Sharp>
 			</statModifiers>
 		</value>
 	</Operation>
