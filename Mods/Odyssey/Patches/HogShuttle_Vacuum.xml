@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!-- Pawns aboard a sealed cabin get full vacuum resistance. Other mods (VGE) also add parts here, so add to the
+	     list if it exists. -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>Defs/StatDef[defName="VacuumResistance"]/parts</xpath>
+		<nomatch Class="PatchOperationAdd">
+			<xpath>Defs/StatDef[defName="VacuumResistance"]</xpath>
+			<value>
+				<parts>
+					<li Class="HogShuttle.StatPart_SealedCabinVacuum" />
+				</parts>
+			</value>
+		</nomatch>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/StatDef[defName="VacuumResistance"]/parts</xpath>
+			<value>
+				<li Class="HogShuttle.StatPart_SealedCabinVacuum" />
+			</value>
+		</match>
+	</Operation>
+</Patch>

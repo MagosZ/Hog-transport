@@ -36,6 +36,13 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       cross a 100% planet pole to pole.
 - [ ] Orbit: launching to an orbital target right overhead costs little fuel, and the trip back is affordable.
 
-## Airtight
-- [ ] On a space map, pawns inside take no vacuum exposure; the shuttle takes no vacuum damage.
-- [ ] Pawns who get out without vacuum gear are exposed (expected).
+## Sealed cabin
+- [ ] Log: no Harmony error for `MagosZ.HogShuttle`; no error about `HogShuttle.StatPart_SealedCabinVacuum`.
+- [ ] In orbit (−75 °C, full vacuum), pawns aboard for a few hours: no hypothermia, no vacuum exposure, no
+      vacuum burns.
+- [ ] A pawn aboard: vacuum resistance shows 100% with an "Inside a sealed cabin" line in its breakdown.
+- [ ] Passengers still get hungry over time (needs keep ticking, as Vehicle Framework intends).
+- [ ] Cargo in orbit doesn't freeze; food in the hold rots at room-temperature speed.
+- [ ] A pawn who gets out loses the protection again: vacuum resistance back to normal right away or after a
+      short delay (the stat is cached), and outside temperature applies.
+- [ ] Other Vehicle Framework vehicles (VVE, the Hind) are unchanged: passengers still feel the outside temperature.

@@ -225,6 +225,11 @@
 		</properties>
 
 		<modExtensions>
+			<!-- Sealed cabin (HogShuttle.dll): seats and cargo hold stay at this temperature, and pawns aboard take no
+			     vacuum (with Odyssey). Vehicle Framework keeps ticking both, so without it they freeze in space. -->
+			<li Class="HogShuttle.SealedCabinExtension">
+				<temperature>21</temperature>
+			</li>
 			<!-- Local-map flight. Movement and curve values start from the Hind's, a bit slower to turn
 			     and steadier in the air. -->
 			<li Class="VTOLVehicle.AircraftProperties">

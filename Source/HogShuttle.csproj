@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!-- One net48 DLL for RimWorld 1.6 and 1.7, against the 1.6 reference assemblies and Vehicle Framework's 1.6
+	     DLLs (the build the Workshop ships). RimWorld 1.7 runs it through its Unity redirects.
+
+	     Release build:  dotnet build HogShuttle.csproj -c Release -nodeReuse:false -p:UseSharedCompilation=false -->
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<AssemblyName>HogShuttle</AssemblyName>
+		<RootNamespace>HogShuttle</RootNamespace>
+		<OutputPath>..\Assemblies\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+		<DebugType>none</DebugType>
+		<DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**;Art/**</DefaultItemExcludes>
+		<!-- Point this at your installed Vehicle Framework folder -->
+		<VFDir>C:\Games\Steam\steamapps\workshop\content\294100\3014915404</VFDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
+		<PackageReference Include="Lib.Harmony" Version="2.4.3" ExcludeAssets="runtime" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Vehicles">
+			<HintPath>$(VFDir)\1.6\Assemblies\Vehicles.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="SmashTools">
+			<HintPath>$(VFDir)\1.6\Assemblies\SmashTools.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
+</Project>

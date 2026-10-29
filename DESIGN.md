@@ -1,7 +1,8 @@
 # Hog Shuttle: design
 
-A small, boxy spacer shuttle, inspired by the Warhammer 40,000 Arvus lighter. It flies in space, is
-airtight, and hovers on the local map like a VTOL aircraft. XML only for now: no C#.
+A small, boxy spacer shuttle, inspired by the Warhammer 40,000 Arvus lighter. It flies in space, has a
+sealed and heated cabin, and hovers on the local map like a VTOL aircraft. Mostly XML, plus a small DLL for
+the cabin.
 
 ## 1. Dependencies
 
@@ -51,12 +52,26 @@ airtight, and hovers on the local map like a VTOL aircraft. XML only for now: no
 - **Space:** `spaceFlight true`. With Odyssey, Vehicle Framework (1.6.2064 and later) lets the vehicle target
   the world objects it marks as space objects: Gravship, SpaceBase, SpaceSite, GeneratedAsteroid.
 
-### Airtight
+### Sealed cabin (`Source/`, `HogShuttle.dll`)
 
-Nothing to add today. Pawns aboard a Vehicle Framework vehicle aren't spawned, so vacuum never reaches
-them (Vehicle Framework only has a to-do, VF-301..303, to let gas, toxic and vacuum affect them). The
-vehicle overrides the pawn tick, so vacuum doesn't hurt the vehicle either. If Vehicle Framework adds vacuum
-for passengers later, this mod needs a small patch to keep the Hog sealed.
+Vehicle Framework keeps ticking what's aboard: the seats (`VehiclePawn.TickHandlers`) and the cargo hold
+(`inventory.innerContainer.DoTick()`), both every tick. So passengers live normally aboard, and they and the
+cargo feel the outside temperature. In space (orbit: full vacuum, −75 °C) the first test passengers died of
+hypothermia. Vanilla shuttles don't have the problem because, as far as can be seen, their transporters don't
+tick their contents (stasis). The Hog keeps Vehicle Framework's way and seals the cabin instead:
+
+- `HogShuttle.SealedCabinExtension` on the VehicleDef (`temperature`, 21) turns it on; other vehicles are untouched.
+- **Temperature:** a Harmony postfix on `Thing.AmbientTemperature` (and on Pawn's own getter if it has one).
+  For anything not spawned whose holder chain reaches a VehiclePawn with the extension, it returns the cabin
+  temperature. That covers seats, the cargo hold, and passengers' own gear, on the map, on the world map and
+  in orbit.
+- **Vacuum (Odyssey):** vacuum belongs to the cell, so it can't be cleared for the cabin alone.
+  `StatPart_SealedCabinVacuum` on Odyssey's `VacuumResistance` sets pawns aboard to 100%. Vacuum exposure
+  and vacuum burns scale with 1 − resistance. Odyssey's patch, `Mods/Odyssey/Patches/HogShuttle_Vacuum.xml`,
+  adds the part to the stat's existing parts list or creates one, so it coexists with VGE's oxygen-pack part.
+- Side effect: passengers keep their needs, and food in the hold rots as in a 21 °C room.
+- Known Vehicle Framework bug: a passenger who dies aboard throws "Collection was modified" in
+  `TickHandlers`. The sealed cabin prevents the deaths that triggered it.
 
 ## 3. Building and research
 

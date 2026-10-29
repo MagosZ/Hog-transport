@@ -1,6 +1,13 @@
 # Memory notes live in the Mods root and are not versioned
 Claude_memory.md
 
+# Build intermediates (normally in C:\Local_Git\build) and compiled output
+# (rebuild with: dotnet build Source/HogShuttle.csproj -c Release)
+Source/obj/
+Source/bin/
+Assemblies/*.dll
+*.pdb
+
 # IDE
 .vs/
 *.user
