@@ -21,7 +21,9 @@ the cabin.
   skill), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
 - Components: hull (all cells), cockpit (front edge), port and starboard thrusters (side edges; flight speed
-  and control), fuel tank (back edge, internal; leaks, may explode below 20% health).
+  and control), port and starboard wings (300 health, the hull's armour; the outer columns at z 1, 0, −1,
+  where the art draws them; flight control), fuel tank (back edge, internal; leaks, may explode below 20%
+  health). Cells: a 4×8 footprint facing north spans x −1..2, z −3..4 (north = z 4).
 - Fuel: chemfuel, 1200 capacity, used only while flying. Enough to cross the planet twice in the air, or to
   reach orbit and work there for a while (see Range and Orbit costs).
 - No weapons yet. When they come: VTOL Vehicle's `VtolVehicleTurret` in `CompProperties_VehicleTurrets`,
@@ -149,6 +151,7 @@ thrusters = Hind engines. The plasteel armour upgrade's amounts become 20% of th
 | Hull | 0.50 / 0.90 | +0.10 / +0.18 | 22.5 / 11.6 | +4.5 / +2.32 |
 | Cockpit | 0.45 / 0.80 | +0.09 / +0.16 | 13.8 / 8.6 | +2.76 / +1.72 |
 | Port, starboard thruster | 0.45 / 0.80 | +0.09 / +0.16 | 17.9 / 9.3 | +3.58 / +1.86 |
+| Port, starboard wing (as hull) | 0.50 / 0.90 | +0.10 / +0.18 | 22.5 / 11.6 | +4.5 / +2.32 |
 | Fuel tank | 0.25 / 0.40 | +0.05 / +0.08 | 10 / 5.3 | +2 / +1.06 |
 
 Not covered: the Hind's CE patch also gives its airframe CE's real collision width (CE treats every vehicle as

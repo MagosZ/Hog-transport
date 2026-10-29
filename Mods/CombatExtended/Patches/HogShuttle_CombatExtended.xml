@@ -2,7 +2,7 @@
 <Patch>
 	<!-- Loaded only with Combat Extended (LoadFolders.xml). Without CE the vanilla ratings in Defs/ apply.
 	     Each rating is the Hind Gunship's CE rating for the matching part, scaled by the Hog's vanilla rating
-	     over the Hind's (hull = Hind body, thrusters = Hind engines). The plasteel armour upgrade adds 20% of
+	     over the Hind's (hull = Hind body, thrusters = Hind engines; the Hind has no wings, so the wings take the hull's). The plasteel armour upgrade adds 20% of
 	     these, in place of 20% of the vanilla ratings. -->
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="Hull"]/armor</xpath>
@@ -50,6 +50,26 @@
 		</value>
 	</Operation>
 
+	<!-- Wings: as the hull. -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="WingPort"]/armor</xpath>
+		<value>
+			<armor>
+				<ArmorRating_Blunt>22.5</ArmorRating_Blunt>
+				<ArmorRating_Sharp>11.6</ArmorRating_Sharp>
+			</armor>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/components/li[key="WingStarboard"]/armor</xpath>
+		<value>
+			<armor>
+				<ArmorRating_Blunt>22.5</ArmorRating_Blunt>
+				<ArmorRating_Sharp>11.6</ArmorRating_Sharp>
+			</armor>
+		</value>
+	</Operation>
+
 	<!-- Plasteel armour upgrade (Defs/HogShuttle_UpgradeTree.xml): 20% of the ratings above. -->
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="Hull"]/statModifiers</xpath>
@@ -93,6 +113,25 @@
 			<statModifiers>
 				<ArmorRating_Blunt>2</ArmorRating_Blunt>
 				<ArmorRating_Sharp>1.06</ArmorRating_Sharp>
+			</statModifiers>
+		</value>
+	</Operation>
+	<!-- Wings: as the hull. -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="WingPort"]/statModifiers</xpath>
+		<value>
+			<statModifiers>
+				<ArmorRating_Blunt>4.5</ArmorRating_Blunt>
+				<ArmorRating_Sharp>2.32</ArmorRating_Sharp>
+			</statModifiers>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.UpgradeTreeDef[defName="HogShuttle_UpgradeTree"]/nodes/li[key="HogShuttle_PlasteelArmour"]/upgrades/li/armor/li[key="WingStarboard"]/statModifiers</xpath>
+		<value>
+			<statModifiers>
+				<ArmorRating_Blunt>4.5</ArmorRating_Blunt>
+				<ArmorRating_Sharp>2.32</ArmorRating_Sharp>
 			</statModifiers>
 		</value>
 	</Operation>
