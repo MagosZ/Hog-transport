@@ -34,6 +34,11 @@ HEAT = 88
 LIGHT = (255, 190, 90)
 CAP = (206, 168, 64)
 GRILLE = (46, 48, 52)
+COPPER = (180, 110, 62)
+LAMP_CYAN = (110, 200, 230)
+LAMP_RED = (210, 60, 50)
+NAV_RED = (225, 55, 45)
+NAV_GREEN = (70, 215, 110)
 
 HULL, ARMOUR, WING = (255, 0, 0), (0, 255, 0), (0, 0, 255)   # mask channels
 NONE = (0, 0, 0)
@@ -137,19 +142,46 @@ HULL_PTS = [(B - 0.15, 1.0), (D + 0.15, 1.0), (D + 0.15, 6.96), (B - 0.15, 6.96)
 def top():
     v = Canvas()
 
-    # 1. Wings (the lowest surfaces): flat plates, a lit leading edge, a dark trailing edge, the green stripe.
+    # 1. Wings (the lowest surfaces): flat plates, a lit leading edge, a dark trailing edge. On top: panel lines,
+    #    rivet rows, the green band with an emblem, a caged landing light near the root, a navigation light at
+    #    the tip (red port, green starboard), and soot streaks behind the turbofan exhausts.
     for side in (-1, 1):
         pts, root, tip = wing_outline(side)
         v.poly(pts, 168, WING)
         v.line([pts[0], pts[1]], 212, 0.04)                                 # leading edge catches the light
         v.line([pts[3], pts[4]], 112, 0.035)                                # trailing edge
-        v.poly([(root, 4.72), (tip, 4.72), (tip, 4.98), (root, 4.98)], 186, ARMOUR, outline=False)
         for y in (2.95, 3.6, 4.25):
             v.groove([(root, y), (tip, y)], 168)
-        v.groove([((root + tip) / 2, 1.75), ((root + tip) / 2, 5.9)], 168)
-        lx = tip - side * 0.14
-        v.dot(lx, 5.12, 0.07, LIGHT)
-        v.dot(lx - 0.02, 5.1, 0.025, (255, 240, 200))
+        mid = (root + tip) / 2
+        v.groove([(mid, 1.75), (mid, 5.9)], 168)
+        for y in (2.75, 3.4, 4.05):                                         # rivet rows along the plate seams
+            for k in range(1, 6):
+                v.rivet(root + (tip - root) * k / 6, y + 0.12)
+        v.poly([(root, 4.62), (tip, 4.62), (tip, 5.02), (root, 5.02)], 186, ARMOUR, outline=False)
+        v.line([(root, 4.62), (tip, 4.62)], 226, 0.012)
+        v.line([(root, 5.02), (tip, 5.02)], 120, 0.012)
+        ex, ey = mid + side * 0.12, 4.82                                    # emblem: an eight-point star outline
+        star = [(ex + (0.16 if k % 2 == 0 else 0.07) * math.cos(k * math.pi / 8),
+                 ey + (0.16 if k % 2 == 0 else 0.07) * math.sin(k * math.pi / 8)) for k in range(16)]
+        v.d.polygon(v.pts(star), outline=(235, 235, 235, 255), width=v.w(0.016))
+        # Soot behind the exhaust (the nacelle sits over the wing's inner half).
+        nx = A + 0.5 if side < 0 else D + 0.5
+        for k in range(6):
+            v.shadow([(nx - 0.32 + k * 0.03, 4.9), (nx + 0.32 - k * 0.03, 4.9), (nx + 0.22, 5.9), (nx - 0.22, 5.9)],
+                     0, 0, 0.07 - k * 0.01)
+        # Caged landing light near the wing root's front (row 2): a dome, so it shows from above.
+        lx, ly = root + side * 0.42, 1.62                                  # outboard of the hull, on the wing
+        v.dot(lx, ly, 0.11, 70, NONE)
+        v.dot(lx, ly, 0.085, LAMP_CYAN, NONE)
+        v.dot(lx - 0.03, ly - 0.03, 0.03, (225, 250, 255), NONE)
+        for a in (0, 60, 120):
+            r = math.radians(a)
+            v.line([(lx - 0.11 * math.cos(r), ly - 0.11 * math.sin(r)),
+                    (lx + 0.11 * math.cos(r), ly + 0.11 * math.sin(r))], 60, 0.012)
+        # Navigation light at the tip.
+        tx = tip - side * 0.14
+        v.dot(tx, 5.12, 0.075, NAV_RED if side < 0 else NAV_GREEN)
+        v.dot(tx - 0.02, 5.1, 0.025, (255, 240, 230))
 
     # 2. Hull (higher): its shadow falls down-right onto the starboard wing, then the hull itself.
     v.shadow(HULL_PTS, 0.16, 0.16)
@@ -159,58 +191,101 @@ def top():
     v.poly([(B - 0.15, 1.0), (B + 0.12, 1.12), (B + 0.12, 5.98), (B - 0.15, 6.0)], 226, HULL, outline=False)
     v.poly([(D + 0.15, 1.0), (D - 0.12, 1.12), (D - 0.12, 5.98), (D + 0.15, 6.0)], 150, HULL, outline=False)
     v.poly([(B - 0.15, 1.0), (D + 0.15, 1.0), (D - 0.12, 1.12), (B + 0.12, 1.12)], 232, HULL, outline=False)
-    # Rear section, row 7 (B7-C7 only; A7 and D7 are empty), a step lower: only its roof shows. The rear door
+    # Rear section, row 7 (B7-C7 only; the corners are empty), a step lower: only its roof shows. The rear door
     # below it is a vertical face at the tail, so it isn't visible from above.
     v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.15, 6.96), (B - 0.15, 6.96)], 186, HULL)
     v.poly([(B - 0.15, 6.0), (D + 0.15, 6.0), (D + 0.05, 6.1), (B - 0.05, 6.1)], 214, HULL, outline=False)
     v.poly([(B - 0.15, 6.0), (B - 0.05, 6.1), (B - 0.05, 6.96), (B - 0.15, 6.96)], 226, HULL, outline=False)
     v.poly([(D + 0.15, 6.0), (D + 0.05, 6.1), (D + 0.05, 6.96), (D + 0.15, 6.96)], 150, HULL, outline=False)
     v.groove([(B - 0.15, 6.0), (D + 0.15, 6.0)], 196)
-    v.groove([(B + 0.2, 6.5), (D - 0.2, 6.5)], 186)                         # roof panel seam
-    for x in (B + 0.15, D - 0.15):
-        v.rivet(x, 6.3)
+    for y in (6.35, 6.6):                                                   # roof vents over the cargo bay's rear
+        v.rect(B + 0.2, y, B + 0.75, y + 0.12, GRILLE, NONE)
+        v.rect(D - 0.75, y, D - 0.2, y + 0.12, GRILLE, NONE)
+    for x in (B + 0.1, D - 0.1):
+        for y in (6.25, 6.85):
+            v.rivet(x, y)
     for y in (1.6, 2.6, 3.6, 4.6, 5.6):
         v.rivet(B - 0.02, y)
         v.rivet(D + 0.02, y)
+    # Copper pipes along both roof edges, rows 3-5 (the pipework on the kit), cylinders lying lengthwise.
+    for x0 in (B - 0.08, D - 0.02):
+        v.cylinder(x0, 2.15, x0 + 0.1, 4.85, COPPER, NONE)
+        for y in (2.6, 3.4, 4.2):                                           # pipe clamps
+            v.rect(x0 - 0.02, y, x0 + 0.12, y + 0.05, 90, NONE, outline=False)
 
-    # 3. Cockpit, B1-C1: an armoured box, lower than the hull behind it. Roof with chamfers, the sloped
-    #    windscreen foreshortened at the front.
+    # 3. Cockpit, B1-C1: a riveted armoured box, lower than the hull behind it. Roof with chamfers, the sloped
+    #    windscreen foreshortened at the front (three panes), a roof hatch, small lamp domes at the rear corners.
     ck = [(B + 0.22, 0.04), (D - 0.22, 0.04), (D - 0.05, 0.25), (D - 0.05, 1.02), (B + 0.05, 1.02), (B + 0.05, 0.25)]
     v.poly(ck, 180, ARMOUR)
     v.poly([(B + 0.05, 0.25), (B + 0.2, 0.32), (B + 0.2, 1.02), (B + 0.05, 1.02)], 206, ARMOUR, outline=False)
     v.poly([(D - 0.05, 0.25), (D - 0.2, 0.32), (D - 0.2, 1.02), (D - 0.05, 1.02)], 140, ARMOUR, outline=False)
     v.poly([(B + 0.3, 0.1), (D - 0.3, 0.1), (D - 0.24, 0.42), (B + 0.24, 0.42)], GLASS, NONE)
-    v.line([(C, 0.1), (C, 0.42)], OUTLINE, 0.025)                           # windscreen frame
-    v.line([(B + 0.38, 0.17), (B + 0.75, 0.17)], GLASS_HI, 0.022)          # reflection
+    v.line([(B + 0.78, 0.1), (B + 0.74, 0.42)], OUTLINE, 0.03)             # windscreen frames: three panes
+    v.line([(D - 0.78, 0.1), (D - 0.74, 0.42)], OUTLINE, 0.03)
+    v.line([(B + 0.36, 0.17), (B + 0.66, 0.17)], GLASS_HI, 0.022)          # reflection
     v.line([(B + 0.05, 1.02), (D - 0.05, 1.02)], 110, 0.03)                  # step up to the hull roof
-    v.dot(C + 0.55, 0.7, 0.05, 90, ARMOUR)                                  # roof vent
+    v.rect(C - 0.25, 0.55, C + 0.25, 0.9, 168, ARMOUR)                      # roof escape hatch
+    v.groove([(C - 0.25, 0.9), (C - 0.25, 0.55), (C + 0.25, 0.55)], 168)
+    for k in range(10):
+        v.rivet(B + 0.12 + 0.196 * k, 0.47)
+    for x, col in ((B + 0.2, NAV_RED), (D - 0.2, NAV_GREEN)):
+        v.dot(x, 0.88, 0.05, col)
+        v.dot(x - 0.012, 0.868, 0.015, (255, 240, 230))
 
-    # 4. Roof details: cabin hatch B2-C2, fuel tank bay B3-C4, vent grille B5-C5, fuel intake B6-C6.
-    for x0, y0, x1, y1 in ((B + 0.3, 1.28, D - 0.3, 1.82), (B + 0.22, 2.15, D - 0.22, 3.85)):
-        v.groove([(x0, y1), (x0, y0), (x1, y0)], 204)
-        v.line([(x1, y0), (x1, y1), (x0, y1)], 232, 0.012)                  # inset panel: lit lower-right lip
-    v.groove([(B + 0.22, 3.0), (D - 0.22, 3.0)], 204)
+    # 4. Roof details.
+    #    Row 2: a raised sensor housing just behind the cockpit (its roof, a dome sensor on top, its shadow), then
+    #    the cabin hatch. Rows 3-4: the fuel tank bay (two filler plates). Row 5: vent grille. Row 6: refuelling
+    #    hatch on the port side. Rows 6-7: the dorsal fin on the centre line, seen edge-on from above.
+    box = [(B + 0.3, 1.1), (D - 0.3, 1.1), (D - 0.3, 1.52), (B + 0.3, 1.52)]
+    v.shadow(box, 0.07, 0.07, 0.4)
+    v.poly(box, 214, HULL)
+    v.line([(B + 0.3, 1.1), (D - 0.3, 1.1)], 240, 0.015)
+    v.rect(B + 0.4, 1.18, B + 0.85, 1.44, GRILLE, NONE)
+    v.dot(D - 0.55, 1.31, 0.1, 80, NONE)
+    v.dot(D - 0.55, 1.31, 0.075, LAMP_RED, NONE)
+    v.dot(D - 0.575, 1.285, 0.022, (255, 220, 210), NONE)
+    v.groove([(B + 0.35, 1.95), (B + 0.35, 1.62), (D - 0.35, 1.62)], 204)   # cabin hatch
+    v.line([(D - 0.35, 1.62), (D - 0.35, 1.95), (B + 0.35, 1.95)], 232, 0.012)
+    v.rect(C - 0.12, 1.74, C + 0.12, 1.83, 140, HULL, outline=False)       # hatch handle
+    for x0, x1 in ((B + 0.22, C - 0.06), (C + 0.06, D - 0.22)):           # tank bay: two filler plates
+        v.groove([(x0, 3.85), (x0, 2.15), (x1, 2.15)], 204)
+        v.line([(x1, 2.15), (x1, 3.85), (x0, 3.85)], 232, 0.012)
+        for y in (2.25, 3.75):
+            v.rivet(x0 + 0.08, y)
+            v.rivet(x1 - 0.08, y)
+        cx = (x0 + x1) / 2
+        v.dot(cx, 3.0, 0.1, 150, HULL)
+        v.groove([(cx - 0.07, 3.0), (cx + 0.07, 3.0)], 150)
     v.rect(B + 0.3, 4.15, D - 0.3, 4.85, GRILLE, NONE)
     for y in (4.25, 4.4, 4.55, 4.7):
         v.line([(B + 0.34, y), (D - 0.34, y)], 120, 0.02)
-    v.rect(B + 0.4, 5.15, D - 0.4, 5.85, 150, HULL)
-    v.groove([(B + 0.4, 5.85), (B + 0.4, 5.15), (D - 0.4, 5.15)], 150)
-    v.dot(C, 5.5, 0.17, CAP)
-    v.dot(C - 0.05, 5.45, 0.06, (240, 215, 140))
+    hx = B + 0.45
+    v.rect(hx - 0.3, 5.2, hx + 0.3, 5.8, 150, HULL)
+    v.groove([(hx - 0.3, 5.8), (hx - 0.3, 5.2), (hx + 0.3, 5.2)], 150)
+    v.dot(hx, 5.5, 0.16, CAP)
+    v.dot(hx - 0.05, 5.45, 0.055, (240, 215, 140))
+    fin = [(C - 0.05, 5.1), (C + 0.05, 5.1), (C + 0.05, 6.9), (C - 0.05, 6.9)]
+    v.shadow(fin, 0.22, 0.22, 0.45)
+    v.poly(fin, 200, ARMOUR)
+    v.line([(C - 0.05, 5.1), (C - 0.05, 6.9)], 236, 0.012)
 
     # 5. Turbofans, A3-A5 / D3-D5: cylinders lying lengthwise on the hull's shoulders. Shadow first (onto the
-    #    wing and the hull side), then the nacelle: intake lip at the front, rib bands, exhaust rim at the back.
+    #    wing and the hull side), then the nacelle: intake lip at the front, mounting straps, a fuel line along
+    #    the top, the rib bands of the machinery housing, the exhaust rim at the back.
     for x0 in (A + 0.1, D + 0.1):
         x1 = x0 + 0.8
         v.shadow([(x0, 2.1), (x1, 2.1), (x1, 4.9), (x0, 4.9)], 0.18, 0.18, 0.45)
         v.cylinder(x0, 2.2, x1, 4.78, 186, HULL)
         v.cylinder(x0 - 0.02, 2.08, x1 + 0.02, 2.24, BRASS, NONE)            # intake lip, the widest part
         v.line([(x0, 2.24), (x1, 2.24)], BRASS_DARK, 0.018)
+        for y in (2.75, 3.25):                                              # mounting straps
+            v.cylinder(x0, y, x1, y + 0.06, 120, HULL, outline=False)
+        px = x0 + 0.28
+        v.cylinder(px, 2.3, px + 0.07, 3.5, COPPER, NONE)                  # fuel line along the top
         for y in (3.55, 3.8, 4.05, 4.3, 4.55):                              # rib bands round the housing
             v.cylinder(x0, y, x1, y + 0.08, 150, HULL, outline=False)
             v.cylinder(x0, y, x1, y + 0.02, 215, HULL, outline=False)        # lit upper rim of each rib
         v.cylinder(x0 + 0.08, 4.78, x1 - 0.08, 4.9, HEAT, NONE)             # exhaust nozzle rim
-        v.groove([(x0 + 0.02, 3.0), (x1 - 0.02, 3.0)], 186)
     return v.done()
 
 

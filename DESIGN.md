@@ -227,8 +227,19 @@ cast down-right onto lower surfaces.
 - **Hull:** a roof with lit west and shaded east chamfers. The rear section (B7–C7; A7 and D7 are empty) sits a
   step lower and shows only its roof; the rear door is a vertical face at the tail, so it isn't visible from above.
 - **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
-- **Roof panels:** cabin hatch B2–C2, tank bay B3–C4, grille B5–C5, fuel cap B6–C6.
+- **Roof details**, after the kit photo: a raised sensor housing with a grille and a red dome right behind the
+  cockpit (B2–C2), then the cabin hatch; the fuel tank bay's two filler plates (B3–C4); the vent grille (B5–C5);
+  the refuelling hatch and cap on the port side (B6); the green dorsal fin on the centre line (C6–C7), seen
+  edge-on as a thin strip with its shadow; roof vents over the rear section (B7–C7); copper pipes with clamps
+  along both roof edges (rows 3–5); rivets along the seams.
+- **Cockpit:** riveted green armour, a three-pane windscreen, a roof escape hatch, red (port) and green
+  (starboard) lamp domes at its rear corners.
+- **Turbofans:** mounting straps and a copper fuel line along the top of each nacelle; soot streaks on the wings
+  behind the exhausts (A6 / D6).
+- **Wings:** rivet rows along the plate seams, the green band with a star emblem, a caged landing light near each
+  root (A2 / D2), and navigation lights at the tips (red port, green starboard).
 - **Skids:** hidden under the hull and wings.
+- Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
 
 `python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
 Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.
