@@ -26,11 +26,17 @@
 		<selectable>true</selectable>
 		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
 
-		<!-- Placeholder art (Source/Art/make_textures.py). Square texture, body 4 wide and 7 long in the middle. -->
+		<!-- Placeholder art (Source/Art/body_views.py), VVE-style: Body_north/_south/_east (west mirrors east), each with
+		     a paint mask (red = hull, green = cockpit armour and wing stripe, blue = wings). drawSize is the 4x7
+		     footprint plus a wing cell each side (the wings' outer cell is art only). -->
 		<graphicData>
 			<texPath>HogShuttle/Body</texPath>
 			<graphicClass>Vehicles.Graphic_Vehicle</graphicClass>
-			<drawSize>(8,8)</drawSize>
+			<shaderType>CutoutComplexPattern</shaderType>
+			<drawSize>(6,7)</drawSize>
+			<color>(176, 178, 182)</color>
+			<colorTwo>(86, 128, 98)</colorTwo>
+			<colorThree>(150, 152, 156)</colorThree>
 		</graphicData>
 
 		<vehicleStats>
@@ -629,8 +635,8 @@
 
 		<graphicData>
 			<texPath>HogShuttle/Body</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-			<drawSize>(8,8)</drawSize>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(6,7)</drawSize>
 		</graphicData>
 
 		<statBases>

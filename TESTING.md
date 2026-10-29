@@ -16,7 +16,12 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Blueprint appears in the Vehicles architect tab after the research.
 - [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
 - [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
-- [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it.
+- [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it (Draw hitbox).
+- [ ] Parked facing north, south, east and west: the matching view shows (west = mirrored east); the wings
+      reach one cell past the footprint on each side.
+- [ ] In flight at diagonal headings: what VTOL Vehicle draws (top view turned? side view turned?). If it
+      looks wrong, fall back to one top-down view like the Hind.
+- [ ] Painting / patterns: hull, cockpit armour + wing stripe, and wings take colours one, two and three.
 
 ## Crew and cargo
 - [ ] Pilot seat needed to fly; co-pilot optional; 8 passenger seats.

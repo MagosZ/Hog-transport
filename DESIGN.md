@@ -209,12 +209,23 @@ all. That's a CE/VF version issue, not this mod's.
 
 ## 4. Art
 
-Placeholders from `Source/Art/make_textures.py` (top-down, nose north, 64 px per cell): `Body` (8×8 cells
-texture, body 4×7), `Shadow`, `BuildIcon`, `Transparent`, and the upgrade icons. Every feature in `Body` is drawn
-inside the grid cells of the part it shows: cockpit B1–C1, wings A2–A6 / D2–D6, turbofan nacelles A3–A5 / D3–D5
-(fan intake at the front), skids see-through underneath (B2–C2, A4–A5 / D4–D5), roof panels over the cabin, tank
-and pumps, fuel intake hatch B6–C6, rear door across row 7. A1 and D1 are empty space beside the cockpit.
-`python make_textures.py <path.png>` also writes a check image with the grid names over the body (not shipped).
+Placeholders, VVE-style, from `Source/Art/body_views.py` (run `make_textures.py`): three views at 128 px per
+cell, `Body_north` (top-down, nose up), `Body_south` (nose toward the viewer, cockpit front and lights showing)
+and `Body_east` (side profile, nose right; west mirrors it). That's the same set as VVE's helicopters, which
+ship `_north/_south/_east` plus masks. Each has a paint mask (`Body_northm` etc.): red = hull, green = cockpit
+armour and the wing stripe, blue = wings. The shader is `CutoutComplexPattern`, default colours grey / green /
+grey (`color`, `colorTwo`, `colorThree`). Glass, copper fans, lights, hatches and machinery are unpainted.
+drawSize (6,7): the 4×7 footprint plus one cell each side, because the wings are painted one cell past their
+component (A2–A6 / D2–D6), an outer cell that has no hitbox. The blueprint uses the same views (`Graphic_Multi`).
+`Shadow` is the north view's silhouette, and `BuildIcon` the north view.
+
+Every feature sits inside the grid cells of its part: cockpit B1–C1, wings A2–A6 / D2–D6 (+1 cell outboard),
+turbofan nacelles A3–A5 / D3–D5 (copper fan at the front, exhaust ring behind), skids B2–C2 and A4–A5 / D4–D5
+(faint, underneath, in the top views), roof panels over the cabin, tank and pumps, fuel intake hatch B6–C6, rear
+door across row 7. In the side view row r spans x 7−r to 8−r. `python make_textures.py <prefix>` also writes
+`<prefix>_north.png` / `<prefix>_east.png` check images with the grid over the views (not shipped).
+Untested: how VTOL Vehicle shows the side and front views while it flies at angles. The Hind ships one
+top-down view, because VTOL turns the airframe to any heading.
 Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.
 
 ## 5. Later
