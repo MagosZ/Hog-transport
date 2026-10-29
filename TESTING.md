@@ -60,7 +60,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
-- [ ] Health tab lists all 16 parts (DESIGN.md table). A7 and D7 have no part: check what a hit there does
+- [ ] Health tab lists all 16 parts (DESIGN.md table). A1, D1, A7 and D7 have no part: check what a hit there does
       (Vehicle Framework may pass it to the nearest part; under CE, the Hind notes such hits do no damage). Shots at the sides (A2-A6, D2-D6) hit the wings, and in
       rows 3-5 also the turbofans (rows 4-5 the rear skids); shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
       when hit). Damaged turbofans, wings, skids, fuel intake or fuel pumps lower flight speed or

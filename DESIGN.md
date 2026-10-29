@@ -31,11 +31,12 @@ the cabin.
 
   **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
   2), rows **1–7** run nose to tail (z 3 down to −3), with the Hog facing north. So B3 = (0, 1). The hull
-  covers every cell except A7 and D7, which are empty, physically and in the art: the tail is two columns wide.
+  covers every cell except the four corners A1, D1, A7 and D7, which are empty, physically and in the art: the
+  nose and the tail are two columns wide.
 
   | Row | A (port) | B | C | D (starboard) |
   |---|---|---|---|---|
-  | 1 nose | – | cockpit, avionics | cockpit, avionics | – |
+  | 1 nose | *(empty)* | cockpit, avionics | cockpit, avionics | *(empty)* |
   | 2 | wing | cabin seats, front skid | cabin seats, front skid | wing |
   | 3 | turbofan, wing | fuel tank | fuel tank | turbofan, wing |
   | 4 | turbofan, wing, rear skid | fuel tank | fuel tank | turbofan, wing, rear skid |
@@ -47,7 +48,7 @@ the cabin.
 
   | Part (key) | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
-  | Hull | 900 (hit weight 3) | outer | – | all but A7, D7 | side panels |
+  | Hull | 900 (hit weight 3) | outer | – | all but the corners A1, D1, A7, D7 | side panels |
   | Cockpit | 200 | outer | – | B1–C1 | – |
   | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A5 / D3–D5 | engine, rotor mast |
   | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A6 / D2–D6 | stabilizers, rudder |

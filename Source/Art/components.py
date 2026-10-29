@@ -51,10 +51,10 @@ def grid(*names):
 # Layout after the Arvus lighter (Warhammer Community pictures): cockpit box at the front centre, wings along the
 # sides (rows 2-6) with the two turbofans on them (rows 3-5), three skids (one under the nose, two at the rear
 # sides), cargo bay with the fuel tank in the middle, fuel intake behind it, rear door across the two-column tail
-# (B7-C7; A7 and D7 are empty).
+# (B7-C7). The corners A1, D1, A7 and D7 are empty.
 PARTS = [
-    ("Hull", "hull", 900, "External", 3, False, [], [], HULL, grid("A1-D6", "B7-C7"),
-     "Every cell except A7 and D7, which are empty: the tail is two columns wide."),
+    ("Hull", "hull", 900, "External", 3, False, [], [], HULL, grid("B1-C1", "A2-D6", "B7-C7"),
+     "Every cell except the four corners A1, D1, A7 and D7, which are empty: the nose and the tail are two columns wide."),
     ("Cockpit", "cockpit", 200, "External", 1, False, [], [], COCKPIT, grid("B1-C1"),
      "The cockpit box at the front centre."),
     ("ThrusterPort", "port turbofan", 220, "External", 1, True, ["FlightSpeed", "FlightControl"], [], EXTERNAL,
