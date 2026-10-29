@@ -1,0 +1,13 @@
+# Memory notes live in the Mods root and are not versioned
+Claude_memory.md
+
+# IDE
+.vs/
+*.user
+
+# Python cache from the texture script
+__pycache__/
+
+# Made by RimWorld: the Workshop item id (written on upload) and the baked texture cache
+About/PublishedFileId.txt
+Assets.zip*

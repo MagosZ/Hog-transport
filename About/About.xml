@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Hog Shuttle</name>
+	<author>MagosZ</author>
+	<packageId>MagosZ.HogShuttle</packageId>
+	<supportedVersions>
+		<li>1.6</li>
+		<li>1.7</li>
+	</supportedVersions>
+	<description>A small, boxy spacer shuttle built on Vehicle Framework and VTOL Vehicle.
+
+THE SHUTTLE
+- Footprint 4×8 (the body is a box once its wings are out).
+- Crew: 1 pilot (required) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,000 kg.
+- Fuel: chemfuel.
+- No weapons yet.
+
+FLIGHT
+- Hovers on the local map (VTOL): take off, fly, land, auto-land on a saved spot, board nearby colonists.
+- Flies across the world map like other Vehicle Framework aircraft.
+- With Odyssey: flies to space (gravships, orbital sites, asteroids) and back.
+- Airtight: pawns inside are safe from vacuum.
+
+RESEARCH
+- "Hog shuttle" in the Vehicles research tab (Vanilla Vehicles Expanded). Needs aerial vehicles and, with Odyssey, shuttle.
+- Spacer tech, hi-tech research bench and multi-analyzer.
+
+Placeholder art for now.</description>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>SmashPhil.VehicleFramework</packageId>
+			<displayName>Vehicle Framework</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3014915404</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>rabiosus.vtolvehicle</packageId>
+			<displayName>VTOL Vehicle</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3730919989</steamWorkshopUrl>
+		</li>
+		<li>
+			<packageId>OskarPotocki.VanillaVehiclesExpanded</packageId>
+			<displayName>Vanilla Vehicles Expanded</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3014906877</steamWorkshopUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>SmashPhil.VehicleFramework</li>
+		<li>rabiosus.vtolvehicle</li>
+		<li>OskarPotocki.VanillaVehiclesExpanded</li>
+		<li>Ludeon.RimWorld.Odyssey</li>
+	</loadAfter>
+</ModMetaData>

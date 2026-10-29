@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- The flight setup follows the Hind Helicopter Gunship (the only open example of a VTOL Vehicle
+	     aircraft): VTOL Vehicle flies it on the local map, Vehicle Framework's launcher flies it on the
+	     world map. VTOL Vehicle is closed source, so field names come from that example. -->
+	<Vehicles.VehicleDef ParentName="BaseVehiclePawn">
+		<defName>HogShuttle</defName>
+		<label>Hog shuttle</label>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<thingClass>VTOLVehicle.VtolVehiclePawn</thingClass>
+		<buildDef>HogShuttle_Blueprint</buildDef>
+
+		<drawerType>RealtimeOnly</drawerType>
+		<category>Pawn</category>
+		<type>Air</type>
+		<vehicleCategory>Transport</vehicleCategory>
+		<techLevel>Spacer</techLevel>
+		<canCaravan>false</canCaravan>
+		<tickerType>Normal</tickerType>
+		<altitudeLayer>Gas</altitudeLayer>
+		<passability>Standable</passability>
+		<pathCost>250</pathCost>
+		<fillPercent>0</fillPercent>
+		<size>(4,8)</size>
+		<rotatable>true</rotatable>
+		<selectable>true</selectable>
+		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+
+		<!-- Placeholder art (Source/Art/make_textures.py). Square texture, body 4 wide and 8 long in the middle. -->
+		<graphicData>
+			<texPath>HogShuttle/Body</texPath>
+			<graphicClass>Vehicles.Graphic_Vehicle</graphicClass>
+			<drawSize>(8,8)</drawSize>
+		</graphicData>
+
+		<vehicleStats>
+			<Mass>1800</Mass>
+			<CargoCapacity>1000</CargoCapacity>
+			<RepairRate>1</RepairRate>
+			<FlightSpeed>20</FlightSpeed>
+		</vehicleStats>
+
+		<statBases>
+			<Flammability>0.3</Flammability>
+			<MarketValue>9000</MarketValue>
+			<ArmorRating_Heat>1.0</ArmorRating_Heat>
+		</statBases>
+
+		<components>
+			<li>
+				<key>Hull</key>
+				<label>hull</label>
+				<health>900</health>
+				<hitWeight>3</hitWeight>
+				<depth>External</depth>
+				<armor>
+					<ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.90</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<side>Body</side>
+				</hitbox>
+			</li>
+			<li>
+				<key>Cockpit</key>
+				<label>cockpit</label>
+				<health>200</health>
+				<depth>External</depth>
+				<armor>
+					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<side>Front</side>
+				</hitbox>
+			</li>
+			<li>
+				<key>ThrusterPort</key>
+				<label>port thruster</label>
+				<health>220</health>
+				<depth>External</depth>
+				<armor>
+					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<side>Left</side>
+				</hitbox>
+				<categories>
+					<li>FlightSpeed</li>
+					<li>FlightControl</li>
+				</categories>
+			</li>
+			<li>
+				<key>ThrusterStarboard</key>
+				<label>starboard thruster</label>
+				<health>220</health>
+				<depth>External</depth>
+				<armor>
+					<ArmorRating_Blunt>0.45</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<side>Right</side>
+				</hitbox>
+				<categories>
+					<li>FlightSpeed</li>
+					<li>FlightControl</li>
+				</categories>
+			</li>
+			<li>
+				<key>FuelTank</key>
+				<label>fuel tank</label>
+				<health>180</health>
+				<depth>Internal</depth>
+				<armor>
+					<ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+					<ArmorRating_Sharp>0.40</ArmorRating_Sharp>
+				</armor>
+				<hitbox>
+					<side>Back</side>
+				</hitbox>
+				<reactors>
+					<li Class="Vehicles.Reactor_FuelLeak" />
+					<li Class="Vehicles.Reactor_Explosive">
+						<indicator>VF_Explosive</indicator>
+						<chance>0.08</chance>
+						<maxHealth>0.2</maxHealth>
+						<radius>3</radius>
+						<damageDef>Bomb</damageDef>
+						<damage>10</damage>
+					</li>
+				</reactors>
+			</li>
+		</components>
+
+		<soundOneShotsOnEvent>
+			<li>
+				<key>IgnitionOn</key>
+				<value>VVE_VehicleStart</value>
+			</li>
+			<li>
+				<key>IgnitionOff</key>
+				<value>VVE_VehicleStart</value>
+			</li>
+		</soundOneShotsOnEvent>
+
+		<comps>
+			<li Class="VTOLVehicle.CompProperties_VtolAirborneMoveBlocker" />
+
+			<!-- World-map flight. spaceFlight: with Odyssey, Vehicle Framework lets it target gravships,
+			     space bases and sites, and asteroids. The 1-tick launch and landing are the Hind's: VTOL
+			     Vehicle draws the take-off and landing on the map itself. -->
+			<li Class="Vehicles.CompProperties_VehicleLauncher">
+				<spaceFlight>true</spaceFlight>
+				<fuelConsumptionWorldMultiplier>0.8</fuelConsumptionWorldMultiplier>
+				<launchProtocol Class="Vehicles.DefaultTakeoff">
+					<launchProperties>
+						<maxTicks>1</maxTicks>
+						<renderShadow>false</renderShadow>
+					</launchProperties>
+					<landingProperties>
+						<maxTicks>1</maxTicks>
+						<renderShadow>false</renderShadow>
+					</landingProperties>
+				</launchProtocol>
+			</li>
+
+			<!-- Placeholder numbers, to tune in game (see TESTING.md). -->
+			<li Class="Vehicles.CompProperties_FueledTravel">
+				<fuelType>Chemfuel</fuelType>
+				<leakDef>Filth_Fuel</leakDef>
+				<fuelCapacity>600</fuelCapacity>
+				<fuelConsumptionRate>60</fuelConsumptionRate>
+				<fuelConsumptionWorldMultiplier>0.8</fuelConsumptionWorldMultiplier>
+				<fuelConsumptionCondition>Flying</fuelConsumptionCondition>
+				<autoRefuelPercent>1</autoRefuelPercent>
+				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+			</li>
+		</comps>
+
+		<properties>
+			<diagonalRotation>true</diagonalRotation>
+			<visibilityWeight>4</visibilityWeight>
+			<roles>
+				<li>
+					<key>Pilot</key>
+					<label>pilot</label>
+					<handlingTypes>Movement</handlingTypes>
+					<slots>1</slots>
+					<slotsToOperate>1</slotsToOperate>
+					<hitbox>
+						<side>Front</side>
+					</hitbox>
+					<exposed>false</exposed>
+					<chanceToHit>0.1</chanceToHit>
+				</li>
+				<li>
+					<!-- A seat with no handling: never needed to fly. -->
+					<key>CoPilot</key>
+					<label>co-pilot</label>
+					<slots>1</slots>
+					<slotsToOperate>0</slotsToOperate>
+					<hitbox>
+						<side>Front</side>
+					</hitbox>
+					<exposed>false</exposed>
+					<chanceToHit>0.1</chanceToHit>
+				</li>
+				<li>
+					<key>Passenger</key>
+					<label>passenger</label>
+					<slots>8</slots>
+					<hitbox>
+						<side>Body</side>
+					</hitbox>
+					<exposed>false</exposed>
+					<chanceToHit>0.03</chanceToHit>
+				</li>
+			</roles>
+		</properties>
+
+		<modExtensions>
+			<!-- Local-map flight. Movement and curve values start from the Hind's, a bit slower to turn
+			     and steadier in the air. -->
+			<li Class="VTOLVehicle.AircraftProperties">
+				<moveSpeed>0.35</moveSpeed>
+				<turnSpeed>1.60</turnSpeed>
+				<accelerationPerTick>0.0035</accelerationPerTick>
+				<decelerationPerTick>0.0020</decelerationPerTick>
+				<arrivalStopSpeed>0.001</arrivalStopSpeed>
+				<angularAccelerationPerTick>0.022</angularAccelerationPerTick>
+				<angularDecelerationPerTick>0.020</angularDecelerationPerTick>
+				<angularStopTolerance>0.01</angularStopTolerance>
+				<highSpeedTurnStartSpeed>0.18</highSpeedTurnStartSpeed>
+				<highSpeedTurnFullSpeed>0.32</highSpeedTurnFullSpeed>
+				<highSpeedTurnSpeedFactor>0.58</highSpeedTurnSpeedFactor>
+				<turnSpeedLimitChangePerTick>1.6</turnSpeedLimitChangePerTick>
+				<turnSlowdownAngle>60</turnSlowdownAngle>
+				<minTurnSpeedFactor>0.15</minTurnSpeedFactor>
+				<facingSpeedLimitAngle>30</facingSpeedLimitAngle>
+				<offFacingMaxSpeed>0.05</offFacingMaxSpeed>
+				<facingSpeedLimitChangePerTick>0.003</facingSpeedLimitChangePerTick>
+				<directionalHoverMaxSpeed>0.12</directionalHoverMaxSpeed>
+				<directionalHoverEnterRadius>16</directionalHoverEnterRadius>
+				<directionalHoverEnterSpeed>0.14</directionalHoverEnterSpeed>
+				<microMoveDistance>4</microMoveDistance>
+				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
+				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
+				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
+				<!-- No weapons yet. -->
+				<combatDirectionalHoverEnabled>false</combatDirectionalHoverEnabled>
+				<takeoffDrawCurve>
+					<mode>MonotoneCubic</mode>
+					<points>
+						<li>(0.00, 0.00)</li>
+						<li>(0.10, 0.01)</li>
+						<li>(0.17, 0.05)</li>
+						<li>(0.25, 0.13)</li>
+						<li>(0.46, 0.59)</li>
+						<li>(0.63, 0.85)</li>
+						<li>(0.77, 0.95)</li>
+						<li>(1.00, 1.00)</li>
+					</points>
+				</takeoffDrawCurve>
+				<landingDrawCurve>
+					<mode>MonotoneCubic</mode>
+					<points>
+						<li>(0.00, 1.00)</li>
+						<li>(0.09, 0.99)</li>
+						<li>(0.16, 0.96)</li>
+						<li>(0.22, 0.92)</li>
+						<li>(0.29, 0.83)</li>
+						<li>(0.46, 0.44)</li>
+						<li>(0.59, 0.19)</li>
+						<li>(0.70, 0.09)</li>
+						<li>(0.82, 0.03)</li>
+						<li>(1.00, 0.00)</li>
+					</points>
+				</landingDrawCurve>
+				<takeoffMoveStartProgress>0.35</takeoffMoveStartProgress>
+				<landingApproachMaxDistance>8</landingApproachMaxDistance>
+				<landingApproachSafetyTicks>15</landingApproachSafetyTicks>
+				<landingTouchdownRadius>0.05</landingTouchdownRadius>
+				<landingAlignmentHoldDrawProgress>0.2</landingAlignmentHoldDrawProgress>
+				<takeoffTicks>360</takeoffTicks>
+				<landingTicks>360</landingTicks>
+				<arrivalRadius>0.05</arrivalRadius>
+				<landingCollisionDamageFactor>1</landingCollisionDamageFactor>
+				<!-- "Rotor" timings are the thrusters spooling up and down. -->
+				<rotorStartupTicks>240</rotorStartupTicks>
+				<rotorShutdownTicks>300</rotorShutdownTicks>
+				<rotorReadyThreshold>0.98</rotorReadyThreshold>
+				<rotorSustainerStartDelayTicks>60</rotorSustainerStartDelayTicks>
+				<rotorSustainerFadeInTicks>120</rotorSustainerFadeInTicks>
+				<rotorSustainerFadeOutTicks>120</rotorSustainerFadeOutTicks>
+				<fuelConsumptionPerTick>0.006</fuelConsumptionPerTick>
+				<flightDrawScale>1.15</flightDrawScale>
+				<flightJitterAmplitude>(0.5, 0.4)</flightJitterAmplitude>
+				<flightJitterTargetIntervalTicks>110</flightJitterTargetIntervalTicks>
+				<flightJitterSmoothTimeTicks>160</flightJitterSmoothTimeTicks>
+				<flightJitterMaxSpeed>0.003</flightJitterMaxSpeed>
+				<flightAngleJitterAmplitude>0.6</flightAngleJitterAmplitude>
+				<flightAngleJitterTargetIntervalTicks>110</flightAngleJitterTargetIntervalTicks>
+				<flightAngleJitterSmoothTimeTicks>160</flightAngleJitterSmoothTimeTicks>
+				<flightAngleJitterMaxSpeed>0.06</flightAngleJitterMaxSpeed>
+				<bodyAltitudeOffset>0.02</bodyAltitudeOffset>
+				<drawShadow>true</drawShadow>
+				<shadowTexturePath>HogShuttle/Shadow</shadowTexturePath>
+				<shadowScale>1</shadowScale>
+				<shadowAlpha>1.5</shadowAlpha>
+				<shadowOffsetX>-0.3</shadowOffsetX>
+				<shadowOffsetZ>-0.3</shadowOffsetZ>
+				<syncShadowWithSun>true</syncShadowWithSun>
+				<shadowSunOffsetFactor>1.3</shadowSunOffsetFactor>
+				<shadowSunStretchFactor>0.0</shadowSunStretchFactor>
+				<shadowMaxStretch>1.8</shadowMaxStretch>
+				<!-- Rocket engine hum (VVE's, used by its Frog) instead of rotor blades. -->
+				<rotorSustainerDef>VVE_VehicleEngineRocket</rotorSustainerDef>
+				<flightRotorSustainerDef>VVE_VehicleEngineRocket</flightRotorSustainerDef>
+				<rotorSustainerMinVolume>0.05</rotorSustainerMinVolume>
+				<rotorSustainerMaxVolume>1</rotorSustainerMaxVolume>
+				<rotorSustainerPitchBySpeed>true</rotorSustainerPitchBySpeed>
+				<rotorSustainerMinPitch>1</rotorSustainerMinPitch>
+				<rotorSustainerMaxPitch>1.12</rotorSustainerMaxPitch>
+				<rotorSustainerPitchSpeedForMax>0.3</rotorSustainerPitchSpeedForMax>
+				<rotorSustainerPitchSmoothTicks>45</rotorSustainerPitchSmoothTicks>
+				<rotors>
+					<!-- The Hog has no rotor. VTOL Vehicle is built around rotors and its code isn't public, so
+					     one invisible, non-spinning rotor stands in to keep it on the tested path. -->
+					<li>
+						<stoppedTexturePath>HogShuttle/Transparent</stoppedTexturePath>
+						<spinningTexturePath>HogShuttle/Transparent</spinningTexturePath>
+						<localOffset>(0, 0)</localOffset>
+						<drawSize>(1, 1)</drawSize>
+						<scale>1</scale>
+						<altitudeOffset>0.01</altitudeOffset>
+						<rotationSpeed>0</rotationSpeed>
+						<rotationDirection>1</rotationDirection>
+						<accelerationTicks>240</accelerationTicks>
+						<drawShadow>false</drawShadow>
+					</li>
+				</rotors>
+			</li>
+			<li Class="VTOLVehicle.VtolCrewTransferProperties">
+				<boardNearbyRangeType>Circle</boardNearbyRangeType>
+				<boardNearbyRadius>8</boardNearbyRadius>
+				<boardNearbyExpandVehicleRectBy>2</boardNearbyExpandVehicleRectBy>
+				<boardNearbyAllowHumanlikes>true</boardNearbyAllowHumanlikes>
+				<boardNearbyAllowAnimalsInPassengerRoles>true</boardNearbyAllowAnimalsInPassengerRoles>
+				<boardNearbyAllowMechanoidsInPassengerRoles>true</boardNearbyAllowMechanoidsInPassengerRoles>
+			</li>
+		</modExtensions>
+	</Vehicles.VehicleDef>
+
+	<Vehicles.VehicleBuildDef ParentName="VehicleBaseBuildable">
+		<defName>HogShuttle_Blueprint</defName>
+		<label>Hog shuttle</label>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<uiIconPath>HogShuttle/BuildIcon</uiIconPath>
+
+		<graphicData>
+			<texPath>HogShuttle/Body</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>(8,8)</drawSize>
+		</graphicData>
+
+		<statBases>
+			<MaxHitPoints>1200</MaxHitPoints>
+			<WorkToBuild>48000</WorkToBuild>
+			<Flammability>0.3</Flammability>
+		</statBases>
+
+		<size>(4,8)</size>
+
+		<researchPrerequisites>
+			<li>HogShuttle_Research</li>
+		</researchPrerequisites>
+
+		<!-- About 1.7x Odyssey's passenger shuttle (250 steel, 150 plasteel, 6 components, 1 shuttle
+		     engine); spacer components stand in for the engine so it builds without Odyssey. -->
+		<costList>
+			<Steel>450</Steel>
+			<Plasteel>250</Plasteel>
+			<ComponentIndustrial>10</ComponentIndustrial>
+			<ComponentSpacer>3</ComponentSpacer>
+		</costList>
+
+		<soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+		<thingToSpawn>HogShuttle</thingToSpawn>
+		<constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+	</Vehicles.VehicleBuildDef>
+</Defs>

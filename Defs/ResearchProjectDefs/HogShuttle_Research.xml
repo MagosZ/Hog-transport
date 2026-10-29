@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- In VVE's Vehicles tab. Row 0 is empty there (VVE uses row 1, VVE Tier 3 row 2), so column 3
+	     sits just right of aerial vehicles (column 2, row 1) without crossing other lines.
+	     Shuttles is Odyssey's (main tab); without Odyssey only aerial vehicles is needed. -->
+	<ResearchProjectDef>
+		<defName>HogShuttle_Research</defName>
+		<label>hog shuttle</label>
+		<description>Build the Hog, a boxy spacer shuttle that hovers over the ground like a VTOL aircraft and can fly between the surface and orbit.</description>
+		<baseCost>3000</baseCost>
+		<techLevel>Spacer</techLevel>
+		<prerequisites>
+			<li>VVE_AerialVehicles</li>
+			<li MayRequire="Ludeon.RimWorld.Odyssey">Shuttles</li>
+		</prerequisites>
+		<requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+		<requiredResearchFacilities>
+			<li>MultiAnalyzer</li>
+		</requiredResearchFacilities>
+		<tab>Vehicles</tab>
+		<researchViewX>3.00</researchViewX>
+		<researchViewY>0.00</researchViewY>
+		<generalRules>
+			<rulesStrings>
+				<li>subject->hog shuttles</li>
+				<li>subject_story->designed a shuttle that could hover</li>
+				<li>subject_story->flew a boxy shuttle into orbit</li>
+				<li>subject_gerund->building hog shuttles</li>
+			</rulesStrings>
+		</generalRules>
+	</ResearchProjectDef>
+</Defs>
