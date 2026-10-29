@@ -32,9 +32,15 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 ## World map and space (Odyssey)
 - [ ] Launch to another surface tile and land.
 - [ ] Launch to orbit: a gravship, an orbital site, an asteroid. Land there and come back.
-- [ ] Range: on a full tank the launch targeter reaches about 360 tiles (1.67 fuel per tile), enough to
-      cross a 100% planet pole to pole.
-- [ ] Orbit: launching to an orbital target right overhead costs little fuel, and the trip back is affordable.
+- [ ] Range: on a full tank (1200) the launch targeter reaches about 720 tiles over the surface (1.67 fuel
+      per tile).
+- [ ] Orbit, straight up: the targeter shows about 50 fuel for an orbital target overhead, and about 50 is
+      spent; the trip back down costs about 50 plus distance.
+- [ ] Orbit to orbit: a hop between two orbital sites costs about 33 fuel per tile (20×), and the tank drains
+      that fast in flight.
+- [ ] A multi-stop path (surface → orbit → surface) shows and spends 50 for each change.
+- [ ] Save mid-flight to orbit, load: no second 50 is taken.
+- [ ] Other Vehicle Framework aircraft (VVE, the Hind) keep their old fuel costs.
 
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Hog has an Upgrades tab with one node, "Chemical toilet", with the description and the placeholder icon.

@@ -18,7 +18,7 @@ THE SHUTTLE
 FLIGHT
 - Hovers on the local map (VTOL): take off, fly, land, auto-land on a saved spot, board nearby colonists.
 - Flies across the world map like other Vehicle Framework aircraft.
-- With Odyssey: flies to space (gravships, orbital sites, asteroids) and back.
+- With Odyssey: flies to space (gravships, orbital sites, asteroids) and back. Each climb into space or drop back down costs 50 chemfuel, and flying between places in space burns fuel 20 times faster than in the air. A full tank (1200) covers about 720 tiles in the air.
 - Sealed cabin: everything aboard, crew, passengers and cargo, stays at 21°C wherever the shuttle is, and pawns aboard take no vacuum (with Odyssey). Passengers still get hungry, heal and so on as in any Vehicle Framework vehicle, and food in the hold ages as in a 21°C room.
 
 UPGRADES (with Dubs Bad Hygiene)

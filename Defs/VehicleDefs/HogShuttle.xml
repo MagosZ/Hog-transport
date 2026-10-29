@@ -37,7 +37,7 @@
 			<Mass>1800</Mass>
 			<CargoCapacity>1000</CargoCapacity>
 			<RepairRate>1</RepairRate>
-			<FlightSpeed>20</FlightSpeed>
+			<FlightSpeed>30</FlightSpeed>
 		</vehicleStats>
 
 		<statBases>
@@ -169,14 +169,16 @@
 
 			<!-- World-map range on a full tank, from Vehicle Framework's launch cost:
 			     fuel per tile = fuelConsumptionRate x launcher multiplier / (60 x FlightSpeed)
-			     = 200 x 10 / (60 x 20) = 1.67, so 600 fuel = 360 tiles. Half the planet's circumference
-			     is about 330 tiles (100% coverage, estimate), so one tank flies pole to pole.
+			     = 300 x 10 / (60 x 30) = 1.67 (the rate follows FlightSpeed so speed doesn't change it),
+			     so 1200 fuel = 720 tiles in the air; half the planet's circumference is about 330 tiles
+			     (100% coverage, estimate). Space costs more (OrbitTransitExtension below): 50 per change
+			     between surface and space, and legs ending in space cost 20x per tile (33 fuel per tile).
 			     VVE's helicopters on a full tank: Mosquito 309, Louie 443, Cherokee 152 tiles. -->
 			<li Class="Vehicles.CompProperties_FueledTravel">
 				<fuelType>Chemfuel</fuelType>
 				<leakDef>Filth_Fuel</leakDef>
-				<fuelCapacity>600</fuelCapacity>
-				<fuelConsumptionRate>200</fuelConsumptionRate>
+				<fuelCapacity>1200</fuelCapacity>
+				<fuelConsumptionRate>300</fuelConsumptionRate>
 				<fuelConsumptionCondition>Flying</fuelConsumptionCondition>
 				<autoRefuelPercent>1</autoRefuelPercent>
 				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
@@ -229,6 +231,12 @@
 			     vacuum (with Odyssey). Vehicle Framework keeps ticking both, so without it they freeze in space. -->
 			<li Class="HogShuttle.SealedCabinExtension">
 				<temperature>21</temperature>
+			</li>
+			<!-- Orbit costs (HogShuttle.dll): 50 fuel per change between surface and space, and legs that end in
+			     space cost 20x per tile (vanilla's orbit rangeDistanceFactor is 20 too). -->
+			<li Class="HogShuttle.OrbitTransitExtension">
+				<transitFuel>50</transitFuel>
+				<spaceDistanceFactor>20</spaceDistanceFactor>
 			</li>
 			<!-- Local-map flight. Movement and curve values start from the Hind's, a bit slower to turn
 			     and steadier in the air. -->
