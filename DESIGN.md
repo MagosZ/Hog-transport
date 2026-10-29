@@ -73,6 +73,22 @@ tick their contents (stasis). The Hog keeps Vehicle Framework's way and seals th
 - Known Vehicle Framework bug: a passenger who dies aboard throws "Collection was modified" in
   `TickHandlers`. The sealed cabin prevents the deaths that triggered it.
 
+### Upgrades (with Dubs Bad Hygiene)
+
+Loaded only with `Dubwise.DubsBadHygiene` (`Mods/DubsBadHygiene/`, LoadFolders.xml). Without DBH the Hog has
+no upgrade tree and no Upgrades tab.
+
+- `HogShuttle_UpgradeTree`, one node `HogShuttle_ChemicalToilet`: "Chemical toilet", *"Keeps the bladder of
+  everyone aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7;
+  Vehicle Framework spends upgrade work at construction speed per tick, like building). Vehicle Framework's
+  defaults for removal: 50% refund, 30% of the work.
+- The node has no Vehicle Framework effect. `UpgradeNeedRefillExtension` on the Hog (`upgradeNode`, `need` =
+  DBH's `Bladder`) and a postfix on `VehiclePawn.TickRare` (every 250 ticks, on the map and in flight) fill
+  that need for everyone in `AllPawnsAboard` while the node is installed. The NeedDef is named in XML, so the
+  DLL doesn't reference DBH.
+- When the Hog gets turrets: give this node an empty `<upgrades />`. Vehicle Framework's turret code
+  (`CompVehicleTurrets`) reads every node's upgrades list without a null check.
+
 ## 3. Building and research
 
 - `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components and, with Odyssey, 3 advanced components

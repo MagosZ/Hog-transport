@@ -36,6 +36,14 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       cross a 100% planet pole to pole.
 - [ ] Orbit: launching to an orbital target right overhead costs little fuel, and the trip back is affordable.
 
+## Chemical toilet (with Dubs Bad Hygiene)
+- [ ] The Hog has an Upgrades tab with one node, "Chemical toilet", with the description and the placeholder icon.
+- [ ] Installing it needs 10 steel and 10 neutroamine and takes about as long as building a wooden wall.
+- [ ] With it installed, the bladder need of everyone aboard (pilot, co-pilot, passengers) stays full, on the
+      map and on the world map; nobody wets themselves on a long trip.
+- [ ] Without it, bladder drains as before. Removing it refunds half the cost.
+- [ ] Without DBH: no Upgrades tab and no errors.
+
 ## Sealed cabin
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`; no error about `HogShuttle.StatPart_SealedCabinVacuum`.
 - [ ] In orbit (−75 °C, full vacuum), pawns aboard for a few hours: no hypothermia, no vacuum exposure, no

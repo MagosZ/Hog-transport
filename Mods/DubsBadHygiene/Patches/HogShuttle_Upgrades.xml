@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!-- Loaded only with Dubs Bad Hygiene. The Hog's only upgrade is the chemical toilet, so without DBH it has no
+	     upgrade tree (and no Upgrades tab). -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/comps</xpath>
+		<value>
+			<li Class="Vehicles.CompProperties_UpgradeTree">
+				<def>HogShuttle_UpgradeTree</def>
+			</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/Vehicles.VehicleDef[defName="HogShuttle"]/modExtensions</xpath>
+		<value>
+			<li Class="HogShuttle.UpgradeNeedRefillExtension">
+				<upgradeNode>HogShuttle_ChemicalToilet</upgradeNode>
+				<need>Bladder</need>
+			</li>
+		</value>
+	</Operation>
+</Patch>

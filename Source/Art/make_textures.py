@@ -1,7 +1,7 @@
 """Placeholder textures for the Hog shuttle (top-down, nose at the top = north).
 
 Run from anywhere: python make_textures.py
-Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent}.png in the mod folder.
+Writes Textures/HogShuttle/{Body,Shadow,BuildIcon,Transparent,Upgrade_ChemicalToilet}.png in the mod folder.
 """
 from pathlib import Path
 
@@ -57,6 +57,19 @@ def shadow_image(body):
     return shadow
 
 
+def toilet_icon():
+    """Upgrade icon: a chemical toilet seen from the side."""
+    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rectangle([30, 14, 62, 66], fill=PANEL, outline=OUTLINE, width=4)        # tank
+    d.rectangle([38, 24, 54, 32], fill=(90, 180, 110, 255))                    # chemical gauge
+    d.rectangle([40, 62, 64, 112], fill=HULL, outline=OUTLINE, width=4)        # base
+    d.ellipse([40, 54, 104, 78], fill=HULL_DARK, outline=OUTLINE, width=4)     # seat
+    d.ellipse([52, 60, 92, 72], fill=(60, 110, 160, 255))                      # bowl
+    d.rectangle([34, 110, 74, 118], fill=OUTLINE)                              # foot
+    return img
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     body = body_image()
@@ -64,6 +77,7 @@ def main():
     shadow_image(body).save(OUT / "Shadow.png")
     body.resize((256, 256), Image.LANCZOS).save(OUT / "BuildIcon.png")
     Image.new("RGBA", (4, 4), (0, 0, 0, 0)).save(OUT / "Transparent.png")
+    toilet_icon().save(OUT / "Upgrade_ChemicalToilet.png")
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))
 
 
