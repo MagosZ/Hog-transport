@@ -4,7 +4,8 @@ A small, boxy spacer shuttle for RimWorld 1.6/1.7, built on Vehicle Framework an
 the local map, flies across the world map, and, with Odyssey, flies to orbit and back. Airtight, no weapons
 yet, placeholder art.
 
-Requires Harmony, Vehicle Framework, VTOL Vehicle and Vanilla Vehicles Expanded. Odyssey is optional.
+Requires Harmony, Vehicle Framework, VTOL Vehicle, Vanilla Vehicles Expanded and VVE - Secondary Weapons (for the
+door guns). Odyssey, Dubs Bad Hygiene and Combat Extended are optional.
 
 - Design: [DESIGN.md](DESIGN.md)
 - In-game checks: [TESTING.md](TESTING.md)
