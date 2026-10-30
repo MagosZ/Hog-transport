@@ -12,4 +12,8 @@ Requires Harmony, Vehicle Framework, VTOL Vehicle and Vanilla Vehicles Expanded.
 - DLL (sealed cabin): `dotnet build Source/HogShuttle.csproj -c Release` (net48; set `VFDir` in the .csproj
   to your Vehicle Framework folder)
 
+Known issue (not this mod's): on RimWorld 1.7 with Combat Extended, Combat Extended's Vehicle Framework
+support fails to load ("Could not load type 'VehiclePartDepth'" in the log), so no Vehicle Framework turret can
+fire CE ammo, the Hog's door gun included. On RimWorld 1.6 it works.
+
 License: CC BY-NC-SA 4.0.
