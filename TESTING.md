@@ -87,8 +87,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] In flight the gun turns with the aircraft's heading (VTOL turret class). Check that a newly fitted gun
       starts pointing back, not north (the Hind needed a fix for new turrets).
 - [ ] Reloads from steel; without CE the box is 75 (minigun 200). With CE: 7.62x51 NATO / .50 BMG ammo.
-- [ ] With VVE - Secondary Weapons active: that mod's gun art, sounds and turret icon; without it, the
-      placeholder guns and vanilla sounds, and no errors.
+- [ ] The guns show VVE - Secondary Weapons' art, sounds and turret icon (it's a dependency now).
 - [ ] Removing the upgrade removes the gun and the gunner seat (the gunner gets out).
 
 ## Chemical toilet (with Dubs Bad Hygiene)

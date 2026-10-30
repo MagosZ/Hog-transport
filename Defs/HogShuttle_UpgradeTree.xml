@@ -214,8 +214,9 @@
 				</upgrades>
 			</li>
 
-			<!-- Rear door guns: the Louie's three door-gun options in "VVE - Secondary Weapons", one gun each, so half its
-			     price and work. Only one can be fitted. Fitting one adds a door gunner seat at the tail (B7-C7, exposed,
+			<!-- Rear door guns: the Louie's three door-gun options in "VVE - Secondary Weapons" (a dependency), using its
+			     turret defs, art, sounds and Combat Extended patch as they are; one gun each, so half its price and work.
+			     Only one can be fitted. Fitting one adds a door gunner seat at the tail (B7-C7, exposed,
 			     the door is open); the role comes first so the turret is manned as soon as it is added. The turret is
 			     VTOL Vehicle's class so it follows the aircraft's heading. Arc: 60 degrees either side of straight back
 			     (0 = the nose). -->
@@ -223,7 +224,7 @@
 				<key>HogShuttle_DoorGunMMG</key>
 				<label>Door gun: medium machine gun</label>
 				<description>A rifle-calibre machine gun on a pintle at the rear door, worked by a door gunner. Fires 60 degrees either side of straight back.</description>
-				<icon>HogShuttle/Gun_MMG</icon>
+				<icon>TGBM_ThirdParty_UI/VVEU_Upgrade_Turret</icon>
 				<gridCoordinate>(4, 10)</gridCoordinate>
 				<work>5000</work>
 				<ingredients>
@@ -260,7 +261,7 @@
 					<li Class="Vehicles.TurretUpgrade">
 						<turrets>
 							<li Class="VTOLVehicle.VtolVehicleTurret">
-								<turretDef>HogShuttle_DoorMMG</turretDef>
+								<turretDef>TGBM_WisentMMG</turretDef>
 								<renderProperties>
 									<north>(0, -3.1)</north>
 								</renderProperties>
@@ -281,7 +282,7 @@
 				<key>HogShuttle_DoorGunHMG</key>
 				<label>Door gun: heavy machine gun</label>
 				<description>A heavy machine gun on a pintle at the rear door, worked by a door gunner. Fires 60 degrees either side of straight back.</description>
-				<icon>HogShuttle/Gun_HMG</icon>
+				<icon>TGBM_ThirdParty_UI/VVEU_Upgrade_Turret</icon>
 				<gridCoordinate>(10, 10)</gridCoordinate>
 				<work>5000</work>
 				<ingredients>
@@ -318,7 +319,7 @@
 					<li Class="Vehicles.TurretUpgrade">
 						<turrets>
 							<li Class="VTOLVehicle.VtolVehicleTurret">
-								<turretDef>HogShuttle_DoorHMG</turretDef>
+								<turretDef>TGBM_WisentHMG</turretDef>
 								<renderProperties>
 									<north>(0, -3.1)</north>
 								</renderProperties>
@@ -339,7 +340,7 @@
 				<key>HogShuttle_DoorGunMinigun</key>
 				<label>Door gun: minigun</label>
 				<description>A minigun on a pintle at the rear door, worked by a door gunner. Fires 60 degrees either side of straight back.</description>
-				<icon>HogShuttle/Gun_Minigun</icon>
+				<icon>TGBM_ThirdParty_UI/VVEU_Upgrade_Turret</icon>
 				<gridCoordinate>(16, 10)</gridCoordinate>
 				<work>5000</work>
 				<ingredients>
@@ -376,7 +377,7 @@
 					<li Class="Vehicles.TurretUpgrade">
 						<turrets>
 							<li Class="VTOLVehicle.VtolVehicleTurret">
-								<turretDef>HogShuttle_DoorMinigun</turretDef>
+								<turretDef>TGBM_ExposedMinigun</turretDef>
 								<renderProperties>
 									<north>(0, -3.1)</north>
 								</renderProperties>

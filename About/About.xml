@@ -25,7 +25,7 @@ UPGRADES
 - Auxiliary flight computer: 1 advanced component, 200 work. Lets anyone who can fly a vehicle pilot the shuttle, whatever their Intellectual skill.
 - Plasteel armour: 150 plasteel, 4 components, 6000 work. About 20% more armour on every part, cockpit included, but 200 kg less cargo (800 kg).
 - Cargo outfit: no cost, 500 work. 2 passenger seats instead of 8, and 1000 kg more cargo (2000 kg; 1800 kg with the plasteel armour).
-- Rear door gun, one of three: medium machine gun (150 steel, 5 components), heavy machine gun (205 steel, 6 components) or minigun (135 steel, 11 components); 5000 work. Adds a door gunner seat; fires 60 degrees either side of straight back. Uses the gun art and sounds of VVE - Secondary Weapons when that mod is active; Combat Extended calibres with CE.
+- Rear door gun, one of three: medium machine gun (150 steel, 5 components), heavy machine gun (205 steel, 6 components) or minigun (135 steel, 11 components); 5000 work. Adds a door gunner seat; fires 60 degrees either side of straight back. The guns are the door guns of VVE - Secondary Weapons (required), with its art, sounds and Combat Extended support.
 - Chemical toilet (with Dubs Bad Hygiene): 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
 
 COMBAT EXTENDED
@@ -57,12 +57,18 @@ Placeholder art for now.</description>
 			<displayName>Vanilla Vehicles Expanded</displayName>
 			<steamWorkshopUrl>steam://url/CommunityFilePage/3014906877</steamWorkshopUrl>
 		</li>
+		<li>
+			<packageId>tgbm.vve.secondary.weapons</packageId>
+			<displayName>VVE - Secondary Weapons</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/3459650108</steamWorkshopUrl>
+		</li>
 	</modDependencies>
 	<loadAfter>
 		<li>brrainz.harmony</li>
 		<li>SmashPhil.VehicleFramework</li>
 		<li>rabiosus.vtolvehicle</li>
 		<li>OskarPotocki.VanillaVehiclesExpanded</li>
+		<li>tgbm.vve.secondary.weapons</li>
 		<li>Ludeon.RimWorld.Odyssey</li>
 	</loadAfter>
 </ModMetaData>
