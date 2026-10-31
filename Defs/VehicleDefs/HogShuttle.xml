@@ -451,7 +451,7 @@
 				<autoRefuelPercent>1</autoRefuelPercent>
 				<targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
 			</li>
-			<!-- Turrets: none built in; the door gun upgrades add one (Defs/HogShuttle_UpgradeTree.xml). -->
+			<!-- Turrets: none built in; the door gun and autocannon upgrades add them (Defs/HogShuttle_UpgradeTree.xml). -->
 			<li Class="Vehicles.CompProperties_VehicleTurrets">
 				<turrets />
 			</li>
@@ -551,8 +551,10 @@
 				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
 				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
 				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
-				<!-- No weapons yet. -->
-				<combatDirectionalHoverEnabled>false</combatDirectionalHoverEnabled>
+				<!-- Hovering in combat, the nose turns to the target for the fixed roof autocannon, as on the Hind. The turret
+				     only exists once the upgrade is fitted. -->
+				<combatDirectionalHoverEnabled>true</combatDirectionalHoverEnabled>
+				<combatDirectionalHoverTurretKey>twinAutocannon</combatDirectionalHoverTurretKey>
 				<takeoffDrawCurve>
 					<mode>MonotoneCubic</mode>
 					<points>

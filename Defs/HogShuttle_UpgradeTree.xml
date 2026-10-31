@@ -394,6 +394,67 @@
 					</li>
 				</upgrades>
 			</li>
+
+			<!-- Twin-linked autocannon on the cockpit roof (Defs/TurretDefs/HogShuttle_TwinAutocannon.xml), fixed
+			     forward like the Hind Gunship's nose cannon: the pilot aims it by turning the shuttle. Fitting it adds
+			     Turret handling to the pilot's seat, so a pawn incapable of violence can no longer sit there. The role
+			     comes first so the turret is manned as soon as it is added. The barrels take turns (fire points:
+			     x starboard, z forward, from the body's centre). Can be fitted with a door gun. -->
+			<li>
+				<key>HogShuttle_TwinAutocannon</key>
+				<label>Twin-linked autocannon</label>
+				<description>Two 30 mm autocannons bound side by side in a roof mount above the cockpit. Fixed forward: the pilot fires it and aims by turning the shuttle, so a pawn incapable of violence can't pilot with it fitted.</description>
+				<icon>HogShuttle/Upgrade_TwinAutocannon</icon>
+				<gridCoordinate>(22, 10)</gridCoordinate>
+				<work>6000</work>
+				<ingredients>
+					<Steel>200</Steel>
+					<Plasteel>30</Plasteel>
+					<ComponentIndustrial>6</ComponentIndustrial>
+				</ingredients>
+				<upgrades>
+					<li Class="Vehicles.VehicleUpgrade">
+						<roles>
+							<li>
+								<key>Pilot</key>
+								<editKey>Pilot</editKey>
+								<handlingTypes>Movement, Turret</handlingTypes>
+								<turretIds>
+									<li>twinAutocannon</li>
+								</turretIds>
+							</li>
+						</roles>
+					</li>
+					<li Class="Vehicles.TurretUpgrade">
+						<turrets>
+							<li Class="VTOLVehicle.VtolVehicleTurret">
+								<turretDef>HogShuttle_TwinAutocannon</turretDef>
+								<renderProperties>
+									<north>(0, 2.84)</north>
+								</renderProperties>
+								<gizmoLabel>Twin-linked autocannon</gizmoLabel>
+								<aimPieOffset>(0, 3.82)</aimPieOffset>
+								<angleRestricted>(-6, 6)</angleRestricted>
+								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
+								<returnToDefaultAfterTicks>120</returnToDefaultAfterTicks>
+								<drawLayer>1</drawLayer>
+								<key>twinAutocannon</key>
+								<firePointSelection>LoopPerShot</firePointSelection>
+								<firePoints>
+									<li>
+										<key>barrelPort</key>
+										<offset>(-0.085, 0, 3.82)</offset>
+									</li>
+									<li>
+										<key>barrelStarboard</key>
+										<offset>(0.085, 0, 3.82)</offset>
+									</li>
+								</firePoints>
+							</li>
+						</turrets>
+					</li>
+				</upgrades>
+			</li>
 		</nodes>
 	</Vehicles.UpgradeTreeDef>
 </Defs>

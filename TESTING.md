@@ -70,7 +70,6 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Removed: armour and cargo return to normal; half the cost is refunded.
 - [ ] Without CE: vanilla ratings (hull 0.50 / 0.90). With CE: CE ratings (hull 22.5 / 11.6) and the
       upgrade adds the CE amounts. No patch errors either way.
-- [ ] With CE: check CE's own vehicle compatibility loads (the author's log showed a VehiclesCompat error).
 
 ## Cargo outfit
 - [ ] The Upgrades tab has "Cargo outfit": no ingredients, 500 work, placeholder icon.
@@ -87,10 +86,28 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] In flight the gun turns with the aircraft's heading (VTOL turret class). Check that a newly fitted gun
       starts pointing back, not north (the Hind needed a fix for new turrets).
 - [ ] Reloads from steel; without CE the box is 75 (minigun 200). With CE: 7.62x51 NATO / .50 BMG ammo.
-      Verified on RimWorld 1.6 with CE (user, 2026-10-30). On 1.7 every Vehicle Framework turret fails under CE
-      (CE's VehiclesCompat doesn't load), so test CE on 1.6.
 - [ ] The guns show VVE - Secondary Weapons' art, sounds and turret icon (it's a dependency now).
 - [ ] Removing the upgrade removes the gun and the gunner seat (the gunner gets out).
+
+## Twin-linked autocannon
+- [ ] The Upgrades tab has "Twin-linked autocannon": 200 steel, 30 plasteel, 6 components, 6000 work. It can be
+      fitted together with a door gun.
+- [ ] Fitted: the gun draws on top of the cockpit roof on the centre line, barrels side by side, muzzles a third of
+      a cell past the nose, at any heading, parked and in flight. Without the upgrade, no gun shows.
+- [ ] A newly fitted gun on a Hog parked facing east or west: it may point north until the pilot boards (the Hind
+      needed extra code for this; the Hog has none).
+- [ ] The pilot fires it; no extra seat. A pawn incapable of violence can't take the pilot seat once it's fitted.
+      Removing the upgrade lifts that, and the gun goes away.
+- [ ] Without CE: 10-round bursts, range 4.9 to 65, 24 damage with a small blast, 200 rounds from steel. Shots leave
+      from the two muzzles in turn.
+- [ ] With CE: 30x165mm rounds, HE by default; range 65; the shots land on the target.
+- [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can
+      only reach 6 degrees either side of the nose.
+- [ ] Airborne, on auto-target: hovering, the nose turns to enemies (VTOL's combat hover).
+- [ ] **New this version, check on every Hog:** combat hover is now on and names a turret that only exists once the
+      upgrade is fitted. Without the autocannon: no log errors, and the nose doesn't turn by itself.
+- [ ] Door gun and autocannon both fitted: see whether the door gun's auto-target swings the nose round to enemies
+      behind (the Hind needed extra code to stop this; the Hog has none).
 
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH

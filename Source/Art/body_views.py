@@ -45,8 +45,9 @@ NONE = (0, 0, 0)
 
 
 class Canvas:
-    def __init__(self):
-        n = SIZE * PX * SS
+    def __init__(self, cells=SIZE):
+        self.cells = cells
+        n = cells * PX * SS
         self.img = Image.new("RGBA", (n, n), (0, 0, 0, 0))
         self.mask = Image.new("RGB", (n, n), NONE)
         self.d = ImageDraw.Draw(self.img)
@@ -125,7 +126,7 @@ class Canvas:
             self.m.rectangle([self.p(x0, y0), self.p(x1, y1)], fill=mask)
 
     def done(self):
-        size = (SIZE * PX, SIZE * PX)
+        size = (self.cells * PX, self.cells * PX)
         return self.img.resize(size, Image.LANCZOS), self.mask.resize(size, Image.NEAREST)
 
 
@@ -281,6 +282,72 @@ def top():
             v.cylinder(x0, y, x1, y + 0.02, 215, HULL, outline=False)        # lit upper rim of each rib
         v.cylinder(x0 + 0.08, 4.78, x1 - 0.08, 4.9, HEAT, NONE)             # exhaust nozzle rim
     return v.done()
+
+
+GUN_CELLS = 2             # the turret texture: square, drawSize (2,2), same pixels per cell as the body
+GUN_PIVOT_Y = 0.66        # the mount's centre on the body texture: on the cockpit roof, on the centre line
+GUN_BARREL_X = 0.085      # barrel centres either side of the centre line: touching, as twin-linked guns are
+GUN_REACH = 0.98          # muzzle ahead of the pivot; the muzzles clear the nose by 0.32 of a cell
+
+
+def twin_autocannon():
+    """The roof-mounted twin autocannon from straight above, pointing north; the pivot is the image's centre.
+    After VFE Security's double autocannon: one breech block, an ammo drum on each side, and two barrels bound
+    together side by side. Each barrel is a cylinder lying lengthwise; straps across both show they are one gun.
+    Own drawing, no pixels from that mod."""
+    v = Canvas(GUN_CELLS)
+    c = GUN_CELLS / 2
+    # A low mounting ring on the roof, under everything.
+    v.dot(c, c + 0.02, 0.37, 58, None)
+    v.dot(c - 0.01, c + 0.01, 0.335, 92, None)
+    # Ammo drums either side of the breech, lying lengthwise, with two bands each.
+    for x0 in (c - 0.47, c + 0.25):
+        v.cylinder(x0, c - 0.16, x0 + 0.22, c + 0.24, 112)
+        for y in (c - 0.09, c + 0.11):
+            v.cylinder(x0, y, x0 + 0.22, y + 0.05, (178, 176, 120), outline=False)
+    # Two barrels, touching: a thick ribbed cooling jacket, then the bare barrel, then the muzzle brake.
+    tip = c - GUN_REACH
+    for sign in (-1, 1):
+        x = c + sign * GUN_BARREL_X
+        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 0.3, 104)
+        v.cylinder(x - 0.075, c - 0.74, x + 0.075, c - 0.16, 88)
+        for k in range(4):
+            y = c - 0.7 + k * 0.125
+            v.cylinder(x - 0.075, y, x + 0.075, y + 0.045, 132, outline=False)
+        v.cylinder(x - 0.07, tip, x + 0.07, tip + 0.11, 76)
+        v.dot(x, tip + 0.005, 0.03, 30, None)
+    # Straps binding the barrels into one gun.
+    for y in (c - 0.76, c - 0.32):
+        v.rect(c - GUN_BARREL_X - 0.085, y, c + GUN_BARREL_X + 0.085, y + 0.05, 62)
+        v.line([(c - GUN_BARREL_X - 0.08, y + 0.008), (c + GUN_BARREL_X + 0.08, y + 0.008)], 140, 0.01)
+    # Breech block: flat top, lit west chamfer, shaded east chamfer, lit front, a feed cover and rivets.
+    block = [(c - 0.17, c - 0.26), (c + 0.17, c - 0.26), (c + 0.26, c - 0.14), (c + 0.26, c + 0.3),
+             (c - 0.26, c + 0.3), (c - 0.26, c - 0.14)]
+    v.poly(block, 86)
+    v.poly([(c - 0.26, c - 0.14), (c - 0.19, c - 0.1), (c - 0.19, c + 0.23), (c - 0.26, c + 0.3)], 124, outline=False)
+    v.poly([(c + 0.26, c - 0.14), (c + 0.19, c - 0.1), (c + 0.19, c + 0.23), (c + 0.26, c + 0.3)], 56, outline=False)
+    v.poly([(c - 0.17, c - 0.26), (c + 0.17, c - 0.26), (c + 0.19, c - 0.1), (c - 0.19, c - 0.1)], 118, outline=False)
+    v.rect(c - 0.13, c - 0.04, c + 0.13, c + 0.16, 72)
+    v.groove([(c - 0.13, c + 0.16), (c - 0.13, c - 0.04), (c + 0.13, c - 0.04)], 72)
+    v.rect(c - 0.05, c + 0.03, c + 0.05, c + 0.08, 128, outline=False)
+    for x, y in ((-0.15, 0.23), (0.15, 0.23), (-0.15, -0.09), (0.15, -0.09)):
+        v.rivet(c + x, c + y)
+    return v.done()[0]
+
+
+def gun_icon(gun):
+    """The gun's Upgrades-tab and gizmo icon: the turret image on a 128 px square."""
+    return gun.crop(gun.getbbox()).resize((110, 110), Image.LANCZOS)
+
+
+def with_gun(img, gun):
+    """Check image (not shipped): the body with the gun on it, on a canvas with room for the muzzles."""
+    out = Image.new("RGBA", (img.width, img.height + PX), (0, 0, 0, 0))
+    out.alpha_composite(img, (0, PX))
+    x = round((C - GUN_CELLS / 2) * PX)
+    y = round((GUN_PIVOT_Y - GUN_CELLS / 2) * PX) + PX
+    out.alpha_composite(gun, (x, y))
+    return out
 
 
 def shadow(img):
