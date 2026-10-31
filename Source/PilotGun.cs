@@ -9,26 +9,26 @@ using Verse;
 
 namespace HogShuttle
 {
-    /// <summary>On a VehicleDef: the turret with key <see cref="turret"/> is fired by whoever sits in
+    /// <summary>On a VehicleDef: the turrets with keys in <see cref="turrets"/> are fired by whoever sits in
     /// <see cref="role"/>. The seat keeps Movement handling only, because Vehicle Framework bars pawns incapable of
     /// violence from any seat with Turret handling, and those pawns should still be able to fly. So no role lists
-    /// the turret, and the patches here decide whether it counts as manned.</summary>
+    /// these turrets, and the patches here decide whether they count as manned.</summary>
     public class PilotGunExtension : DefModExtension
     {
         public string role = "Pilot";
-        public string turret;
+        public List<string> turrets;
 
         public static PilotGunExtension For(VehicleTurret turret)
         {
             PilotGunExtension gun = turret?.vehicle?.def.GetModExtension<PilotGunExtension>();
-            return gun != null && turret.key == gun.turret ? gun : null;
+            return gun?.turrets != null && gun.turrets.Contains(turret.key) ? gun : null;
         }
     }
 
     /// <summary>Vehicle Framework rechecks this whenever anyone boards, leaves, changes seats, dies or is hurt. With
     /// no role listing the turret it would count as always manned. Also tells the player when a pawn incapable of
-    /// violence takes the seat. The first check of a turret only records the pilot, so loading a save says
-    /// nothing.</summary>
+    /// violence takes the seat, once per vehicle however many guns it has. The first check of a vehicle only records
+    /// the pilot, so loading a save says nothing.</summary>
     [HarmonyPatch]
     public static class Patch_VehicleTurret_RecacheMannedStatus
     {
@@ -36,8 +36,8 @@ namespace HogShuttle
             AccessTools.MethodDelegate<Action<VehicleTurret, bool>>(
                 AccessTools.PropertySetter(typeof(VehicleTurret), nameof(VehicleTurret.IsManned)));
 
-        private static readonly ConditionalWeakTable<VehicleTurret, StrongBox<Pawn>> LastPilot =
-            new ConditionalWeakTable<VehicleTurret, StrongBox<Pawn>>();
+        private static readonly ConditionalWeakTable<VehiclePawn, StrongBox<Pawn>> LastPilot =
+            new ConditionalWeakTable<VehiclePawn, StrongBox<Pawn>>();
 
         public static IEnumerable<MethodBase> TargetMethods()
         {
@@ -70,9 +70,9 @@ namespace HogShuttle
                 SetIsManned(__instance, pilot != null && !pacifist && handler.RoleFulfilled);
             }
 
-            if (!LastPilot.TryGetValue(__instance, out StrongBox<Pawn> last))
+            if (!LastPilot.TryGetValue(vehicle, out StrongBox<Pawn> last))
             {
-                LastPilot.Add(__instance, new StrongBox<Pawn>(pilot));
+                LastPilot.Add(vehicle, new StrongBox<Pawn>(pilot));
                 return;
             }
             if (last.Value == pilot)

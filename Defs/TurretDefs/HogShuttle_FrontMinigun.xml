@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- The front miniguns, two of them, fitted by the HogShuttle_FrontMiniguns upgrade (Defs/HogShuttle_UpgradeTree.xml). The
+	     numbers and art are VVE - Secondary Weapons' TGBM_ExposedMinigun (a dependency), the door gun option. A def of its own
+	     because that one's accuracy can draw on its crew, and these have no gunner seat: spreadRadius gives a fixed
+	     accuracy, the same as the autocannon's, and accuracy with no shooter is left out. -->
+	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
+		<defName>HogShuttle_FrontMinigun</defName>
+		<label>front minigun</label>
+		<description>A rotary machine gun slung under the wing beside the cockpit and fed from a 200-round box. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
+		<turretType>Rotatable</turretType>
+		<shotSound>Shot_Minigun</shotSound>
+
+		<ammunition>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</ammunition>
+		<genericAmmo>true</genericAmmo>
+		<magazineCapacity>200</magazineCapacity>
+		<chargePerAmmoCount>0.25</chargePerAmmoCount>
+		<reloadTimer>4</reloadTimer>
+		<autoRefuelProportion>1</autoRefuelProportion>
+
+		<projectile>Bullet_Minigun</projectile>
+		<attachProjectileFlag>VVE_Tank</attachProjectileFlag>
+		<warmUpTimer>2</warmUpTimer>
+		<autoSnapTargeting>true</autoSnapTargeting>
+		<rotationSpeed>6</rotationSpeed>
+		<!-- Shots leave from the muzzle. -->
+		<projectileOffset>1.18</projectileOffset>
+		<maxRange>30.9</maxRange>
+
+		<fireModes>
+			<li>
+				<shotsPerBurst>25</shotsPerBurst>
+				<ticksBetweenShots>2</ticksBetweenShots>
+				<ticksBetweenBursts>30~60</ticksBetweenBursts>
+				<spreadRadius>1</spreadRadius>
+				<label>Burst</label>
+				<texPath>UI/Gizmos/FireRate_Burst</texPath>
+			</li>
+		</fireModes>
+
+		<graphicData>
+			<texPath>Things/TGBM_ThirdParty_Vehicles/GHTek_M134</texPath>
+			<graphicClass>Vehicles.Graphic_Turret</graphicClass>
+			<shaderType>Cutout</shaderType>
+			<drawSize>(2.5, 2.5)</drawSize>
+		</graphicData>
+	</Vehicles.VehicleTurretDef>
+</Defs>

@@ -223,19 +223,42 @@ speed per tick, like building.
     airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
     a separate turret image because it only shows once fitted.
   - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
-    so the seat stays Movement only and no role lists the turret. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
+    so the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
     a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a crewed pilot's seat and a
     pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with a reason.
   - Pacifist pilots can fly but can't fire. A caution message appears when one takes the seat (keyed
     `HogShuttle_PacifistPilot`), found by comparing pilots in that same recheck, which runs on boarding, leaving and
-    seat changes. The first check of a turret only records the pilot, so loading a save says nothing.
+    seat changes. The first check of a vehicle only records the pilot, so loading a save says nothing.
   - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat
-    hover is on with `combatDirectionalHoverTurretKey` = `twinAutocannon`. The key names a turret that only exists
+    hover is on with `combatDirectionalHoverTurretKey` = `frontGun`. The key names a turret that only exists
     once the upgrade is fitted; how VTOL handles that without it needs checking in game (TESTING.md).
   - The Hind's own code isn't here (no license, and not copied): bursts stop when the target dies, the nose may drift
     back to the move-order facing, a door gun's auto-target may swing the nose, and a newly fitted gun may point
     north until the pilot boards.
   - CE: `Mods/CombatExtended/Patches/HogShuttle_TwinAutocannon.xml`.
+- `HogShuttle_FrontMiniguns`: "Front miniguns". 270 steel, 22 components, work 10000 (two door gun miniguns, the Louie's
+  pair in VVE - Secondary Weapons), no cargo cost. **Conflicts with the autocannon**; can be fitted with a door gun. Two
+  turrets of `HogShuttle_FrontMinigun` (`Defs/TurretDefs/`), each with its own button, target and box.
+
+  The numbers and art are `TGBM_ExposedMinigun`'s, on a def of its own, because that one's accuracy can draw on its
+  crew and these have no gunner seat. `spreadRadius` 1 gives a fixed accuracy, as on the autocannon.
+
+  | Per gun | Without CE | With CE |
+  |---|---|---|
+  | Range | Up to 30.9 | Up to 62 |
+  | Fire modes | Burst: 25 rounds, 2 ticks apart, 30-60 ticks between | Single, 25 or 50 rounds, 1 tick apart, 21 ticks between |
+  | Warm-up | 2 s | 2.07 s |
+  | Magazine | 200, steel, 0.25 per round, 4 s reload | 2000, 7.62×51 NATO, 9.2 s reload |
+  | Shell | `Bullet_Minigun` | `Bullet_762x51mmNATO_FMJ` by default, speed 156 |
+  | Accuracy | Spread 1 | Sway 1.02, spread 0.06, recoil 0 |
+  | Arc | Fixed forward, 6° either side | Same |
+
+  - Mounted beside the cockpit (north offsets (±1.2, 1.95)) and drawn below the airframe (`drawLayer` −8, the Hind's chin
+    turret value), so the wing covers the receiver and only the barrels show, through the empty corners A1 and D1.
+  - No fire points, since those made shells curve under CE. The pilot fires them, through `PilotGunExtension`, whose
+    `turrets` list holds both keys.
+  - VTOL's combat hover follows one named turret, so the port gun shares the key `frontGun` with the autocannon (they
+    can't be fitted together) and the nose turns for whichever is fitted. The starboard gun is `frontGunStarboard`.
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).

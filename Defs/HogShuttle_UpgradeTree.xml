@@ -399,7 +399,7 @@
 			     Hind Gunship's nose cannon: the pilot aims it by turning the shuttle. No role lists the turret, so pawns
 			     incapable of violence can still fly; PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it.
 			     No fire points, like the Hind's nose cannon: under CE they made the shells fly in a curve. Shots leave from one
-			     point between the muzzles (projectileOffset on the turret def). Can be fitted with a door gun. The gun and its ammunition cost 50 kg of cargo. -->
+			     point between the muzzles (projectileOffset on the turret def). Can be fitted with a door gun, not with the front miniguns. The gun and its ammunition cost 50 kg of cargo. -->
 			<li>
 				<key>HogShuttle_TwinAutocannon</key>
 				<label>Twin-linked autocannon</label>
@@ -412,6 +412,9 @@
 					<Plasteel>30</Plasteel>
 					<ComponentIndustrial>6</ComponentIndustrial>
 				</ingredients>
+				<disableIfUpgradeNodesEnabled>
+					<li>HogShuttle_FrontMiniguns</li>
+				</disableIfUpgradeNodesEnabled>
 				<upgrades>
 					<li Class="Vehicles.StatUpgrade">
 						<vehicleStats>
@@ -435,7 +438,61 @@
 								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
 								<returnToDefaultAfterTicks>120</returnToDefaultAfterTicks>
 								<drawLayer>1</drawLayer>
-								<key>twinAutocannon</key>
+								<key>frontGun</key>
+							</li>
+						</turrets>
+					</li>
+				</upgrades>
+			</li>
+
+			<!-- Two miniguns under the wings beside the cockpit (Defs/TurretDefs/HogShuttle_FrontMinigun.xml), each with its own
+			     button, target and box. Fixed forward with the autocannon's arc; the pilot fires them (PilotGunExtension on the
+			     Hog). Conflicts with the autocannon. The port gun shares the key frontGun with the autocannon so VTOL's combat
+			     hover steers for whichever is fitted. -->
+			<li>
+				<key>HogShuttle_FrontMiniguns</key>
+				<label>Front miniguns</label>
+				<description>Two miniguns slung under the wings beside the cockpit. Each is fixed forward and aims on its own: the pilot fires them and points them by turning the shuttle. A pilot incapable of violence can fly, but can't fire them.</description>
+				<icon>TGBM_ThirdParty_UI/VVEU_Upgrade_Turret</icon>
+				<gridCoordinate>(22, 16)</gridCoordinate>
+				<work>10000</work>
+				<ingredients>
+					<Steel>270</Steel>
+					<ComponentIndustrial>22</ComponentIndustrial>
+				</ingredients>
+				<disableIfUpgradeNodesEnabled>
+					<li>HogShuttle_TwinAutocannon</li>
+				</disableIfUpgradeNodesEnabled>
+				<upgrades>
+					<li Class="Vehicles.TurretUpgrade">
+						<turrets>
+							<li Class="VTOLVehicle.VtolVehicleTurret">
+								<turretDef>HogShuttle_FrontMinigun</turretDef>
+								<renderProperties>
+									<north>(-1.2, 1.95)</north>
+								</renderProperties>
+								<gizmoLabel>Port minigun</gizmoLabel>
+								<aimPieOffset>(-1.2, 3.13)</aimPieOffset>
+								<angleRestricted>(-6, 6)</angleRestricted>
+								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
+								<returnToDefaultAfterTicks>120</returnToDefaultAfterTicks>
+								<!-- Below the airframe, so the wing covers the receiver: see the Hind's chin turret. -->
+								<drawLayer>-8</drawLayer>
+								<key>frontGun</key>
+							</li>
+							<li Class="VTOLVehicle.VtolVehicleTurret">
+								<turretDef>HogShuttle_FrontMinigun</turretDef>
+								<renderProperties>
+									<north>(1.2, 1.95)</north>
+								</renderProperties>
+								<gizmoLabel>Starboard minigun</gizmoLabel>
+								<aimPieOffset>(1.2, 3.13)</aimPieOffset>
+								<angleRestricted>(-6, 6)</angleRestricted>
+								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
+								<returnToDefaultAfterTicks>120</returnToDefaultAfterTicks>
+								<!-- Below the airframe, so the wing covers the receiver: see the Hind's chin turret. -->
+								<drawLayer>-8</drawLayer>
+								<key>frontGunStarboard</key>
 							</li>
 						</turrets>
 					</li>

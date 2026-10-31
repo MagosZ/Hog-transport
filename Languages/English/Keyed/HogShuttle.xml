@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 	<HogShuttle_SealedCabin>Inside a sealed cabin</HogShuttle_SealedCabin>
-	<HogShuttle_PacifistPilot>{0} is incapable of violence: they can fly {1}, but the autocannon won't fire while they're the pilot.</HogShuttle_PacifistPilot>
+	<HogShuttle_PacifistPilot>{0} is incapable of violence: they can fly {1}, but the front guns won't fire while they're the pilot.</HogShuttle_PacifistPilot>
 	<HogShuttle_GunNeedsPilot>Needs a pilot capable of violence.</HogShuttle_GunNeedsPilot>
 </LanguageData>

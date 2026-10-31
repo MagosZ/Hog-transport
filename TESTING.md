@@ -125,6 +125,21 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Door gun and autocannon both fitted: see whether the door gun's auto-target swings the nose round to enemies
       behind (the Hind needed extra code to stop this; the Hog has none).
 
+## Front miniguns
+- [ ] The Upgrades tab has "Front miniguns": 270 steel, 22 components, 10000 work. Cargo capacity doesn't change.
+- [ ] Fitting the miniguns greys out the autocannon, and the other way round. Either can go with a door gun.
+- [ ] Fitted: only the barrels show, beside the cockpit, with the receivers hidden under the wings. Parked and in flight,
+      at any heading. The guns point forward as soon as they're fitted, or after the pilot boards.
+- [ ] Two buttons, "Port minigun" and "Starboard minigun", each with its own target and box. Their arcs are 6 degrees
+      either side of the nose.
+- [ ] Without CE: 25-round bursts, range 30.9, 200 rounds, steel. Accuracy doesn't change with the pilot's Shooting skill.
+- [ ] With CE: Single / Burst / Auto, range 62, 2000 rounds of 7.62×51 NATO; the shells fly straight, not in a curve.
+- [ ] Airborne with a target by hand: the nose turns to it. Two different targets: see which gun steers (the Hind's notes
+      say the first in the list) and whether the other can still reach its target.
+- [ ] Hovering on auto-target: the nose turns to enemies, and the starboard gun fires too.
+- [ ] A pilot incapable of violence can fly but neither gun fires, both buttons are greyed out, and there's **one**
+      caution message, not two.
+
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH
       only the flight computer is there.
