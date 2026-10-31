@@ -180,6 +180,18 @@ def top():
         tx = tip - side * 0.14
         v.dot(tx, 5.12, 0.075, NAV_RED if side < 0 else NAV_GREEN)
         v.dot(tx - 0.02, 5.1, 0.025, (255, 240, 230))
+        # The hinge the wing tip folds on, just inside the footprint's edge, so it stays with the parked body: a long
+        # barrel lying lengthwise, cut into knuckles, with a riveted leaf on the wing side. Unpainted.
+        bx = A if side < 0 else END - 0.1
+        lx = A + 0.1 if side < 0 else END - 0.17
+        y0, y1 = 1.85, 5.85
+        v.rect(lx, y0, lx + 0.07, y1, 128, NONE, outline=False)
+        for k in range(8):
+            v.rivet(lx + 0.035, y0 + 0.2 + k * (y1 - y0 - 0.4) / 7)
+        v.cylinder(bx, y0, bx + 0.1, y1, 138, NONE)
+        for k in range(1, 16):
+            y = y0 + k * (y1 - y0) / 16
+            v.line([(bx, y), (bx + 0.1, y)], 48, 0.012)
 
     # 2. Hull (higher): its shadow falls down-right onto the starboard wing, then the hull itself.
     v.shadow(HULL_PTS, 0.16, 0.16)

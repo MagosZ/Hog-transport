@@ -287,7 +287,8 @@ cells wide. The parts outside go in `WingTips.png`, the spinning texture of the 
 `Transparent`, rotation speed 0, drawSize (7,7), no offset), which VTOL Vehicle cross-fades by rotor speed over
 `accelerationTicks` (240): in as the engines spool up, out after shutdown, and present while landed with the engines
 running. Rotor textures take no paint mask, so the tips are baked in the default colours, and a repainted wing shows a
-seam at the footprint's edge. `Shadow` and `BuildIcon` keep the full wings. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
+seam at the footprint's edge. `Shadow` and `BuildIcon` keep the full wings. A hinge runs along each wing just inside the footprint's edge
+(barrel, knuckles, riveted leaf, unpainted), so the parked body shows where the tips fold. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
 
 Drawn as seen from straight above: only upward-facing surfaces show, with light from the north-west and shadows
 cast down-right onto lower surfaces.
