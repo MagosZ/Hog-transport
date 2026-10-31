@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Loaded only when Combat Extended is active (see LoadFolders.xml). CE's version of vanilla's autocannon turret: burst 10, 7
+     ticks apart, no minimum range, warm-up 2.3 s, cooldown 1 s, reload 7.8 s, 20x102mm NATO ammo, sway 1.61, spread 0.01. Range is
+     10% under the original's 78 (70.2), and the magazine 50% over its 100 (150). Recoil is 0 like the Hind's. Speed: that ammo's
+     base speed. -->
+<Patch>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/projectile</xpath>
+		<value>
+			<projectile>Bullet_20x102mmNATO_AP</projectile>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/minRange</xpath>
+		<value>
+			<minRange>0</minRange>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/maxRange</xpath>
+		<value>
+			<maxRange>70.2</maxRange>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/warmUpTimer</xpath>
+		<value>
+			<warmUpTimer>2.3</warmUpTimer>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/magazineCapacity</xpath>
+		<value>
+			<magazineCapacity>150</magazineCapacity>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/reloadTimer</xpath>
+		<value>
+			<reloadTimer>7.8</reloadTimer>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/shotsPerBurst</xpath>
+		<value>
+			<shotsPerBurst>10</shotsPerBurst>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/ticksBetweenShots</xpath>
+		<value>
+			<ticksBetweenShots>7</ticksBetweenShots>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/ticksBetweenBursts</xpath>
+		<value>
+			<ticksBetweenBursts>60</ticksBetweenBursts>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]</xpath>
+		<value>
+			<li Class="Vehicles.CETurretDataDefModExtension">
+				<ammoSet>AmmoSet_20x102mmNATO</ammoSet>
+				<shotHeight>1.5</shotHeight>
+				<recoil>0</recoil>
+				<speed>182</speed>
+				<sway>1.61</sway>
+				<spread>0.01</spread>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/description</xpath>
+		<value>
+			<description>An autocannon in a roof turret, fed from a 150-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with 20x102mm shells.</description>
+		</value>
+	</Operation>
+</Patch>

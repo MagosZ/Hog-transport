@@ -94,52 +94,48 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] The guns show VVE - Secondary Weapons' art, sounds and turret icon (it's a dependency now).
 - [ ] Removing the upgrade removes the gun and the gunner seat (the gunner gets out).
 
-## Twin-linked autocannon
+## Autocannon
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`, and no error about `HogShuttle.PilotGunExtension`.
-- [ ] The Upgrades tab has "Twin-linked autocannon": 200 steel, 30 plasteel, 6 components, 6000 work. It can be
-      fitted together with a door gun.
+- [ ] The Upgrades tab has "Autocannon": 200 steel, 30 plasteel, 6 components, 6000 work. It can be fitted together with
+      a door gun, not with the front minigun.
 - [ ] Cargo capacity drops by 50 kg when fitted (950; with plasteel armour 750; with the cargo outfit 1950; with
       both 1750) and comes back when removed.
-- [ ] Fitted: the mount draws on the roof behind the cockpit, on the centre line, barrels side by side over the cockpit,
-      muzzles just short of the nose, over the windscreen, at any heading, parked and in flight. Without the upgrade, no gun shows.
+- [ ] Fitted: the turret draws on the roof behind the cockpit, on the centre line, at any heading, parked and in flight.
+      Without the upgrade, no gun shows.
+- [ ] It swings 30 degrees either side of the nose on its own: the head and barrel turn, the mounting ring looks fixed, and
+      the nose doesn't turn for it, by hand or on auto-target. After firing it swings back to face forward.
 - [ ] A newly fitted gun on a Hog parked facing east or west: it may point north until the pilot boards (the Hind
       needed extra code for this; the Hog has none).
+- [ ] Without CE: 3-round bursts every 3.5 s or so, range 8.9 to 29.6, 27 damage, 135 rounds at 2 steel each. Shots and the
+      muzzle flash leave from the muzzle, also at full traverse.
+- [ ] With CE: 20x102mm shells (AP by default), 150 rounds, range 70.2, 10-round bursts every second or so, 2.3 s warm-up;
+      the shells fly straight and land on the target.
+
+## Front minigun
+- [ ] The Upgrades tab has "Front minigun": 135 steel, 11 components, 5000 work. Cargo capacity doesn't change. It can be
+      fitted together with a door gun, not with the autocannon.
+- [ ] Fitted: only the barrel shows, on the starboard side beside the cockpit, with the receiver hidden under the wing.
+      Parked and in flight, at any heading.
+- [ ] Its arc is 6 degrees either side of the nose. Airborne with a target by hand: the nose turns to it. Parked, it can
+      only reach what's nearly straight ahead.
+- [ ] Hovering on auto-target: the nose turns to enemies (VTOL's combat hover, key `frontGun`).
+- [ ] Without CE: 25-round bursts, range 30.9, 200 rounds, steel. Accuracy doesn't change with the pilot's Shooting skill.
+- [ ] With CE: Single / Burst / Auto, range 62, 2000 rounds of 7.62×51 NATO; the shells fly straight.
+
+## Front gun and the pilot
 - [ ] Pilot capable of violence: the gun fires, with no extra seat. Nobody in the pilot's seat: it doesn't, and its button
       says "Needs a pilot capable of violence."
 - [ ] Pilot incapable of violence: boards the pilot's seat and flies. The gun doesn't fire or auto-target, its button is
       greyed out, and a caution message names the pilot. Check boarding, dragging between seats in the crew tab, and
       VTOL's "board nearby".
 - [ ] No message: on loading a save with such a pilot aboard, for a pilot capable of violence, for a pacifist co-pilot
-      or passenger, or on a Hog without the gun.
-- [ ] A pacifist pilot hovering with enemies near: see whether the nose still turns to them with the gun dead (VTOL's
-      combat hover may ignore the gun's state).
-- [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 29.6, 27 damage, 270 rounds at 2 steel each. Shots
-      and the muzzle flash leave from between the muzzles.
-- [x] Firing east or west under CE: the shells fly straight now the fire points are gone (user, 2026-10-31).
-- [ ] With CE: 20x102mm shells (AP by default), 300 rounds, range 70.2, 20-round bursts every second or so, 2.3 s warm-up; the
-      shots land on the target, including close targets.
-- [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can
-      only reach 6 degrees either side of the nose.
-- [ ] Airborne, on auto-target: hovering, the nose turns to enemies (VTOL's combat hover).
-- [ ] **Check on every Hog:** combat hover is on and names a turret that only exists once the upgrade is fitted.
-      Without the autocannon: no log errors, and the nose doesn't turn by itself.
-- [ ] Door gun and autocannon both fitted: see whether the door gun's auto-target swings the nose round to enemies
-      behind (the Hind needed extra code to stop this; the Hog has none).
-
-## Front miniguns
-- [ ] The Upgrades tab has "Front miniguns": 270 steel, 22 components, 10000 work. Cargo capacity doesn't change.
-- [ ] Fitting the miniguns greys out the autocannon, and the other way round. Either can go with a door gun.
-- [ ] Fitted: only the barrels show, beside the cockpit, with the receivers hidden under the wings. Parked and in flight,
-      at any heading. The guns point forward as soon as they're fitted, or after the pilot boards.
-- [ ] Two buttons, "Port minigun" and "Starboard minigun", each with its own target and box. Their arcs are 6 degrees
-      either side of the nose.
-- [ ] Without CE: 25-round bursts, range 30.9, 200 rounds, steel. Accuracy doesn't change with the pilot's Shooting skill.
-- [ ] With CE: Single / Burst / Auto, range 62, 2000 rounds of 7.62×51 NATO; the shells fly straight, not in a curve.
-- [ ] Airborne with a target by hand: the nose turns to it. Two different targets: see which gun steers (the Hind's notes
-      say the first in the list) and whether the other can still reach its target.
-- [ ] Hovering on auto-target: the nose turns to enemies, and the starboard gun fires too.
-- [ ] A pilot incapable of violence can fly but neither gun fires, both buttons are greyed out, and there's **one**
-      caution message, not two.
+      or passenger, or on a Hog without a front gun.
+- [ ] A pacifist pilot hovering with enemies near, minigun fitted: see whether the nose still turns to them with the gun
+      dead (VTOL's combat hover may ignore the gun's state).
+- [ ] **Check on every Hog:** combat hover is on and names a turret that only exists once the minigun is fitted. Without it:
+      no log errors, and the nose doesn't turn by itself.
+- [ ] Door gun fitted: see whether its auto-target swings the nose round to enemies behind (the Hind needed extra code to
+      stop this; the Hog has none). Also with the autocannon fitted, whether its targets do.
 
 ## Chemical toilet (with Dubs Bad Hygiene)
 - [ ] The Upgrades tab also has "Chemical toilet", with the description and the placeholder icon; without DBH

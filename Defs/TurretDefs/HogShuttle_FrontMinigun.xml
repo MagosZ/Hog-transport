@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<!-- The front miniguns, two of them, fitted by the HogShuttle_FrontMiniguns upgrade (Defs/HogShuttle_UpgradeTree.xml). The
+	<!-- The front minigun, fitted by the HogShuttle_FrontMinigun upgrade (Defs/HogShuttle_UpgradeTree.xml). The
 	     numbers and art are VVE - Secondary Weapons' TGBM_ExposedMinigun (a dependency), the door gun option. A def of its own
-	     because that one's accuracy can draw on its crew, and these have no gunner seat: spreadRadius gives a fixed
+	     because that one's accuracy can draw on its crew, and this one has no gunner seat: spreadRadius gives a fixed
 	     accuracy, the same as the autocannon's, and accuracy with no shooter is left out. -->
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_FrontMinigun</defName>
 		<label>front minigun</label>
-		<description>A rotary machine gun slung under the wing beside the cockpit and fed from a 200-round box. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
+		<description>A rotary machine gun slung under the starboard wing beside the cockpit and fed from a 200-round box. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<shotSound>Shot_Minigun</shotSound>
 

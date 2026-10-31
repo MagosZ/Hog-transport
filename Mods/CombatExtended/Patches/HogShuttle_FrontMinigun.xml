@@ -77,7 +77,7 @@
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_FrontMinigun"]/description</xpath>
 		<value>
-			<description>A rotary machine gun slung under the wing beside the cockpit and fed from a 2000-round box. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with 7.62x51mm NATO cartridges.</description>
+			<description>A rotary machine gun slung under the starboard wing beside the cockpit and fed from a 2000-round box. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with 7.62x51mm NATO cartridges.</description>
 		</value>
 	</Operation>
 </Patch>

@@ -403,41 +403,36 @@ def split_wings(img, mask):
 
 GUN_CELLS = 4             # the turret texture: square, drawSize (4,4), same pixels per cell as the body
 GUN_PIVOT_Y = 1.66        # the mount's centre on the body texture: on the roof behind the cockpit, on the centre line
-GUN_BARREL_X = 0.085      # barrel centres either side of the centre line: touching, as twin-linked guns are
 GUN_REACH = 1.48          # muzzle ahead of the pivot; the muzzles stop just short of the nose, over the windscreen
 
 
-def twin_autocannon():
-    """The roof-mounted twin autocannon from straight above, pointing north; the pivot is the image's centre.
-    After VFE Security's double autocannon: one breech block, an ammo drum on each side, and two barrels bound
-    together side by side. Each barrel is a cylinder lying lengthwise; straps across both show they are one gun.
-    Own drawing, no pixels from that mod."""
+def autocannon():
+    """The roof turret from straight above, pointing north. The whole image turns about its centre, so the mounting
+    ring, being round, looks fixed to the roof while the head and barrel swing. One barrel: a ribbed cooling jacket, a bare
+    tip section and a muzzle brake, with a collar at each end of the jacket. One ammo drum on the head's port side."""
     v = Canvas(GUN_CELLS)
     c = GUN_CELLS / 2
     # A low mounting ring on the roof, under everything.
-    v.dot(c, c + 0.02, 0.37, 58, None)
-    v.dot(c - 0.01, c + 0.01, 0.335, 92, None)
-    # Ammo drums either side of the breech, lying lengthwise, with two bands each.
-    for x0 in (c - 0.47, c + 0.25):
-        v.cylinder(x0, c - 0.16, x0 + 0.22, c + 0.24, 112)
-        for y in (c - 0.09, c + 0.11):
-            v.cylinder(x0, y, x0 + 0.22, y + 0.05, (178, 176, 120), outline=False)
-    # Two barrels, touching: a short, thick ribbed cooling jacket, then a bare tip section, then the muzzle brake.
+    v.dot(c, c, 0.37, 58, None)
+    v.dot(c, c, 0.335, 92, None)
+    # Ammo drum beside the breech, lying lengthwise, with two bands.
+    x0 = c - 0.47
+    v.cylinder(x0, c - 0.16, x0 + 0.22, c + 0.24, 112)
+    for y in (c - 0.09, c + 0.11):
+        v.cylinder(x0, y, x0 + 0.22, y + 0.05, (178, 176, 120), outline=False)
+    # The barrel.
     tip = c - GUN_REACH
-    for sign in (-1, 1):
-        x = c + sign * GUN_BARREL_X
-        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 0.3, 104)
-        v.cylinder(x - 0.075, c - 0.74, x + 0.075, c - 0.16, 88)
-        for k in range(4):
-            y = c - 0.7 + k * 0.125
-            v.cylinder(x - 0.075, y, x + 0.075, y + 0.045, 132, outline=False)
-        v.cylinder(x - 0.07, tip, x + 0.07, tip + 0.11, 76)
-        v.dot(x, tip + 0.005, 0.03, 30, None)
-    # Straps binding the barrels into one gun.
+    v.cylinder(c - 0.06, tip + 0.1, c + 0.06, c - 0.3, 104)
+    v.cylinder(c - 0.09, c - 0.74, c + 0.09, c - 0.16, 88)
+    for k in range(4):
+        y = c - 0.7 + k * 0.125
+        v.cylinder(c - 0.09, y, c + 0.09, y + 0.045, 132, outline=False)
+    v.cylinder(c - 0.085, tip, c + 0.085, tip + 0.11, 76)
+    v.dot(c, tip + 0.005, 0.035, 30, None)
     for y in (c - 0.76, c - 0.32):
-        v.rect(c - GUN_BARREL_X - 0.085, y, c + GUN_BARREL_X + 0.085, y + 0.05, 62)
-        v.line([(c - GUN_BARREL_X - 0.08, y + 0.008), (c + GUN_BARREL_X + 0.08, y + 0.008)], 140, 0.01)
-    # Breech block: flat top, lit west chamfer, shaded east chamfer, lit front, a feed cover and rivets.
+        v.rect(c - 0.105, y, c + 0.105, y + 0.05, 62)
+        v.line([(c - 0.1, y + 0.008), (c + 0.1, y + 0.008)], 140, 0.01)
+    # Head: flat top, lit west chamfer, shaded east chamfer, lit front, a feed cover and rivets.
     block = [(c - 0.17, c - 0.26), (c + 0.17, c - 0.26), (c + 0.26, c - 0.14), (c + 0.26, c + 0.3),
              (c - 0.26, c + 0.3), (c - 0.26, c - 0.14)]
     v.poly(block, 86)

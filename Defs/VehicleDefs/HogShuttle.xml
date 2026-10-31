@@ -520,13 +520,13 @@
 				<minLevel>6</minLevel>
 				<waivedByUpgradeNode>HogShuttle_FlightComputer</waivedByUpgradeNode>
 			</li>
-			<!-- The front guns, the roof autocannon or the two miniguns (HogShuttle.dll): the pilot fires them, if capable of
+			<!-- The front gun, the roof autocannon or the starboard minigun (HogShuttle.dll): the pilot fires it, if capable of
 			     violence. Those who aren't can still fly; the player gets a message when one takes the seat. -->
 			<li Class="HogShuttle.PilotGunExtension">
 				<role>Pilot</role>
 				<turrets>
+					<li>autocannon</li>
 					<li>frontGun</li>
-					<li>frontGunStarboard</li>
 				</turrets>
 			</li>
 			<li Class="HogShuttle.OrbitTransitExtension">
@@ -560,8 +560,8 @@
 				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
 				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
 				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
-				<!-- Hovering in combat, the nose turns to the target for the fixed front guns, as on the Hind. The turret only
-				     exists once an upgrade is fitted: the autocannon, or the port minigun, which shares its key. -->
+				<!-- Hovering in combat, the nose turns to the target for the fixed front minigun, as on the Hind's nose cannon. The
+				     turret only exists once that upgrade is fitted. The autocannon traverses, so it has its own key. -->
 				<combatDirectionalHoverEnabled>true</combatDirectionalHoverEnabled>
 				<combatDirectionalHoverTurretKey>frontGun</combatDirectionalHoverTurretKey>
 				<takeoffDrawCurve>

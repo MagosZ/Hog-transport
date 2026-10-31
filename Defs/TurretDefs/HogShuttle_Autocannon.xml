@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- The roof gun, fitted by the HogShuttle_Autocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). Vanilla's autocannon turret
+	     (Turret_Autocannon, Gun_AutocannonTurret): burst 3, 17 ticks apart, cooldown 3.5 s (210 ticks), no warm-up, minimum
+	     range 8.9, the shell, and 2 steel per round. Range is 10% under the original's 32.9 (29.6), and the magazine 50% over its
+	     barrel durability of 90 (135). Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. It traverses
+	     on its own, so its image turns about its centre; the rotation values are the Hind's chin turret's. -->
+	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
+		<defName>HogShuttle_Autocannon</defName>
+		<label>autocannon</label>
+		<description>An autocannon in a roof turret, fed from a 135-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with steel.</description>
+		<turretType>Rotatable</turretType>
+		<gizmoIconTexPath>HogShuttle/Upgrade_Autocannon</gizmoIconTexPath>
+
+		<ammunition>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</ammunition>
+		<genericAmmo>true</genericAmmo>
+		<magazineCapacity>135</magazineCapacity>
+		<chargePerAmmoCount>2</chargePerAmmoCount>
+		<reloadTimer>10</reloadTimer>
+		<autoRefuelProportion>1</autoRefuelProportion>
+
+		<projectile>Bullet_AutocannonTurret</projectile>
+		<shotSound>Shot_Autocannon</shotSound>
+		<warmUpTimer>0</warmUpTimer>
+		<autoSnapTargeting>false</autoSnapTargeting>
+		<rotationSpeed>2.5</rotationSpeed>
+		<rotationDelta>0.25</rotationDelta>
+		<!-- Shots leave from the muzzle. -->
+		<projectileOffset>1.48</projectileOffset>
+		<minRange>8.9</minRange>
+		<maxRange>29.6</maxRange>
+
+		<motes>
+			<li>
+				<moteDef>Mote_CannonFlash</moteDef>
+				<offset>(0, 0, 1.48)</offset>
+				<scale>0.45</scale>
+			</li>
+		</motes>
+
+		<fireModes>
+			<li>
+				<shotsPerBurst>3</shotsPerBurst>
+				<ticksBetweenShots>17</ticksBetweenShots>
+				<ticksBetweenBursts>210</ticksBetweenBursts>
+				<spreadRadius>1</spreadRadius>
+				<label>Burst</label>
+				<texPath>UI/Gizmos/FireRate_Burst</texPath>
+			</li>
+		</fireModes>
+
+		<!-- Square, 4 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
+		<graphicData>
+			<texPath>HogShuttle/Autocannon</texPath>
+			<graphicClass>Vehicles.Graphic_Turret</graphicClass>
+			<drawSize>(4, 4)</drawSize>
+		</graphicData>
+	</Vehicles.VehicleTurretDef>
+</Defs>

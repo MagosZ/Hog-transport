@@ -3,7 +3,7 @@
 Run from anywhere: python make_textures.py [check-image path]
 Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view clipped to the footprint, from body_views.py),
 WingTips (the rest of the wings, shown while the engines run), Shadow and BuildIcon (with the full wings),
-Transparent, the upgrade icons, and the roof-mounted TwinAutocannon with its icon.
+Transparent, the upgrade icons, and the Autocannon roof turret with its icon.
 """
 import sys
 from pathlib import Path
@@ -92,9 +92,9 @@ def main():
     flight_computer_icon().save(OUT / "Upgrade_FlightComputer.png")
     armour_icon().save(OUT / "Upgrade_PlasteelArmour.png")
     cargo_icon().save(OUT / "Upgrade_CargoOutfit.png")
-    gun = body_views.twin_autocannon()
-    gun.save(OUT / "TwinAutocannon.png")
-    body_views.gun_icon(gun).save(OUT / "Upgrade_TwinAutocannon.png")
+    gun = body_views.autocannon()
+    gun.save(OUT / "Autocannon.png")
+    body_views.gun_icon(gun).save(OUT / "Upgrade_Autocannon.png")
     if len(sys.argv) > 2:                       # optional check image of the gun on the body
         body_views.with_gun(img, gun).save(sys.argv[2])
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))

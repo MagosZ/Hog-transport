@@ -187,63 +187,41 @@ speed per tick, like building.
   all come from VVE - Secondary Weapons, so they follow its updates. The Hog has an empty `CompProperties_VehicleTurrets` for
   the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
   Framework's turret code reads it without a null check.
-- `HogShuttle_TwinAutocannon`: "Twin-linked autocannon". 200 steel, 30 plasteel, 6 components, work 6000 (a step up
-  from the Hind's heavy chin turret, 150 / 30 / 4 / 5000), and `StatUpgrade` CargoCapacity -50. Can be fitted with a
-  door gun. Turret def in `Defs/TurretDefs/HogShuttle_TwinAutocannon.xml`.
+- `HogShuttle_Autocannon`: "Autocannon". 200 steel, 30 plasteel, 6 components, work 6000 (a step up from the Hind's heavy
+  chin turret, 150 / 30 / 4 / 5000), and `StatUpgrade` CargoCapacity -50. **Conflicts with the front minigun**; can be fitted
+  with a door gun. Turret def in `Defs/TurretDefs/HogShuttle_Autocannon.xml`, CE in
+  `Mods/CombatExtended/Patches/HogShuttle_Autocannon.xml`.
 
-  The weapon is vanilla's autocannon turret (`Turret_Autocannon`, `Gun_AutocannonTurret`; with CE, CE's version of it),
-  doubled where two barrels change the number, then with range cut by 10% and the magazine raised by 50% for balance.
+  The weapon is vanilla's autocannon turret (`Turret_Autocannon`, `Gun_AutocannonTurret`; with CE, CE's version of it), with
+  range cut by 10% and the magazine raised by 50% for balance.
 
   | Stat | Without CE | Vanilla turret | With CE | CE's turret |
   |---|---|---|---|---|
-  | Rounds per burst | **6** | 3 | **20** | 10 |
-  | Ticks between rounds | **9** | 17 | **4** | 7 |
+  | Rounds per burst | 3 | Same | 10 | Same |
+  | Ticks between rounds | 17 | Same | 7 | Same |
   | Between bursts | 210 ticks (3.5 s) | Same | 60 ticks (1 s) | Same |
   | Warm-up | None | Same | 2.3 s | Same |
   | Range | 8.9 to **29.6** | 8.9 to 32.9 | 0 to **70.2** | 0 to 78 |
   | Shell | `Bullet_AutocannonTurret`: 27 damage, speed 88 | Same | `Bullet_20x102mmNATO_AP` by default: 44 damage, 30 sharp AP, speed 182 | Same |
-  | Magazine | **270** rounds | 90 shots per barrel | **300** rounds | 100 |
-  | Ammo | 2 steel per round (540 to fill) | Same | 20x102mm NATO | Same |
+  | Magazine | **135** rounds | 90 shots per barrel | **150** rounds | 100 |
+  | Ammo | 2 steel per round (270 to fill) | Same | 20x102mm NATO | Same |
   | Reload | 10 s | A pawn changes the barrel | 7.8 s | Same |
   | Accuracy | Spread 1 | 0.28 / 0.72 / 0.66 / 0.5 | Sway 1.61, spread 0.01 | Same |
-  | Arc | Fixed forward, 6° either side | Full turret | Same | Full turret |
+  | Arc | **30° either side** of the nose | Full turret | Same | Full turret |
 
-  Choices:
-  - Each barrel keeps the original's rhythm, so the gun fires twice the rounds in about the same burst time: twice the
-    damage over time. Half of 17 and of 7 aren't whole ticks, so they round up. Damage per round and range don't double. The magazine is the doubled number +50% (90 × 2 × 1.5, 100 × 2 × 1.5).
-  - Vehicle Framework has no accuracy stats, so spread 1 stands in without CE.
-  - CE recoil is 0, like the Hind's: Vehicle Framework multiplies it by the shot number, and these bursts are long.
-
-  - Twin-linked means two barrels bound together in one gun, drawn after VFE Security's double autocannon (one breech
-    block, an ammo drum on each side, barrels almost touching). No fire points: shots leave from one point between the muzzles
-    (`projectileOffset`), as on the Hind's nose cannon. With two fire points, shells visibly flew in a curve under CE;
-    removing them fixed it (user, 2026-10-31). Why isn't known: VTOL Vehicle's CE path for fire points is closed source.
-    Width was ruled out first (a 3-wide Hog still curved). So don't use fire points on this gun.
-  - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
-    airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
-    a separate turret image because it only shows once fitted.
-  - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
-    so the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
-    a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a crewed pilot's seat and a
-    pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with a reason.
-  - Pacifist pilots can fly but can't fire. A caution message appears when one takes the seat (keyed
-    `HogShuttle_PacifistPilot`), found by comparing pilots in that same recheck, which runs on boarding, leaving and
-    seat changes. The first check of a vehicle only records the pilot, so loading a save says nothing.
-  - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat
-    hover is on with `combatDirectionalHoverTurretKey` = `frontGun`. The key names a turret that only exists
-    once the upgrade is fitted; how VTOL handles that without it needs checking in game (TESTING.md).
-  - The Hind's own code isn't here (no license, and not copied): bursts stop when the target dies, the nose may drift
-    back to the move-order facing, a door gun's auto-target may swing the nose, and a newly fitted gun may point
-    north until the pilot boards.
-  - CE: `Mods/CombatExtended/Patches/HogShuttle_TwinAutocannon.xml`.
-- `HogShuttle_FrontMiniguns`: "Front miniguns". 270 steel, 22 components, work 10000 (two door gun miniguns, the Louie's
-  pair in VVE - Secondary Weapons), no cargo cost. **Conflicts with the autocannon**; can be fitted with a door gun. Two
-  turrets of `HogShuttle_FrontMinigun` (`Defs/TurretDefs/`), each with its own button, target and box.
+  - A real turret, on the roof behind the cockpit (B2–C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
+    airframe (`drawLayer` 1). Its image is separate and turns about its centre; the round mounting ring looks fixed to the
+    roof. It swings on its own at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is off.
+  - No fire points, since those made shells curve under CE. Shots leave from the muzzle (`projectileOffset` 1.48).
+  - CE recoil is 0, like the Hind's.
+  - A newly fitted gun may point north until the pilot boards (the Hind has its own code for this; the Hog doesn't).
+- `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. **Conflicts
+  with the autocannon**; can be fitted with a door gun. One turret, on the starboard side only.
 
   The numbers and art are `TGBM_ExposedMinigun`'s, on a def of its own, because that one's accuracy can draw on its
-  crew and these have no gunner seat. `spreadRadius` 1 gives a fixed accuracy, as on the autocannon.
+  crew and this one has no gunner seat. `spreadRadius` 1 gives a fixed accuracy.
 
-  | Per gun | Without CE | With CE |
+  | Stat | Without CE | With CE |
   |---|---|---|
   | Range | Up to 30.9 | Up to 62 |
   | Fire modes | Burst: 25 rounds, 2 ticks apart, 30-60 ticks between | Single, 25 or 50 rounds, 1 tick apart, 21 ticks between |
@@ -253,12 +231,17 @@ speed per tick, like building.
   | Accuracy | Spread 1 | Sway 1.02, spread 0.06, recoil 0 |
   | Arc | Fixed forward, 6° either side | Same |
 
-  - Mounted beside the cockpit (north offsets (±1.2, 1.95)) and drawn below the airframe (`drawLayer` −8, the Hind's chin
-    turret value), so the wing covers the receiver and only the barrels show, through the empty corners A1 and D1.
-  - No fire points, since those made shells curve under CE. The pilot fires them, through `PilotGunExtension`, whose
-    `turrets` list holds both keys.
-  - VTOL's combat hover follows one named turret, so the port gun shares the key `frontGun` with the autocannon (they
-    can't be fitted together) and the nose turns for whichever is fitted. The starboard gun is `frontGunStarboard`.
+  - Mounted beside the cockpit (north offset (1.2, 1.95)) and drawn below the airframe (`drawLayer` −8, the Hind's chin
+    turret value), so the wing covers the receiver and only the barrel shows, through the empty corner D1.
+  - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat hover is
+    on with `combatDirectionalHoverTurretKey` = `frontGun`, the minigun's key. That turret only exists once this upgrade
+    is fitted; the autocannon has its own key (`autocannon`) so it doesn't steer the nose.
+- **Pilot fires the front gun.** Vehicle Framework bars pawns incapable of violence from any seat with Turret handling, so
+  the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`,
+  `turrets` = `autocannon`, `frontGun`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
+  crewed pilot's seat and a pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with
+  a reason. A caution message appears when a pacifist takes the seat (keyed `HogShuttle_PacifistPilot`), once per vehicle;
+  the first check of a vehicle only records the pilot, so loading a save says nothing.
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).
@@ -322,7 +305,7 @@ from the north-west and shadows cast down-right onto lower surfaces.
   brass intake rings, a short duct, an arched yoke, the coil machinery on a dark core with side braces, a second yoke, a
   ribbed neck, then an armoured exhaust with a blue heat-stained nozzle rim. The fan faces forward, so it isn't visible.
 - **Roof:** a raised sensor block with two lens domes behind the cockpit, then the cabin hatch (under the autocannon's
-  mount if fitted); copper pipes on the shoulders ahead of the engines; the yokes reach in to a raised eight-sided plate
+  ring if fitted); copper pipes on the shoulders ahead of the engines; the yokes reach in to a raised eight-sided plate
   with the tank fillers (rows 3–4); then a stepped plate with the vent grille, refuelling cap and an access panel (rows
   5–6), and a rear hatch with an antenna post (rows 6–7). The tail's corners are cut. Row 7 is ordinary roof; the rear door
   below it is a vertical face, so it isn't visible from above.
@@ -332,6 +315,9 @@ from the north-west and shadows cast down-right onto lower surfaces.
   arrows, a ring and a caged lamp at the leading corner. The band and its details are on the wing tips, so they show only
   while the engines run; the hinge and inner wing stay with the parked body.
 - **Skids:** hidden under the hull and wings.
+- **Autocannon** (`Autocannon.png`, 4 cells square, `autocannon()` in `body_views.py`): a separate image that turns about its
+  centre: a round mounting ring, the head, one ammo drum, and one barrel with a short ribbed jacket, a bare tip section and
+  a muzzle brake. Unpainted.
 - Soot behind the exhausts, lightly over the wing and the roof's edge.
 
 `python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
