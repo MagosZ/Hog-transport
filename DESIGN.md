@@ -16,50 +16,51 @@ the cabin.
 
 ## 2. The shuttle (`HogShuttle`, `Defs/VehicleDefs/HogShuttle.xml`)
 
-- Footprint 3×7 (`size (3,7)`; it was 4×8, then 4×7, and went to 3 wide when even width was suspected of bending
-  shots); the body is a box once its wings are out. Facing east or west it takes 7×3.
+- Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
+  east or west it takes 7×4.
 - Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
   skill; also fires the roof autocannon if fitted), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
 - Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
   it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
-  the Louie's × 1.5 (set at 28 cells to its 21; now 17 cells, health kept). Their positions follow the Arvus lighter
-  (Warhammer Community pictures): cockpit box at the front centre, wings along the sides with the two ducted turbofans
-  on them, three skids (one under the nose, two at the rear sides), cargo bay with a rear door. A part may cover several
-  cells, and a cell may hold several parts. Cells: a 3×7 footprint facing north spans x −1..1, z −3..3 (north = z 3).
+  the Louie's × 1.5 (28 cells to its 21). Their positions follow the Arvus lighter (Warhammer Community pictures):
+  cockpit box at the front centre, wings along the sides with the two ducted turbofans on them, three skids (one
+  under the nose, two at the rear sides), cargo bay with a rear door. A part may cover several cells, and a cell may hold several parts. Cells: a 4×7 footprint
+  facing north spans x −1..2, z −3..3 (north = z 3).
 
-  **Grid names** (used when talking about part positions): columns **A–C** run port to starboard (x −1, 0, 1),
-  rows **1–7** run nose to tail (z 3 down to −3), with the Hog facing north. So B3 = (0, 1). The hull covers every cell
-  except the four corners A1, C1, A7 and C7, which have no part: the nose and the tail are one column wide.
+  **Grid names** (used when talking about part positions): columns **A–D** run port to starboard (x −1, 0, 1,
+  2), rows **1–7** run nose to tail (z 3 down to −3), with the Hog facing north. So B3 = (0, 1). The hull
+  covers every cell except the four corners A1, D1, A7 and D7, which are empty, physically and in the art: the
+  nose and the tail are two columns wide.
 
-  | Row | A (port) | B | C (starboard) |
-  |---|---|---|---|
-  | 1 nose | *(empty)* | cockpit, avionics | *(empty)* |
-  | 2 | wing | cabin seats, front skid | wing |
-  | 3 | turbofan, wing | fuel tank | turbofan, wing |
-  | 4 | turbofan, wing, rear skid | fuel tank | turbofan, wing, rear skid |
-  | 5 | turbofan, wing, rear skid | fuel pumps, control servos | turbofan, wing, rear skid |
-  | 6 | wing | fuel intake | wing |
-  | 7 tail | *(empty)* | rear door | *(empty)* |
+  | Row | A (port) | B | C | D (starboard) |
+  |---|---|---|---|---|
+  | 1 nose | *(empty)* | cockpit, avionics | cockpit, avionics | *(empty)* |
+  | 2 | wing | cabin seats, front skid | cabin seats, front skid | wing |
+  | 3 | turbofan, wing | fuel tank | fuel tank | turbofan, wing |
+  | 4 | turbofan, wing, rear skid | fuel tank | fuel tank | turbofan, wing, rear skid |
+  | 5 | turbofan, wing, rear skid | fuel pumps, control servos | fuel pumps, control servos | turbofan, wing, rear skid |
+  | 6 | wing | fuel intake | fuel intake | wing |
+  | 7 tail | *(empty)* | rear door | rear door | *(empty)* |
 
   In game, Vehicle Framework's dev-mode setting "Draw hitbox" (mod settings, Debug) shows the real cells.
 
   | Part (key) | Health | Depth | Affects | Cells | VVE counterpart |
   |---|---|---|---|---|---|
-  | Hull | 900 (hit weight 3) | outer | – | all but the corners A1, C1, A7, C7 | side panels |
-  | Cockpit | 200 | outer | – | B1 | – |
-  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A5 / C3–C5 | engine, rotor mast |
-  | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A6 / C2–C6 | stabilizers, rudder |
-  | Front skid (`SkidFront`) | 120 | outer | flight speed | B2 | landing skids |
-  | Port / starboard rear skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A4–A5 / C4–C5 | landing skids |
-  | Rear door | 150 | outer | – | B7 | – |
-  | Fuel intake | 75 | outer | flight speed | B6 | fuel intake |
-  | Fuel pumps | 75 | inner | flight speed | B5 | transmission |
-  | Fuel tank | 180 | inner, leaks, may explode | – | **B3–B4** (centre) | chemtank |
-  | Avionics | 75 (hit weight 2) | inner | – | B1 | dashboard |
-  | Cabin seats | 75 (hit weight 2) | inner | – | B2 | upholstery |
-  | Control servos | 105 (hit weight 2) | inner | – | B5 | servos |
+  | Hull | 900 (hit weight 3) | outer | – | all but the corners A1, D1, A7, D7 | side panels |
+  | Cockpit | 200 | outer | – | B1–C1 | – |
+  | Port / starboard turbofan (`ThrusterPort`, `ThrusterStarboard`) | 220 each | outer, the engines: flight stats can't exceed their state; don't explode | flight speed, control | A3–A5 / D3–D5 | engine, rotor mast |
+  | Port / starboard wing | 300 each | outer, hull armour | flight control | A2–A6 / D2–D6 | stabilizers, rudder |
+  | Front skid (`SkidFront`) | 120 | outer | flight speed | B2–C2 | landing skids |
+  | Port / starboard rear skid (`SkidPort`, `SkidStarboard`) | 120 each | outer | flight speed | A4–A5 / D4–D5 | landing skids |
+  | Rear door | 150 | outer | – | B7–C7 | – |
+  | Fuel intake | 75 | outer | flight speed | B6–C6 | fuel intake |
+  | Fuel pumps | 75 | inner | flight speed | B5–C5 | transmission |
+  | Fuel tank | 180 | inner, leaks, may explode | – | **B3–C4** (centre) | chemtank |
+  | Avionics | 75 (hit weight 2) | inner | – | B1–C1 | dashboard |
+  | Cabin seats | 75 (hit weight 2) | inner | – | B2–C2 | upholstery |
+  | Control servos | 105 (hit weight 2) | inner | – | B5–C5 | servos |
 
   Armour classes: hull and wings 0.50 / 0.90, cockpit 0.45 / 0.80, other outer parts 0.45 / 0.80, inner parts
   0.25 / 0.40. VVE puts armour on the vehicle, not the parts, so these follow the Hog's first parts.
@@ -178,7 +179,7 @@ speed per tick, like building.
   | Heavy machine gun | `TGBM_WisentHMG` | 32.9 | 6 per burst, slower | 75 (steel) | 205 steel, 6 components | .50 BMG, range 75, 100 |
   | Minigun | `TGBM_ExposedMinigun` | 30.9 | 25 per burst | 200 (steel) | 135 steel, 11 components | 7.62×51 NATO, range 62, 2000 |
 
-  All take 5000 work. Fitting one adds a **door gunner** role (1 seat, Turret, needed to fire, at B7,
+  All take 5000 work. Fitting one adds a **door gunner** role (1 seat, Turret, needed to fire, at B7–C7,
   exposed because the door is open). The role comes first, then a `VTOLVehicle.VtolVehicleTurret`, so the gun
   follows the aircraft's heading as the Hind's do. It is mounted at the tail centre (north offset (0, −3.1)),
   defaultAngleRotated 180, angleRestricted (120, 240): 60° either side of straight back (0 = the nose). The
@@ -216,7 +217,7 @@ speed per tick, like building.
   - Twin-linked means two barrels bound together in one gun, drawn after VFE Security's double autocannon (one breech
     block, an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`:
     half the rounds from each barrel.
-  - Mounted on the **roof behind the cockpit** (B2, centre line, pivot north offset (0, 1.84)), drawn on top of the
+  - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
     a separate turret image because it only shows once fitted.
   - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
@@ -278,30 +279,29 @@ Placeholder, from `Source/Art/body_views.py` (run `make_textures.py`): **one top
 since in game only the top-down view is used (user). Mask: red = hull and nacelles, green = cockpit armour and the
 wing stripe, blue = wings. Glass, brass intake lips, exhaust rims, the grille, the fuel cap and lights are
 unpainted. `CutoutComplexPattern`, default colours grey / green / grey. Square drawSize (7,7), like the Hind's.
-The wings are painted one cell past their component (A2–A6 / C2–C6) on each side, an outer cell that is art
-only. A one-cell hull would be a sliver, so the hull's roof is drawn 1.6 cells wide, reaching into columns A and C, and
-the nose and tail 1.3 wide, slightly over the empty corners (art only). `Shadow` is the silhouette, `BuildIcon` the view scaled down.
+The wings are painted one cell past their component (A2–A6 / D2–D6) on each side, an outer cell that is art
+only. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
 
 Drawn as seen from straight above: only upward-facing surfaces show, with light from the north-west and shadows
 cast down-right onto lower surfaces.
-- **Turbofans** (A3–A5 / C3–C5): they face forward, so each is a cylinder lying lengthwise, shaded across its
-  width, against the hull's side. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
+- **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
+  width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
   rim at the back. The fan isn't visible. They cast shadows onto the wings.
 - **Hull:** one roof from row 2 to the tail, with lit west and shaded east chamfers and a shaded tail edge. Row 7
-  (B7; A7 and C7 have no part) is ordinary roof; the rear door is a vertical face at the tail, so it isn't
+  (B7–C7; A7 and D7 are empty) is ordinary roof; the rear door is a vertical face at the tail, so it isn't
   visible from above.
-- **Cockpit** (B1): an armoured roof, with the sloped windscreen foreshortened at the front.
+- **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
 - **Roof details**, after the kit photo: a raised sensor housing with a grille and a red dome right behind the
-  cockpit (B2), then the cabin hatch; the fuel tank bay's two filler plates (B3–B4); the vent grille (B5);
-  the refuelling cap at the front of B6 with roof vents behind it; the green dorsal fin on the
-  centre line (B6–B7), seen edge-on as a thin strip with its shadow; copper pipes with clamps
+  cockpit (B2–C2), then the cabin hatch; the fuel tank bay's two filler plates (B3–C4); the vent grille (B5–C5);
+  the refuelling cap at the front of B6 with roof vents behind it in B6 and C6; the green dorsal fin on the
+  centre line (C6–C7), seen edge-on as a thin strip with its shadow; copper pipes with clamps
   along both roof edges (rows 3–5); rivets along the seams.
 - **Cockpit:** riveted green armour, a three-pane windscreen, a roof escape hatch, red (port) and green
   (starboard) lamp domes at its rear corners.
 - **Turbofans:** mounting straps and a copper fuel line along the top of each nacelle; soot streaks on the wings
-  behind the exhausts (A6 / C6).
+  behind the exhausts (A6 / D6).
 - **Wings:** rivet rows along the plate seams, the green band with a star emblem, a caged landing light near each
-  root (A2 / C2), and navigation lights at the tips (red port, green starboard).
+  root (A2 / D2), and navigation lights at the tips (red port, green starboard).
 - **Skids:** hidden under the hull and wings.
 - Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
 - **Twin-linked autocannon** (`TwinAutocannon.png`, 4 cells square, `twin_autocannon()` in `body_views.py`): own drawing
