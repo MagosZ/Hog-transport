@@ -96,7 +96,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Cargo capacity drops by 50 kg when fitted (950; with plasteel armour 750; with the cargo outfit 1950; with
       both 1750) and comes back when removed.
 - [ ] Fitted: the mount draws on the roof behind the cockpit, on the centre line, barrels side by side over the cockpit,
-      muzzles a third of a cell past the nose, at any heading, parked and in flight. Without the upgrade, no gun shows.
+      muzzles about 1.3 cells past the nose, at any heading, parked and in flight. Without the upgrade, no gun shows.
 - [ ] A newly fitted gun on a Hog parked facing east or west: it may point north until the pilot boards (the Hind
       needed extra code for this; the Hog has none).
 - [ ] Pilot capable of violence: the gun fires, with no extra seat. Nobody in the pilot's seat: it doesn't, and its button
@@ -108,10 +108,10 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       or passenger, or on a Hog without the gun.
 - [ ] A pacifist pilot hovering with enemies near: see whether the nose still turns to them with the gun dead (VTOL's
       combat hover may ignore the gun's state).
-- [ ] Without CE: 6-round bursts every 5.6 s, range 8.9 to 32.9, 27 damage, 200 rounds from steel. Shots leave from the
-      two muzzles in turn.
-- [ ] With CE: autocannon shells (AP by default), range 55, 6-round bursts every second, 2.3 s warm-up; the shots land
-      on the target.
+- [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 32.9, 27 damage, 180 rounds at 2 steel each. Shots
+      and the muzzle flash leave from the two muzzles in turn.
+- [ ] With CE: 20x102mm shells (AP by default), 200 rounds, range 78, 20-round bursts every second or so, 2.3 s warm-up; the
+      shots land on the target, including close targets now the muzzles are further out.
 - [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can
       only reach 6 degrees either side of the nose.
 - [ ] Airborne, on auto-target: hovering, the nose turns to enemies (VTOL's combat hover).

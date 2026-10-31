@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<!-- The roof gun, fitted by the HogShuttle_TwinAutocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). The numbers are
-	     VFE Empire's armored shuttle gun (VFEI_TurretArmoredShuttle, "a powerful, twin-linked autocannon"), which isn't a
-	     dependency: burst 6, 11 ticks apart, cooldown 5.6 s (336 ticks), no warm-up, range 8.9 to 32.9, vanilla's
-	     autocannon shell. Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. Magazine and
-	     reload are vehicle-turret values with no counterpart on that gun; they stay as the Hind's nose cannon. -->
+	<!-- The roof gun, fitted by the HogShuttle_TwinAutocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). Vanilla's autocannon
+	     turret (Turret_Autocannon, Gun_AutocannonTurret), doubled where two barrels change the number: burst 3 becomes 6,
+	     17 ticks apart becomes 9 (8.5 rounded up; each barrel keeps its own rhythm), barrel durability 90 becomes a 180-round
+	     magazine. Unchanged: cooldown 3.5 s (210 ticks), no warm-up, range 8.9 to 32.9, the shell, and 2 steel per round.
+	     Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. -->
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_TwinAutocannon</defName>
 		<label>twin-linked autocannon</label>
-		<description>Two autocannons bound side by side in a roof mount and fed from a 200-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
+		<description>Two autocannons bound side by side in a roof mount and fed from a 180-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<gizmoIconTexPath>HogShuttle/Upgrade_TwinAutocannon</gizmoIconTexPath>
 
@@ -18,8 +18,8 @@
 			</thingDefs>
 		</ammunition>
 		<genericAmmo>true</genericAmmo>
-		<magazineCapacity>200</magazineCapacity>
-		<chargePerAmmoCount>0.5</chargePerAmmoCount>
+		<magazineCapacity>180</magazineCapacity>
+		<chargePerAmmoCount>2</chargePerAmmoCount>
 		<reloadTimer>10</reloadTimer>
 		<autoRefuelProportion>1</autoRefuelProportion>
 
@@ -36,7 +36,7 @@
 		<motes>
 			<li>
 				<moteDef>Mote_CannonFlash</moteDef>
-				<offset>(0, 0, 1.98)</offset>
+				<offset>(0, 0, 2.98)</offset>
 				<scale>0.45</scale>
 			</li>
 		</motes>
@@ -44,19 +44,19 @@
 		<fireModes>
 			<li>
 				<shotsPerBurst>6</shotsPerBurst>
-				<ticksBetweenShots>11</ticksBetweenShots>
-				<ticksBetweenBursts>336</ticksBetweenBursts>
+				<ticksBetweenShots>9</ticksBetweenShots>
+				<ticksBetweenBursts>210</ticksBetweenBursts>
 				<spreadRadius>1</spreadRadius>
 				<label>Burst</label>
 				<texPath>UI/Gizmos/FireRate_Burst</texPath>
 			</li>
 		</fireModes>
 
-		<!-- Square, 4 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
+		<!-- Square, 6 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
 		<graphicData>
 			<texPath>HogShuttle/TwinAutocannon</texPath>
 			<graphicClass>Vehicles.Graphic_Turret</graphicClass>
-			<drawSize>(4, 4)</drawSize>
+			<drawSize>(6, 6)</drawSize>
 		</graphicData>
 	</Vehicles.VehicleTurretDef>
 </Defs>

@@ -284,10 +284,10 @@ def top():
     return v.done()
 
 
-GUN_CELLS = 4             # the turret texture: square, drawSize (4,4), same pixels per cell as the body
+GUN_CELLS = 6             # the turret texture: square, drawSize (6,6), same pixels per cell as the body
 GUN_PIVOT_Y = 1.66        # the mount's centre on the body texture: on the roof behind the cockpit, on the centre line
 GUN_BARREL_X = 0.085      # barrel centres either side of the centre line: touching, as twin-linked guns are
-GUN_REACH = 1.98          # muzzle ahead of the pivot; the muzzles clear the nose by 0.32 of a cell
+GUN_REACH = 2.98          # muzzle ahead of the pivot; the muzzles clear the nose by 1.32 cells
 
 
 def twin_autocannon():
@@ -309,15 +309,15 @@ def twin_autocannon():
     tip = c - GUN_REACH
     for sign in (-1, 1):
         x = c + sign * GUN_BARREL_X
-        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 1.2, 104)
-        v.cylinder(x - 0.075, c - 1.42, x + 0.075, c - 0.16, 88)
-        for k in range(9):
-            y = c - 1.36 + k * 0.125
+        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 2.0, 104)
+        v.cylinder(x - 0.075, c - 2.2, x + 0.075, c - 0.16, 88)
+        for k in range(15):
+            y = c - 2.14 + k * 0.125
             v.cylinder(x - 0.075, y, x + 0.075, y + 0.045, 132, outline=False)
         v.cylinder(x - 0.07, tip, x + 0.07, tip + 0.11, 76)
         v.dot(x, tip + 0.005, 0.03, 30, None)
     # Straps binding the barrels into one gun.
-    for y in (c - 1.44, c - 0.9, c - 0.32):
+    for y in (c - 2.22, c - 1.5, c - 0.9, c - 0.32):
         v.rect(c - GUN_BARREL_X - 0.085, y, c + GUN_BARREL_X + 0.085, y + 0.05, 62)
         v.line([(c - GUN_BARREL_X - 0.08, y + 0.008), (c + GUN_BARREL_X + 0.08, y + 0.008)], 140, 0.01)
     # Breech block: flat top, lit west chamfer, shaded east chamfer, lit front, a feed cover and rivets.
@@ -347,10 +347,10 @@ def gun_icon(gun):
 
 def with_gun(img, gun):
     """Check image (not shipped): the body with the gun on it, on a canvas with room for the muzzles."""
-    out = Image.new("RGBA", (img.width, img.height + PX), (0, 0, 0, 0))
-    out.alpha_composite(img, (0, PX))
+    out = Image.new("RGBA", (img.width, img.height + 2 * PX), (0, 0, 0, 0))
+    out.alpha_composite(img, (0, 2 * PX))
     x = round((C - GUN_CELLS / 2) * PX)
-    y = round((GUN_PIVOT_Y - GUN_CELLS / 2) * PX) + PX
+    y = round((GUN_PIVOT_Y - GUN_CELLS / 2) * PX) + 2 * PX
     out.alpha_composite(gun, (x, y))
     return out
 
