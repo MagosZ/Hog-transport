@@ -96,7 +96,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Autocannon
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`, and no error about `HogShuttle.PilotGunExtension`.
-- [ ] The Upgrades tab has "Autocannon": 100 steel, 15 plasteel, 3 components, 6000 work. It can be fitted together with
+- [ ] The Upgrades tab has "Autocannon": 100 steel, 15 plasteel, 3 components, 3000 work. It can be fitted together with
       a door gun, not with the front minigun.
 - [ ] Cargo capacity drops by 30 kg when fitted (970; with plasteel armour 770; with the cargo outfit 1970; with
       both 1770) and comes back when removed.

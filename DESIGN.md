@@ -187,7 +187,7 @@ speed per tick, like building.
   all come from VVE - Secondary Weapons, so they follow its updates. The Hog has an empty `CompProperties_VehicleTurrets` for
   the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
   Framework's turret code reads it without a null check.
-- `HogShuttle_Autocannon`: "Autocannon". 100 steel, 15 plasteel, 3 components, work 6000, and `StatUpgrade` CargoCapacity -30. **Conflicts with the front minigun**; can be fitted
+- `HogShuttle_Autocannon`: "Autocannon". 100 steel, 15 plasteel, 3 components, work 3000, and `StatUpgrade` CargoCapacity -30. **Conflicts with the front minigun**; can be fitted
   with a door gun. Turret def in `Defs/TurretDefs/HogShuttle_Autocannon.xml`, CE in
   `Mods/CombatExtended/Patches/HogShuttle_Autocannon.xml`.
 
