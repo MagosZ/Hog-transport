@@ -142,11 +142,14 @@ Upgrade nodes have no Vehicle Framework effect of their own; HogShuttle.dll chec
 Vehicle Framework's removal defaults apply: 50% refund, 30% of the work. Upgrade work is spent at construction
 speed per tick, like building.
 
-- `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Plots more efficient courses: 20% less fuel for travel on the
-  world map and to and from space."* 1 advanced component, work 200. `StatUpgrade` on Vehicle Framework's
+- `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Plots more efficient courses and trims the engines: 20% less
+  fuel for hovering, for travel on the world map, and to and from space."* 1 advanced component, work 200. `StatUpgrade` on Vehicle Framework's
   `FuelConsumptionRate` category, -60 of the rate 300. The launch cost and in-flight burn follow the rate, and
   `OrbitTransitExtension.TransitFuel` scales the layer-change fee with it (50 to 40). So: 1.33 fuel per tile and 900 tiles in
-  the air; 13.3 per tile for legs ending in space. VTOL Vehicle's hover burn on the local map is unaffected.
+  the air; 13.3 per tile for legs ending in space. VTOL Vehicle's burn while airborne on the map comes from the def, so it can't
+  be changed per vehicle: `HoverFuelFollowsRateExtension` (`Source/HoverFuel.cs`, a postfix on `VehiclePawn.TickRare`) hands
+  the saved part back every 250 ticks, 0.3 fuel. So 12 chemfuel per in-game hour instead of 15, and a full tank hovers about
+  100 hours instead of 80.
 - `HogShuttle_PlasteelArmour`: "Plasteel armour", *"Plasteel plates over the whole airframe: about 20% more
   armour on every part, at the cost of 200 kg of cargo space."* 150 plasteel + 4 components, work 6000 (the
   Hind Gunship's Plasteel Armour price and work). Unlike the Hind's, it plates the cockpit too. Vehicle

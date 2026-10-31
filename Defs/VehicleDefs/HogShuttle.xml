@@ -520,6 +520,8 @@
 			</li>
 			<!-- Guns fitted by an upgrade start out facing their default direction, relative to the aircraft (HogShuttle.dll). -->
 			<li Class="HogShuttle.FittedGunsAlignExtension" />
+			<!-- What the flight computer does to the fuel rate also applies to the burn while airborne on the map (HogShuttle.dll). -->
+			<li Class="HogShuttle.HoverFuelFollowsRateExtension" />
 			<!-- Orbit costs (HogShuttle.dll): 50 fuel per change between surface and space, and legs that end in
 			     space cost 10x per tile (vanilla's orbit rangeDistanceFactor is 20, but part of that may be its larger orbit tiles). -->
 			<li Class="HogShuttle.OrbitTransitExtension">

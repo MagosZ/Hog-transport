@@ -8,13 +8,12 @@
 	<Vehicles.UpgradeTreeDef>
 		<defName>HogShuttle_UpgradeTree</defName>
 		<nodes>
-			<!-- 20% less fuel for world-map travel: the fuel rate 300 less 60. Vehicle Framework's launch cost and in-flight burn
-			     follow the rate, and HogShuttle.dll scales the fee for changing layer with it. VTOL Vehicle's hover burn on the local
-			     map is its own, so this doesn't touch it. -->
+			<!-- 20% less fuel: the fuel rate 300 less 60. Vehicle Framework's launch cost and in-flight burn follow the rate, and
+			     HogShuttle.dll scales the fee for changing layer and the hover burn on the local map with it. -->
 			<li>
 				<key>HogShuttle_FlightComputer</key>
 				<label>Auxiliary flight computer</label>
-				<description>Plots more efficient courses: 20% less fuel for travel on the world map and to and from space.</description>
+				<description>Plots more efficient courses and trims the engines: 20% less fuel for hovering, for travel on the world map, and to and from space.</description>
 				<icon>HogShuttle/Upgrade_FlightComputer</icon>
 				<gridCoordinate>(4, 4)</gridCoordinate>
 				<work>200</work>

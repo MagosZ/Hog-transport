@@ -57,7 +57,8 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Installed: the launch targeter reaches about 900 tiles on a full tank instead of 720 (1.33 fuel per tile), and about
       40 fuel, not 50, straight up to an orbital target; a hop between orbital sites costs about 13 per tile. The fuel
       spent matches what the targeter showed, and the tank drains 20% slower in flight.
-- [ ] Hovering on the local map burns the same as before.
+- [ ] Hovering on the local map burns 20% less: about 12 fuel per in-game hour instead of 15, in small steps every few
+      seconds. Not while landed, and the tank never goes above full. Running dry still forces an emergency landing.
 - [ ] Removing it brings the old costs back.
 
 ## Plasteel armour
