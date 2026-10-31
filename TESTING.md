@@ -110,8 +110,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       combat hover may ignore the gun's state).
 - [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 29.6, 27 damage, 270 rounds at 2 steel each. Shots
       and the muzzle flash leave from between the muzzles.
-- [ ] Firing east or west under CE, compared with the Hind's nose cannon: do the shells still bow in a curve? Fire
-      points were removed to test this. If they still bend, compare the door gun, which never had fire points.
+- [x] Firing east or west under CE: the shells fly straight now the fire points are gone (user, 2026-10-31).
 - [ ] With CE: 20x102mm shells (AP by default), 300 rounds, range 70.2, 20-round bursts every second or so, 2.3 s warm-up; the
       shots land on the target, including close targets.
 - [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can

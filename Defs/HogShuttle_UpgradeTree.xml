@@ -398,8 +398,8 @@
 			<!-- Twin-linked autocannon on the roof (Defs/TurretDefs/HogShuttle_TwinAutocannon.xml), fixed forward like the
 			     Hind Gunship's nose cannon: the pilot aims it by turning the shuttle. No role lists the turret, so pawns
 			     incapable of violence can still fly; PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it.
-			     No fire points, like the Hind's nose cannon: shots leave from one point between the muzzles (projectileOffset
-			     on the turret def). Can be fitted with a door gun. The gun and its ammunition cost 50 kg of cargo. -->
+			     No fire points, like the Hind's nose cannon: under CE they made the shells fly in a curve. Shots leave from one
+			     point between the muzzles (projectileOffset on the turret def). Can be fitted with a door gun. The gun and its ammunition cost 50 kg of cargo. -->
 			<li>
 				<key>HogShuttle_TwinAutocannon</key>
 				<label>Twin-linked autocannon</label>

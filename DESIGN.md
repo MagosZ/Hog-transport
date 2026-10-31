@@ -216,8 +216,9 @@ speed per tick, like building.
 
   - Twin-linked means two barrels bound together in one gun, drawn after VFE Security's double autocannon (one breech
     block, an ammo drum on each side, barrels almost touching). No fire points: shots leave from one point between the muzzles
-    (`projectileOffset`), as on the Hind's nose cannon. Fire points were taken out to test whether they make shells
-    curve under CE (TESTING.md).
+    (`projectileOffset`), as on the Hind's nose cannon. With two fire points, shells visibly flew in a curve under CE;
+    removing them fixed it (user, 2026-10-31). Why isn't known: VTOL Vehicle's CE path for fire points is closed source.
+    Width was ruled out first (a 3-wide Hog still curved). So don't use fire points on this gun.
   - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
     a separate turret image because it only shows once fitted.
