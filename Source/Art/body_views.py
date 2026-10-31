@@ -287,7 +287,7 @@ def top():
 GUN_CELLS = 4             # the turret texture: square, drawSize (4,4), same pixels per cell as the body
 GUN_PIVOT_Y = 1.66        # the mount's centre on the body texture: on the roof behind the cockpit, on the centre line
 GUN_BARREL_X = 0.085      # barrel centres either side of the centre line: touching, as twin-linked guns are
-GUN_REACH = 1.98          # muzzle ahead of the pivot; the muzzles clear the nose by 0.32 of a cell
+GUN_REACH = 1.48          # muzzle ahead of the pivot; the muzzles stop just short of the nose, over the windscreen
 
 
 def twin_autocannon():
@@ -305,7 +305,7 @@ def twin_autocannon():
         v.cylinder(x0, c - 0.16, x0 + 0.22, c + 0.24, 112)
         for y in (c - 0.09, c + 0.11):
             v.cylinder(x0, y, x0 + 0.22, y + 0.05, (178, 176, 120), outline=False)
-    # Two barrels, touching: a short, thick ribbed cooling jacket, then a long bare tip section, then the muzzle brake.
+    # Two barrels, touching: a short, thick ribbed cooling jacket, then a bare tip section, then the muzzle brake.
     tip = c - GUN_REACH
     for sign in (-1, 1):
         x = c + sign * GUN_BARREL_X

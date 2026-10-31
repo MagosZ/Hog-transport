@@ -218,8 +218,8 @@ speed per tick, like building.
     block, an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`:
     half the rounds from each barrel.
   - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
-    airframe (`drawLayer` 1). The barrels run over the cockpit roof and clear the nose by about a third of a cell (art and fire points only, no hitbox). It's
-    a separate turret image because it only shows once fitted, and because the muzzles reach past the body texture.
+    airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
+    a separate turret image because it only shows once fitted.
   - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
     so the seat stays Movement only and no role lists the turret. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
     a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a crewed pilot's seat and a
@@ -306,7 +306,7 @@ cast down-right onto lower surfaces.
 - Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
 - **Twin-linked autocannon** (`TwinAutocannon.png`, 4 cells square, `twin_autocannon()` in `body_views.py`): own drawing
   after VFE Security's double autocannon. A mounting ring on the roof, the breech block, an ammo drum on each side, and
-  two barrels lying lengthwise: a short ribbed jacket with straps binding them together, then a long bare tip section and a muzzle brake. Unpainted.
+  two barrels lying lengthwise: a short ribbed jacket with straps binding them together, then a bare tip section half a cell longer than the first drawing's, and a muzzle brake. Unpainted.
 
 `python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
 Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.

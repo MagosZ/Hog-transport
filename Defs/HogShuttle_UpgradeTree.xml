@@ -430,7 +430,7 @@
 									<north>(0, 1.84)</north>
 								</renderProperties>
 								<gizmoLabel>Twin-linked autocannon</gizmoLabel>
-								<aimPieOffset>(0, 3.82)</aimPieOffset>
+								<aimPieOffset>(0, 3.32)</aimPieOffset>
 								<angleRestricted>(-6, 6)</angleRestricted>
 								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
 								<returnToDefaultAfterTicks>120</returnToDefaultAfterTicks>
@@ -440,11 +440,11 @@
 								<firePoints>
 									<li>
 										<key>barrelPort</key>
-										<offset>(-0.085, 0, 3.82)</offset>
+										<offset>(-0.085, 0, 3.32)</offset>
 									</li>
 									<li>
 										<key>barrelStarboard</key>
-										<offset>(0.085, 0, 3.82)</offset>
+										<offset>(0.085, 0, 3.32)</offset>
 									</li>
 								</firePoints>
 							</li>
