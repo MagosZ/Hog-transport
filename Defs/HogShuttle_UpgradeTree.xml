@@ -402,14 +402,14 @@
 			<li>
 				<key>HogShuttle_Autocannon</key>
 				<label>Autocannon</label>
-				<description>An autocannon in a roof turret, at the cost of 50 kg of cargo space. Traverses 30 degrees either side of the nose. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
+				<description>An autocannon in a roof turret, at the cost of 30 kg of cargo space. Traverses 30 degrees either side of the nose. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
 				<icon>HogShuttle/Upgrade_Autocannon</icon>
 				<gridCoordinate>(22, 10)</gridCoordinate>
 				<work>6000</work>
 				<ingredients>
-					<Steel>200</Steel>
-					<Plasteel>30</Plasteel>
-					<ComponentIndustrial>6</ComponentIndustrial>
+					<Steel>100</Steel>
+					<Plasteel>15</Plasteel>
+					<ComponentIndustrial>3</ComponentIndustrial>
 				</ingredients>
 				<disableIfUpgradeNodesEnabled>
 					<li>HogShuttle_FrontMinigun</li>
@@ -419,7 +419,7 @@
 						<vehicleStats>
 							<li>
 								<def>CargoCapacity</def>
-								<value>-50</value>
+								<value>-30</value>
 								<type>Add</type>
 							</li>
 						</vehicleStats>

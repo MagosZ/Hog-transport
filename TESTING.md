@@ -88,24 +88,23 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Fitted: a "door gunner" seat appears (1 slot). A gunner can fire; nobody else can. A pawn incapable of
       violence can't take the seat.
 - [ ] The gun sits at the tail and points straight back when idle; it only swings 60 degrees to each side.
-- [ ] In flight the gun turns with the aircraft's heading (VTOL turret class). Check that a newly fitted gun
-      starts pointing back, not north (the Hind needed a fix for new turrets).
+- [ ] In flight the gun turns with the aircraft's heading (VTOL turret class). A newly fitted gun points straight back
+      at once, at any heading, with nobody aboard. On loading a save, a gun keeps the rotation it was saved with.
 - [ ] Reloads from steel; without CE the box is 75 (minigun 200). With CE: 7.62x51 NATO / .50 BMG ammo.
 - [ ] The guns show VVE - Secondary Weapons' art, sounds and turret icon (it's a dependency now).
 - [ ] Removing the upgrade removes the gun and the gunner seat (the gunner gets out).
 
 ## Autocannon
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`, and no error about `HogShuttle.PilotGunExtension`.
-- [ ] The Upgrades tab has "Autocannon": 200 steel, 30 plasteel, 6 components, 6000 work. It can be fitted together with
+- [ ] The Upgrades tab has "Autocannon": 100 steel, 15 plasteel, 3 components, 6000 work. It can be fitted together with
       a door gun, not with the front minigun.
-- [ ] Cargo capacity drops by 50 kg when fitted (950; with plasteel armour 750; with the cargo outfit 1950; with
-      both 1750) and comes back when removed.
+- [ ] Cargo capacity drops by 30 kg when fitted (970; with plasteel armour 770; with the cargo outfit 1970; with
+      both 1770) and comes back when removed.
 - [ ] Fitted: the turret draws on the roof behind the cockpit, on the centre line, at any heading, parked and in flight.
       Without the upgrade, no gun shows.
 - [ ] It swings 30 degrees either side of the nose on its own: the head and barrel turn, the mounting ring looks fixed, and
       the nose doesn't turn for it, by hand or on auto-target. After firing it swings back to face forward.
-- [ ] A newly fitted gun on a Hog parked facing east or west: it may point north until the pilot boards (the Hind
-      needed extra code for this; the Hog has none).
+- [ ] A newly fitted gun on a Hog parked facing east or west: it points forward straight away, with nobody aboard.
 - [ ] Without CE: 3-round bursts every 3.5 s or so, range 8.9 to 29.6, 27 damage, 135 rounds at 2 steel each. Shots and the
       muzzle flash leave from the muzzle, also at full traverse.
 - [ ] With CE: 20x102mm shells (AP by default), 150 rounds, range 70.2, 10-round bursts every second or so, 2.3 s warm-up;

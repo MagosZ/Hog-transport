@@ -187,8 +187,7 @@ speed per tick, like building.
   all come from VVE - Secondary Weapons, so they follow its updates. The Hog has an empty `CompProperties_VehicleTurrets` for
   the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
   Framework's turret code reads it without a null check.
-- `HogShuttle_Autocannon`: "Autocannon". 200 steel, 30 plasteel, 6 components, work 6000 (a step up from the Hind's heavy
-  chin turret, 150 / 30 / 4 / 5000), and `StatUpgrade` CargoCapacity -50. **Conflicts with the front minigun**; can be fitted
+- `HogShuttle_Autocannon`: "Autocannon". 100 steel, 15 plasteel, 3 components, work 6000, and `StatUpgrade` CargoCapacity -30. **Conflicts with the front minigun**; can be fitted
   with a door gun. Turret def in `Defs/TurretDefs/HogShuttle_Autocannon.xml`, CE in
   `Mods/CombatExtended/Patches/HogShuttle_Autocannon.xml`.
 
@@ -214,7 +213,6 @@ speed per tick, like building.
     roof. It swings on its own at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is off.
   - No fire points, since those made shells curve under CE. Shots leave from the muzzle (`projectileOffset` 1.48).
   - CE recoil is 0, like the Hind's.
-  - A newly fitted gun may point north until the pilot boards (the Hind has its own code for this; the Hog doesn't).
 - `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. **Conflicts
   with the autocannon**; can be fitted with a door gun. One turret, on the starboard side only.
 
@@ -236,6 +234,10 @@ speed per tick, like building.
   - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat hover is
     on with `combatDirectionalHoverTurretKey` = `frontGun`, the minigun's key. That turret only exists once this upgrade
     is fitted; the autocannon has its own key (`autocannon`) so it doesn't steer the nose.
+- **Fitted guns face their default direction.** Vehicle Framework treats a new turret's default angle as a world angle (0 =
+  north), and VTOL Vehicle only swings an idle gun back once it's crewed. `FittedGunsAlignExtension` on the Hog
+  (`Source/FittedGuns.cs`): a postfix on `CompVehicleTurrets.AddTurret` sets a gun added by an upgrade to the aircraft's
+  heading plus its `defaultAngleRotated`: forward for the front guns, backward for the door guns (180).
 - **Pilot fires the front gun.** Vehicle Framework bars pawns incapable of violence from any seat with Turret handling, so
   the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`,
   `turrets` = `autocannon`, `frontGun`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
