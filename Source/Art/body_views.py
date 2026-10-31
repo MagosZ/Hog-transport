@@ -165,11 +165,6 @@ def top():
         star = [(ex + (0.16 if k % 2 == 0 else 0.07) * math.cos(k * math.pi / 8),
                  ey + (0.16 if k % 2 == 0 else 0.07) * math.sin(k * math.pi / 8)) for k in range(16)]
         v.d.polygon(v.pts(star), outline=(235, 235, 235, 255), width=v.w(0.016))
-        # Soot behind the exhaust (the nacelle sits over the wing's inner half).
-        nx = A + 0.5 if side < 0 else D + 0.5
-        for k in range(6):
-            v.shadow([(nx - 0.32 + k * 0.03, 4.9), (nx + 0.32 - k * 0.03, 4.9), (nx + 0.22, 5.9), (nx - 0.22, 5.9)],
-                     0, 0, 0.07 - k * 0.01)
         # Caged landing light near the wing root's front (row 2): a dome, so it shows from above.
         lx, ly = root + side * 0.42, 1.62                                  # outboard of the hull, on the wing
         v.dot(lx, ly, 0.11, 70, NONE)
@@ -198,11 +193,6 @@ def top():
     for y in (1.6, 2.6, 3.6, 4.6, 5.6, 6.6):
         v.rivet(B - 0.02, y)
         v.rivet(D + 0.02, y)
-    # Copper pipes along both roof edges, rows 3-5 (the pipework on the kit), cylinders lying lengthwise.
-    for x0 in (B - 0.08, D - 0.02):
-        v.cylinder(x0, 2.15, x0 + 0.1, 4.85, COPPER, NONE)
-        for y in (2.6, 3.4, 4.2):                                           # pipe clamps
-            v.rect(x0 - 0.02, y, x0 + 0.12, y + 0.05, 90, NONE, outline=False)
 
     # 3. Cockpit, B1-C1: a riveted armoured box, lower than the hull behind it. Roof with chamfers, the sloped
     #    windscreen foreshortened at the front (three panes), a roof hatch, small lamp domes at the rear corners.
@@ -239,7 +229,7 @@ def top():
     v.groove([(B + 0.35, 1.95), (B + 0.35, 1.62), (D - 0.35, 1.62)], 204)   # cabin hatch
     v.line([(D - 0.35, 1.62), (D - 0.35, 1.95), (B + 0.35, 1.95)], 232, 0.012)
     v.rect(C - 0.12, 1.74, C + 0.12, 1.83, 140, HULL, outline=False)       # hatch handle
-    for x0, x1 in ((B + 0.22, C - 0.06), (C + 0.06, D - 0.22)):           # tank bay: two filler plates
+    for x0, x1 in ((B + 0.48, C - 0.06), (C + 0.06, D - 0.48)):           # tank bay: two filler plates
         v.groove([(x0, 3.85), (x0, 2.15), (x1, 2.15)], 204)
         v.line([(x1, 2.15), (x1, 3.85), (x0, 3.85)], 232, 0.012)
         for y in (2.25, 3.75):
@@ -248,9 +238,9 @@ def top():
         cx = (x0 + x1) / 2
         v.dot(cx, 3.0, 0.1, 150, HULL)
         v.groove([(cx - 0.07, 3.0), (cx + 0.07, 3.0)], 150)
-    v.rect(B + 0.3, 4.15, D - 0.3, 4.85, GRILLE, NONE)
+    v.rect(B + 0.48, 4.15, D - 0.48, 4.85, GRILLE, NONE)
     for y in (4.25, 4.4, 4.55, 4.7):
-        v.line([(B + 0.34, y), (D - 0.34, y)], 120, 0.02)
+        v.line([(B + 0.52, y), (D - 0.52, y)], 120, 0.02)
     hx = B + 0.45
     v.rect(hx - 0.22, 5.1, hx + 0.22, 5.46, 150, HULL)
     v.groove([(hx - 0.22, 5.46), (hx - 0.22, 5.1), (hx + 0.22, 5.1)], 150)
@@ -264,11 +254,16 @@ def top():
     v.poly(fin, 200, ARMOUR)
     v.line([(C - 0.05, 5.1), (C - 0.05, 6.9)], 236, 0.012)
 
-    # 5. Turbofans, A3-A5 / D3-D5: cylinders lying lengthwise on the hull's shoulders. Shadow first (onto the
-    #    wing and the hull side), then the nacelle: intake lip at the front, mounting straps, a fuel line along
-    #    the top, the rib bands of the machinery housing, the exhaust rim at the back.
-    for x0 in (A + 0.1, D + 0.1):
+    # 5. Turbofans, rows 3-5: cylinders lying lengthwise on the hull's shoulders, half a cell in from their component
+    #    cells (A3-A5 / D3-D5), so each sits half on the wing and half on the roof. Soot behind the exhaust, then the
+    #    shadow (onto the wing and the roof), then the nacelle: intake lip at the front, mounting straps, a fuel line
+    #    along the top, the rib bands of the machinery housing, the exhaust rim at the back.
+    for x0 in (A + 0.6, D - 0.4):
         x1 = x0 + 0.8
+        nx = (x0 + x1) / 2
+        for k in range(6):
+            v.shadow([(nx - 0.32 + k * 0.03, 4.9), (nx + 0.32 - k * 0.03, 4.9), (nx + 0.22, 5.9), (nx - 0.22, 5.9)],
+                     0, 0, 0.07 - k * 0.01)
         v.shadow([(x0, 2.1), (x1, 2.1), (x1, 4.9), (x0, 4.9)], 0.18, 0.18, 0.45)
         v.cylinder(x0, 2.2, x1, 4.78, 186, HULL)
         v.cylinder(x0 - 0.02, 2.08, x1 + 0.02, 2.24, BRASS, NONE)            # intake lip, the widest part
