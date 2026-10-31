@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-	<!-- Loaded only with Odyssey (LoadFolders.xml): 2 shuttle engines instead of the 6 extra advanced
-	     components the base cost has. -->
+	<!-- Loaded only with Odyssey (LoadFolders.xml): 2 shuttle engines instead of 25 of the advanced components the base
+	     cost has. Both costs come to the same market value, 11915, a little over VVE's Cherokee (11744). -->
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleBuildDef[defName="HogShuttle_Blueprint"]/costList/ComponentSpacer</xpath>
 		<value>

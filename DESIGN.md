@@ -266,10 +266,12 @@ a one-cell-wide target).
 
 ## 3. Building and research
 
-- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components and, with Odyssey, 3 advanced components
-  + 2 shuttle engines; without Odyssey, 9 advanced components. Work 48000, construction 10. About 1.7×
-  Odyssey's passenger shuttle. The base def has the no-Odyssey cost; `Mods/Odyssey/Patches/HogShuttle_Cost.xml`
-  (loaded only with Odyssey via LoadFolders.xml) replaces the 9 advanced components with 3 + 2 shuttle engines.
+- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components, and VVE parts: 2 engine blocks, 4 alternators, 4 exhausts, 3
+  suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks. With Odyssey, 3 advanced components + 2 shuttle engines;
+  without Odyssey, 28 advanced components. Work 48000 (58000 more to craft the parts), construction 10.
+  Both come to a market value of 11915, a little over VVE's Cherokee (11744), its most expensive helicopter. The base def
+  has the no-Odyssey cost; `Mods/Odyssey/Patches/HogShuttle_Cost.xml` (loaded only with Odyssey via LoadFolders.xml) replaces
+  the 28 advanced components with 3 + 2 shuttle engines.
 - `HogShuttle_Research` in VVE's `Vehicles` tab at (3, 0): Spacer, 3000, hi-tech research bench and
   multi-analyzer. Prerequisites `VVE_AerialVehicles` and, only with Odyssey, `Shuttles`.
 

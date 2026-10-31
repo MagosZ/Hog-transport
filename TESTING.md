@@ -14,8 +14,10 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Building
 - [ ] Blueprint appears in the Vehicles architect tab after the research.
-- [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
-- [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
+- [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines, and the VVE parts:
+      2 engine blocks, 4 alternators, 4 exhausts, 3 suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks.
+- [ ] Cost without Odyssey: the same but 28 advanced components and no shuttle engine.
+- [ ] All the VVE parts can be crafted by the time the Hog's research is done.
 - [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it (Draw hitbox).
 - [ ] Parked with the engines off: the art stops exactly at the 4-cell footprint, with no wing tips. The blueprint too.
 - [ ] Engines on: the wing tips fade in over about 4 seconds and reach one cell past the footprint on each side, lined
