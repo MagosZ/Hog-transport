@@ -284,10 +284,10 @@ def top():
     return v.done()
 
 
-GUN_CELLS = 2             # the turret texture: square, drawSize (2,2), same pixels per cell as the body
-GUN_PIVOT_Y = 0.66        # the mount's centre on the body texture: on the cockpit roof, on the centre line
+GUN_CELLS = 4             # the turret texture: square, drawSize (4,4), same pixels per cell as the body
+GUN_PIVOT_Y = 1.66        # the mount's centre on the body texture: on the roof behind the cockpit, on the centre line
 GUN_BARREL_X = 0.085      # barrel centres either side of the centre line: touching, as twin-linked guns are
-GUN_REACH = 0.98          # muzzle ahead of the pivot; the muzzles clear the nose by 0.32 of a cell
+GUN_REACH = 1.98          # muzzle ahead of the pivot; the muzzles clear the nose by 0.32 of a cell
 
 
 def twin_autocannon():
@@ -309,15 +309,15 @@ def twin_autocannon():
     tip = c - GUN_REACH
     for sign in (-1, 1):
         x = c + sign * GUN_BARREL_X
-        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 0.3, 104)
-        v.cylinder(x - 0.075, c - 0.74, x + 0.075, c - 0.16, 88)
-        for k in range(4):
-            y = c - 0.7 + k * 0.125
+        v.cylinder(x - 0.05, tip + 0.1, x + 0.05, c - 1.2, 104)
+        v.cylinder(x - 0.075, c - 1.42, x + 0.075, c - 0.16, 88)
+        for k in range(9):
+            y = c - 1.36 + k * 0.125
             v.cylinder(x - 0.075, y, x + 0.075, y + 0.045, 132, outline=False)
         v.cylinder(x - 0.07, tip, x + 0.07, tip + 0.11, 76)
         v.dot(x, tip + 0.005, 0.03, 30, None)
     # Straps binding the barrels into one gun.
-    for y in (c - 0.76, c - 0.32):
+    for y in (c - 1.44, c - 0.9, c - 0.32):
         v.rect(c - GUN_BARREL_X - 0.085, y, c + GUN_BARREL_X + 0.085, y + 0.05, 62)
         v.line([(c - GUN_BARREL_X - 0.08, y + 0.008), (c + GUN_BARREL_X + 0.08, y + 0.008)], 140, 0.01)
     # Breech block: flat top, lit west chamfer, shaded east chamfer, lit front, a feed cover and rivets.
@@ -336,8 +336,13 @@ def twin_autocannon():
 
 
 def gun_icon(gun):
-    """The gun's Upgrades-tab and gizmo icon: the turret image on a 128 px square."""
-    return gun.crop(gun.getbbox()).resize((110, 110), Image.LANCZOS)
+    """The gun's Upgrades-tab and gizmo icon: the turret image centred on a 128 px square."""
+    shape = gun.crop(gun.getbbox())
+    scale = 118 / max(shape.size)
+    shape = shape.resize((round(shape.width * scale), round(shape.height * scale)), Image.LANCZOS)
+    icon = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    icon.alpha_composite(shape, ((128 - shape.width) // 2, (128 - shape.height) // 2))
+    return icon
 
 
 def with_gun(img, gun):

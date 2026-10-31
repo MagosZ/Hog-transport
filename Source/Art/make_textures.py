@@ -2,7 +2,7 @@
 
 Run from anywhere: python make_textures.py [check-image path]
 Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view, from body_views.py), Shadow, BuildIcon,
-Transparent, the upgrade icons, and the roof-mounted TwinAutocannon with its shell and icon.
+Transparent, the upgrade icons, and the roof-mounted TwinAutocannon with its icon.
 """
 import sys
 from pathlib import Path
@@ -75,15 +75,6 @@ def cargo_icon():
     return img
 
 
-def shell_tracer():
-    """The 30 mm shell in flight: a hot tracer streak, pointing north. Glows, so no outline."""
-    img = Image.new("RGBA", (32, 64), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    d.ellipse([9, 2, 23, 62], fill=(255, 150, 50, 150))
-    d.ellipse([12, 6, 20, 52], fill=(255, 225, 150, 255))
-    return img
-
-
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     img, mask = body_views.top()
@@ -100,10 +91,7 @@ def main():
     cargo_icon().save(OUT / "Upgrade_CargoOutfit.png")
     gun = body_views.twin_autocannon()
     gun.save(OUT / "TwinAutocannon.png")
-    icon = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
-    icon.alpha_composite(body_views.gun_icon(gun), (9, 9))
-    icon.save(OUT / "Upgrade_TwinAutocannon.png")
-    shell_tracer().save(OUT / "Shell_30mm.png")
+    body_views.gun_icon(gun).save(OUT / "Upgrade_TwinAutocannon.png")
     if len(sys.argv) > 2:                       # optional check image of the gun on the body
         body_views.with_gun(img, gun).save(sys.argv[2])
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))

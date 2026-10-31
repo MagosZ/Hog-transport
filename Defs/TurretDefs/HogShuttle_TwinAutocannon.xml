@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<!-- The roof gun, fitted by the HogShuttle_TwinAutocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). Numbers start
-	     from the Hind Gunship's 30 mm nose cannon; range (45 there) and rounds per burst (8 there) are the Hog's own. -->
+	<!-- The roof gun, fitted by the HogShuttle_TwinAutocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). The numbers are
+	     VFE Empire's armored shuttle gun (VFEI_TurretArmoredShuttle, "a powerful, twin-linked autocannon"), which isn't a
+	     dependency: burst 6, 11 ticks apart, cooldown 5.6 s (336 ticks), no warm-up, range 8.9 to 32.9, vanilla's
+	     autocannon shell. Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. Magazine and
+	     reload are vehicle-turret values with no counterpart on that gun; they stay as the Hind's nose cannon. -->
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_TwinAutocannon</defName>
 		<label>twin-linked autocannon</label>
-		<description>Two 30 mm autocannons bound side by side in a roof mount above the cockpit and fed from a 200-round magazine. Fires bursts of high-explosive shells, the barrels taking turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
+		<description>Two autocannons bound side by side in a roof mount and fed from a 200-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<gizmoIconTexPath>HogShuttle/Upgrade_TwinAutocannon</gizmoIconTexPath>
 
@@ -20,61 +23,40 @@
 		<reloadTimer>10</reloadTimer>
 		<autoRefuelProportion>1</autoRefuelProportion>
 
-		<projectile>HogShuttle_Bullet_30mm</projectile>
+		<projectile>Bullet_AutocannonTurret</projectile>
 		<shotSound>Shot_Autocannon</shotSound>
-		<warmUpTimer>0.8</warmUpTimer>
+		<warmUpTimer>0</warmUpTimer>
 		<autoSnapTargeting>true</autoSnapTargeting>
 		<rotationSpeed>6</rotationSpeed>
 		<!-- Shots leave from the muzzles: see the fire points on the turret in the upgrade tree. -->
 		<projectileOffset>0</projectileOffset>
-		<minRange>4.9</minRange>
-		<maxRange>65</maxRange>
+		<minRange>8.9</minRange>
+		<maxRange>32.9</maxRange>
 
 		<motes>
 			<li>
 				<moteDef>Mote_CannonFlash</moteDef>
-				<offset>(0, 0, 0.98)</offset>
+				<offset>(0, 0, 1.98)</offset>
 				<scale>0.45</scale>
 			</li>
 		</motes>
 
 		<fireModes>
 			<li>
-				<shotsPerBurst>10</shotsPerBurst>
-				<ticksBetweenShots>5</ticksBetweenShots>
-				<ticksBetweenBursts>120</ticksBetweenBursts>
+				<shotsPerBurst>6</shotsPerBurst>
+				<ticksBetweenShots>11</ticksBetweenShots>
+				<ticksBetweenBursts>336</ticksBetweenBursts>
 				<spreadRadius>1</spreadRadius>
 				<label>Burst</label>
 				<texPath>UI/Gizmos/FireRate_Burst</texPath>
 			</li>
 		</fireModes>
 
-		<!-- Square, 2 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
+		<!-- Square, 4 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
 		<graphicData>
 			<texPath>HogShuttle/TwinAutocannon</texPath>
 			<graphicClass>Vehicles.Graphic_Turret</graphicClass>
-			<drawSize>(2, 2)</drawSize>
+			<drawSize>(4, 4)</drawSize>
 		</graphicData>
 	</Vehicles.VehicleTurretDef>
-
-	<ThingDef ParentName="BaseBullet">
-		<defName>HogShuttle_Bullet_30mm</defName>
-		<label>30 mm shell</label>
-		<thingClass>Projectile_Explosive</thingClass>
-		<graphicData>
-			<texPath>HogShuttle/Shell_30mm</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-			<shaderType>MoteGlow</shaderType>
-			<drawSize>(0.38, 0.8)</drawSize>
-		</graphicData>
-		<projectile>
-			<damageDef>Bomb</damageDef>
-			<damageAmountBase>24</damageAmountBase>
-			<armorPenetrationBase>0.45</armorPenetrationBase>
-			<explosionRadius>1.5</explosionRadius>
-			<explosionDamageFalloff>true</explosionDamageFalloff>
-			<explosionChanceToStartFire>0</explosionChanceToStartFire>
-			<speed>150</speed>
-		</projectile>
-	</ThingDef>
 </Defs>

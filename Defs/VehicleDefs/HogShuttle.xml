@@ -520,6 +520,12 @@
 				<minLevel>6</minLevel>
 				<waivedByUpgradeNode>HogShuttle_FlightComputer</waivedByUpgradeNode>
 			</li>
+			<!-- The roof autocannon (HogShuttle.dll): the pilot fires it, if capable of violence. Those who aren't can still
+			     fly; the player gets a message when one takes the seat. -->
+			<li Class="HogShuttle.PilotGunExtension">
+				<role>Pilot</role>
+				<turret>twinAutocannon</turret>
+			</li>
 			<li Class="HogShuttle.OrbitTransitExtension">
 				<transitFuel>50</transitFuel>
 				<spaceDistanceFactor>10</spaceDistanceFactor>

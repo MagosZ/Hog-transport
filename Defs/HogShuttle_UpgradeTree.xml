@@ -395,15 +395,15 @@
 				</upgrades>
 			</li>
 
-			<!-- Twin-linked autocannon on the cockpit roof (Defs/TurretDefs/HogShuttle_TwinAutocannon.xml), fixed
-			     forward like the Hind Gunship's nose cannon: the pilot aims it by turning the shuttle. Fitting it adds
-			     Turret handling to the pilot's seat, so a pawn incapable of violence can no longer sit there. The role
-			     comes first so the turret is manned as soon as it is added. The barrels take turns (fire points:
-			     x starboard, z forward, from the body's centre). Can be fitted with a door gun. -->
+			<!-- Twin-linked autocannon on the roof (Defs/TurretDefs/HogShuttle_TwinAutocannon.xml), fixed forward like the
+			     Hind Gunship's nose cannon: the pilot aims it by turning the shuttle. No role lists the turret, so pawns
+			     incapable of violence can still fly; PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it.
+			     The barrels take turns (fire points: x starboard, z forward, from the body's centre). Can be fitted with
+			     a door gun. The gun and its ammunition cost 50 kg of cargo. -->
 			<li>
 				<key>HogShuttle_TwinAutocannon</key>
 				<label>Twin-linked autocannon</label>
-				<description>Two 30 mm autocannons bound side by side in a roof mount above the cockpit. Fixed forward: the pilot fires it and aims by turning the shuttle, so a pawn incapable of violence can't pilot with it fitted.</description>
+				<description>Two autocannons bound side by side in a roof mount, at the cost of 50 kg of cargo space. Fixed forward: the pilot fires it and aims by turning the shuttle. A pilot incapable of violence can fly, but can't fire it.</description>
 				<icon>HogShuttle/Upgrade_TwinAutocannon</icon>
 				<gridCoordinate>(22, 10)</gridCoordinate>
 				<work>6000</work>
@@ -413,24 +413,21 @@
 					<ComponentIndustrial>6</ComponentIndustrial>
 				</ingredients>
 				<upgrades>
-					<li Class="Vehicles.VehicleUpgrade">
-						<roles>
+					<li Class="Vehicles.StatUpgrade">
+						<vehicleStats>
 							<li>
-								<key>Pilot</key>
-								<editKey>Pilot</editKey>
-								<handlingTypes>Movement, Turret</handlingTypes>
-								<turretIds>
-									<li>twinAutocannon</li>
-								</turretIds>
+								<def>CargoCapacity</def>
+								<value>-50</value>
+								<type>Add</type>
 							</li>
-						</roles>
+						</vehicleStats>
 					</li>
 					<li Class="Vehicles.TurretUpgrade">
 						<turrets>
 							<li Class="VTOLVehicle.VtolVehicleTurret">
 								<turretDef>HogShuttle_TwinAutocannon</turretDef>
 								<renderProperties>
-									<north>(0, 2.84)</north>
+									<north>(0, 1.84)</north>
 								</renderProperties>
 								<gizmoLabel>Twin-linked autocannon</gizmoLabel>
 								<aimPieOffset>(0, 3.82)</aimPieOffset>

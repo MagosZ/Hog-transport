@@ -19,7 +19,7 @@ the cabin.
 - Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
   east or west it takes 7×4.
 - Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
-  skill), co-pilot ×1 (no handling, optional), passenger ×8.
+  skill; also fires the roof autocannon if fitted), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
 - Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
@@ -188,34 +188,50 @@ speed per tick, like building.
   the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
   Framework's turret code reads it without a null check.
 - `HogShuttle_TwinAutocannon`: "Twin-linked autocannon". 200 steel, 30 plasteel, 6 components, work 6000 (a step up
-  from the Hind's heavy chin turret, 150 / 30 / 4 / 5000; the Hind's nose cannon is built in, so it has no price).
-  Can be fitted with a door gun. Turret def and shell in `Defs/TurretDefs/HogShuttle_TwinAutocannon.xml`.
+  from the Hind's heavy chin turret, 150 / 30 / 4 / 5000), and `StatUpgrade` CargoCapacity -50. Can be fitted with a
+  door gun. Turret def in `Defs/TurretDefs/HogShuttle_TwinAutocannon.xml`.
 
-  | Stat | Hog | Hind's 30 mm nose cannon |
+  The weapon is VFE Empire's armored shuttle gun (`VFEI_TurretArmoredShuttle`, *"A powerful, twin-linked
+  autocannon"*), numbers only; VFE Empire isn't a dependency. With CE, its numbers as CE patches them.
+
+  | Stat | Without CE | With CE |
   |---|---|---|
-  | Burst | **10** rounds, 5 ticks apart, then 120 ticks | 8, 5, 120 |
-  | Range | 4.9 to **65** | 4.9 to 45 |
-  | Shell | 24 Bomb damage, 0.45 AP, 1.5 blast, speed 150 | Same |
-  | Spread, warm-up, reload | 1, 0.8 s, 10 s | Same |
-  | Magazine | 200, steel, 0.5 per round | Same |
+  | Burst | 6 rounds, 11 ticks apart | 6, 10 ticks apart |
+  | Between bursts | 336 ticks (5.6 s) | 60 ticks (1 s) |
+  | Warm-up | None | 2.3 s |
+  | Range | 8.9 to 32.9 | 8.9 to 55 |
+  | Shell | `Bullet_AutocannonTurret`: 27 Bullet damage, speed 88 | `AmmoSet_Autocannon`, AP by default: 44 damage, 30 sharp AP, speed 182 |
+  | Spread | 1 | Sway 1.72, spread 0.05 |
+  | Magazine | 200, steel, 0.5 per round, 10 s reload | Autocannon shells |
   | Arc | Fixed forward, 6° either side | Same |
-  | CE | `Bullet_30x165mm_HE`, `AmmoSet_30x165mm`, speed 165, sway 0.7, spread 0.04 | Same |
 
-  - Twin-linked means two barrels bound together in one gun, after VFE Security's double autocannon (one breech block,
-    an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`: 5 rounds
-    from each barrel per burst. It's one gun's damage, not two.
-  - Mounted on the **cockpit roof** (B1–C1, centre line, pivot north offset (0, 2.84)), drawn on top of the airframe
-    (`drawLayer` 1). The muzzles clear the nose by about a third of a cell. It's a separate turret image because it only
-    shows once fitted, and because the muzzles reach past the body texture.
-  - The **pilot** controls it (user): a role edit gives the pilot's seat `Movement, Turret` and the turret id, so no
-    extra crew, but a pawn incapable of violence can't take that seat while it's fitted.
+  Choices where the two systems don't line up:
+  - Vehicle Framework has no accuracy stats (the Empire gun has 0.24 / 0.52 / 0.57 / 0.43), so spread 1 stands in.
+  - Magazine and reload have no counterpart on that gun, whose shots aren't limited by ammo; they stay as the Hind's.
+  - CE's patch gives the Empire gun a shell that isn't a CE projectile (15 damage, 25 AP, speed 158) and exists only
+    with VFE Empire. So the Hog uses CE's autocannon ammo, as CE's vanilla and VFE Security autocannons do, with
+    sway and spread from VFE Security's double autocannon under CE.
+
+  - Twin-linked means two barrels bound together in one gun, drawn after VFE Security's double autocannon (one breech
+    block, an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`:
+    3 rounds from each barrel per burst. It's one gun's damage, not two.
+  - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
+    airframe (`drawLayer` 1). The barrels run over the cockpit roof and clear the nose by about a third of a cell. It's
+    a separate turret image because it only shows once fitted, and because the muzzles reach past the body texture.
+  - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
+    so the seat stays Movement only and no role lists the turret. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
+    a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a crewed pilot's seat and a
+    pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with a reason.
+  - Pacifist pilots can fly but can't fire. A caution message appears when one takes the seat (keyed
+    `HogShuttle_PacifistPilot`), found by comparing pilots in that same recheck, which runs on boarding, leaving and
+    seat changes. The first check of a turret only records the pilot, so loading a save says nothing.
   - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat
     hover is on with `combatDirectionalHoverTurretKey` = `twinAutocannon`. The key names a turret that only exists
     once the upgrade is fitted; how VTOL handles that without it needs checking in game (TESTING.md).
   - The Hind's own code isn't here (no license, and not copied): bursts stop when the target dies, the nose may drift
     back to the move-order facing, a door gun's auto-target may swing the nose, and a newly fitted gun may point
     north until the pilot boards.
-  - CE: `Mods/CombatExtended/Patches/HogShuttle_TwinAutocannon.xml`, the Hind's CE values. Range stays 65 under CE.
+  - CE: `Mods/CombatExtended/Patches/HogShuttle_TwinAutocannon.xml`.
 - `HogShuttle_ChemicalToilet`, only with `Dubwise.DubsBadHygiene` (added to the tree by
   `Mods/DubsBadHygiene/Patches/HogShuttle_Upgrades.xml`): "Chemical toilet", *"Keeps the bladder of everyone
   aboard satisfied."* 10 steel + 10 neutroamine, work 95 (a wooden wall: Wall 135 × wood 0.7).
@@ -286,7 +302,7 @@ cast down-right onto lower surfaces.
   root (A2 / D2), and navigation lights at the tips (red port, green starboard).
 - **Skids:** hidden under the hull and wings.
 - Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
-- **Twin-linked autocannon** (`TwinAutocannon.png`, 2 cells square, `twin_autocannon()` in `body_views.py`): own drawing
+- **Twin-linked autocannon** (`TwinAutocannon.png`, 4 cells square, `twin_autocannon()` in `body_views.py`): own drawing
   after VFE Security's double autocannon. A mounting ring on the roof, the breech block, an ammo drum on each side, and
   two ribbed barrels lying lengthwise with straps binding them together. Unpainted.
 

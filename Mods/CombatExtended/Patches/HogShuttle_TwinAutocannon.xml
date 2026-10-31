@@ -1,29 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Loaded only when Combat Extended is active (see LoadFolders.xml). The Hind Gunship's CE values for its 30 mm cannon. -->
+<!-- Loaded only when Combat Extended is active (see LoadFolders.xml). Firing numbers are CE's patch of VFE Empire's armored
+     shuttle gun: range 55, burst 6, 10 ticks apart, warm-up 2.3 s, cooldown 1 s. That gun's shell can't be used: it isn't a
+     CE projectile and it needs VFE Empire. So the ammo is CE's autocannon ammo, as on CE's vanilla and VFE Security
+     autocannons, with sway and spread from VFE Security's double autocannon under CE. Speed: that ammo's base speed. -->
 <Patch>
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/projectile</xpath>
 		<value>
-			<projectile>Bullet_30x165mm_HE</projectile>
+			<projectile>Bullet_20x102mmNATO_AP</projectile>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/maxRange</xpath>
+		<value>
+			<maxRange>55</maxRange>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/warmUpTimer</xpath>
+		<value>
+			<warmUpTimer>2.3</warmUpTimer>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/fireModes/li/ticksBetweenShots</xpath>
+		<value>
+			<ticksBetweenShots>10</ticksBetweenShots>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/fireModes/li/ticksBetweenBursts</xpath>
+		<value>
+			<ticksBetweenBursts>60</ticksBetweenBursts>
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationAddModExtension">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]</xpath>
 		<value>
 			<li Class="Vehicles.CETurretDataDefModExtension">
-				<ammoSet>AmmoSet_30x165mm</ammoSet>
+				<ammoSet>AmmoSet_Autocannon</ammoSet>
 				<shotHeight>1.5</shotHeight>
 				<recoil>0</recoil>
-				<speed>165</speed>
-				<sway>0.7</sway>
-				<spread>0.04</spread>
+				<speed>182</speed>
+				<sway>1.72</sway>
+				<spread>0.05</spread>
 			</li>
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/description</xpath>
 		<value>
-			<description>Two 30 mm autocannons bound side by side in a roof mount above the cockpit and fed from a 200-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with 30x165mm shells (AP, incendiary, HE or sabot).</description>
+			<description>Two autocannons bound side by side in a roof mount and fed from a 200-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with autocannon shells.</description>
 		</value>
 	</Operation>
 </Patch>

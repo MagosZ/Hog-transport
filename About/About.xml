@@ -26,7 +26,7 @@ UPGRADES
 - Plasteel armour: 150 plasteel, 4 components, 6000 work. About 20% more armour on every part, cockpit included, but 200 kg less cargo (800 kg).
 - Cargo outfit: no cost, 500 work. 2 passenger seats instead of 8, and 1000 kg more cargo (2000 kg; 1800 kg with the plasteel armour).
 - Rear door gun, one of three: medium machine gun (150 steel, 5 components), heavy machine gun (205 steel, 6 components) or minigun (135 steel, 11 components); 5000 work. Adds a door gunner seat; fires 60 degrees either side of straight back. The guns are the door guns of VVE - Secondary Weapons (required), with its art, sounds and Combat Extended support.
-- Twin-linked autocannon: 200 steel, 30 plasteel, 6 components, 6000 work. Two 30 mm barrels bound together on the cockpit roof, range 65, 10-round bursts. Fixed forward; the pilot fires it and aims by turning the shuttle, so a pawn incapable of violence can't pilot with it fitted. Fires 30x165mm rounds with Combat Extended.
+- Twin-linked autocannon: 200 steel, 30 plasteel, 6 components, 6000 work, 50 kg less cargo. Two barrels bound together on the roof, range 33, 6-round bursts (with Combat Extended: range 55, autocannon shells). Fixed forward; the pilot fires it and aims by turning the shuttle. A pilot incapable of violence can fly but can't fire it, and you get a message when one takes the seat.
 - Chemical toilet (with Dubs Bad Hygiene): 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
 
 COMBAT EXTENDED
