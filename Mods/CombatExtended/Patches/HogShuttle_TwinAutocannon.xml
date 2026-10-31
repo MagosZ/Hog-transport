@@ -75,7 +75,7 @@
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_TwinAutocannon"]/description</xpath>
 		<value>
-			<description>Two autocannons bound side by side in a roof mount and fed from a 300-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with 20x102mm shells.</description>
+			<description>Two autocannons bound side by side in a roof mount and fed from a 300-round magazine. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with 20x102mm shells.</description>
 		</value>
 	</Operation>
 </Patch>

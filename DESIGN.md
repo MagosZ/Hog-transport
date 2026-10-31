@@ -215,8 +215,9 @@ speed per tick, like building.
   - CE recoil is 0, like the Hind's: Vehicle Framework multiplies it by the shot number, and these bursts are long.
 
   - Twin-linked means two barrels bound together in one gun, drawn after VFE Security's double autocannon (one breech
-    block, an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`:
-    half the rounds from each barrel.
+    block, an ammo drum on each side, barrels almost touching). No fire points: shots leave from one point between the muzzles
+    (`projectileOffset`), as on the Hind's nose cannon. Fire points were taken out to test whether they make shells
+    curve under CE (TESTING.md).
   - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). The barrels run over the cockpit roof and stop just short of the nose, over the windscreen. It's
     a separate turret image because it only shows once fitted.

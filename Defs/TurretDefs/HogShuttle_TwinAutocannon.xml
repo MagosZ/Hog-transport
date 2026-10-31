@@ -9,7 +9,7 @@
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_TwinAutocannon</defName>
 		<label>twin-linked autocannon</label>
-		<description>Two autocannons bound side by side in a roof mount and fed from a 270-round magazine. The barrels take turns. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
+		<description>Two autocannons bound side by side in a roof mount and fed from a 270-round magazine. The mount is fixed forward, so the pilot aims it by turning the shuttle. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<gizmoIconTexPath>HogShuttle/Upgrade_TwinAutocannon</gizmoIconTexPath>
 
@@ -29,8 +29,8 @@
 		<warmUpTimer>0</warmUpTimer>
 		<autoSnapTargeting>true</autoSnapTargeting>
 		<rotationSpeed>6</rotationSpeed>
-		<!-- Shots leave from the muzzles: see the fire points on the turret in the upgrade tree. -->
-		<projectileOffset>0</projectileOffset>
+		<!-- Shots leave from between the muzzles. -->
+		<projectileOffset>1.48</projectileOffset>
 		<minRange>8.9</minRange>
 		<maxRange>29.6</maxRange>
 
