@@ -73,8 +73,8 @@ the cabin.
 - **Local map (VTOL):** `thingClass VTOLVehicle.VtolVehiclePawn` with `VTOLVehicle.AircraftProperties`,
   `CompProperties_VtolAirborneMoveBlocker` and `VtolCrewTransferProperties`. Field names come from the Hind
   Helicopter Gunship, the only open example (`Model mods/_Mod_Source_Reference/Mi24HindHelicopter`).
-  VTOL Vehicle is built for helicopters; the Hog has one invisible, non-spinning "rotor"
-  (`HogShuttle/Transparent`) so it stays on the path the Hind uses. Its rotor sound is VVE's rocket engine.
+  VTOL Vehicle is built for helicopters; the Hog has one non-spinning "rotor"
+  so it stays on the path the Hind uses, and that rotor carries the wing tips (see Art). Its rotor sound is VVE's rocket engine.
   Fuel on the local map is all VTOL Vehicle's: `fuelConsumptionPerTick` 0.006 the whole time it's airborne,
   hovering included (15 chemfuel per in-game hour; a full tank hovers about 80 hours). Vehicle Framework burns
   nothing on the map, since its condition is `Flying`, which it applies only on the world map. Kept on purpose
@@ -282,7 +282,12 @@ since in game only the top-down view is used (user). Mask: red = hull and nacell
 wing stripe, blue = wings. Glass, brass intake lips, exhaust rims, the grille, the fuel cap and lights are
 unpainted. `CutoutComplexPattern`, default colours grey / green / grey. Square drawSize (7,7), like the Hind's.
 The wings are painted one cell past their component (A2–A6 / D2–D6) on each side, an outer cell that is art
-only. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
+only, and it shows only while the engines run. `Body.png` stops at the footprint's edge, so a parked Hog is exactly 4
+cells wide. The parts outside go in `WingTips.png`, the spinning texture of the Hog's one rotor (stopped texture
+`Transparent`, rotation speed 0, drawSize (7,7), no offset), which VTOL Vehicle cross-fades by rotor speed over
+`accelerationTicks` (240): in as the engines spool up, out after shutdown, and present while landed with the engines
+running. Rotor textures take no paint mask, so the tips are baked in the default colours, and a repainted wing shows a
+seam at the footprint's edge. `Shadow` and `BuildIcon` keep the full wings. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
 
 Drawn as seen from straight above: only upward-facing surfaces show, with light from the north-west and shadows
 cast down-right onto lower surfaces.

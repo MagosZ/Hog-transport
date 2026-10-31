@@ -12,8 +12,9 @@ What shows from above, and what doesn't:
   whatever lies lower: the hull and the nacelles shade the wings.
 
 Every feature sits inside the grid cells of its part (components.py, DESIGN.md): columns A-D port to starboard,
-rows 1-7 nose to tail. The wings run one cell past the footprint on each side (art only, no hitbox). The texture is
-square, drawSize (7,7), like the Hind's, so it turns cleanly: the 6-cell span sits in the middle.
+rows 1-7 nose to tail. The wings run one cell past the footprint on each side (art only, no hitbox), and split_wings() cuts those parts off
+into their own texture, shown only while the engines run. The texture is square, drawSize (7,7), like the Hind's, so it
+turns cleanly: the 6-cell span sits in the middle.
 """
 import math
 
@@ -156,12 +157,13 @@ def top():
         mid = (root + tip) / 2
         v.groove([(mid, 1.75), (mid, 5.9)], 168)
         for y in (2.75, 3.4, 4.05):                                         # rivet rows along the plate seams
-            for k in range(1, 6):
+            for k in (1, 2, 4, 5):                                          # k = 3 would sit on the cut (split_wings)
                 v.rivet(root + (tip - root) * k / 6, y + 0.12)
         v.poly([(root, 4.62), (tip, 4.62), (tip, 5.02), (root, 5.02)], 186, ARMOUR, outline=False)
         v.line([(root, 4.62), (tip, 4.62)], 226, 0.012)
         v.line([(root, 5.02), (tip, 5.02)], 120, 0.012)
-        ex, ey = mid + side * 0.12, 4.82                                    # emblem: an eight-point star outline
+        ex, ey = mid - side * 0.3, 4.82                                     # emblem: an eight-point star outline, on the
+        #                                                                     inner wing, so it shows while parked too
         star = [(ex + (0.16 if k % 2 == 0 else 0.07) * math.cos(k * math.pi / 8),
                  ey + (0.16 if k % 2 == 0 else 0.07) * math.sin(k * math.pi / 8)) for k in range(16)]
         v.d.polygon(v.pts(star), outline=(235, 235, 235, 255), width=v.w(0.016))
@@ -277,6 +279,38 @@ def top():
             v.cylinder(x0, y, x1, y + 0.02, 215, HULL, outline=False)        # lit upper rim of each rib
         v.cylinder(x0 + 0.08, 4.78, x1 - 0.08, 4.9, HEAT, NONE)             # exhaust nozzle rim
     return v.done()
+
+
+# The Hog's default paint (graphicData in Defs/VehicleDefs/HogShuttle.xml), per mask channel.
+DEFAULT_PAINT = ((176, 178, 182), (86, 128, 98), (150, 152, 156))
+
+
+def split_wings(img, mask):
+    """Cut the full view at the footprint's edges. Returns the body and its mask, parked exactly 4 cells wide, and
+    the wing tips, the parts outside the footprint, which VTOL Vehicle's rotor code fades in when the engines run
+    (Defs/VehicleDefs/HogShuttle.xml). Rotor textures take no paint, so the tips are baked in the default colours."""
+    left, right = round(A * PX), round(END * PX)
+    body, body_mask, tips = img.copy(), mask.copy(), img.copy()
+    pixels, mask_pixels, tip_pixels = body.load(), body_mask.load(), tips.load()
+    for y in range(img.height):
+        for x in range(img.width):
+            r, g, b, a = pixels[x, y]
+            if left <= x < right:
+                tip_pixels[x, y] = (0, 0, 0, 0)
+                continue
+            pixels[x, y] = (0, 0, 0, 0)
+            mask_pixels[x, y] = NONE
+            weights = mask.getpixel((x, y))
+            total = sum(weights)
+            if a and total:                                  # as the paint shader: the texture times the colour
+                tint = [sum(w * paint[c] for w, paint in zip(weights, DEFAULT_PAINT)) / total for c in range(3)]
+                tip_pixels[x, y] = (round(r * tint[0] / 255), round(g * tint[1] / 255), round(b * tint[2] / 255), a)
+    # A dark edge where each wing is cut, so the parked body has a clean outline.
+    for x in (left, left + 1, right - 2, right - 1):
+        for y in range(img.height):
+            if pixels[x, y][3] > 128:
+                pixels[x, y] = OUTLINE + (255,)
+    return body, body_mask, tips
 
 
 GUN_CELLS = 4             # the turret texture: square, drawSize (4,4), same pixels per cell as the body

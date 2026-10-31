@@ -17,8 +17,12 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
 - [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
 - [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it (Draw hitbox).
-- [ ] Parked and in flight, at any heading: the top-down view turns with the aircraft; the wings reach one
-      cell past the footprint on each side.
+- [ ] Parked with the engines off: the art stops exactly at the 4-cell footprint, with no wing tips. The blueprint too.
+- [ ] Engines on: the wing tips fade in over about 4 seconds and reach one cell past the footprint on each side, lined
+      up with the body at any heading and at flight scale, with no visible seam in the default paint. After shutdown
+      they fade out.
+- [ ] The flight shadow keeps its wings, and doesn't show under a parked Hog.
+- [ ] Repainted wings: a colour change stops at the footprint's edge (the tips keep the default paint; expected).
 - [ ] Painting / patterns: hull and nacelles, cockpit armour + wing stripe, and wings take colours one, two and
       three.
 

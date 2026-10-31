@@ -1,7 +1,8 @@
 """Placeholder textures for the Hog shuttle.
 
 Run from anywhere: python make_textures.py [check-image path]
-Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view, from body_views.py), Shadow, BuildIcon,
+Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view clipped to the footprint, from body_views.py),
+WingTips (the rest of the wings, shown while the engines run), Shadow and BuildIcon (with the full wings),
 Transparent, the upgrade icons, and the roof-mounted TwinAutocannon with its icon.
 """
 import sys
@@ -78,8 +79,10 @@ def cargo_icon():
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     img, mask = body_views.top()
-    img.save(OUT / "Body.png")
-    mask.save(OUT / "Body_m.png")
+    body, body_mask, tips = body_views.split_wings(img, mask)
+    body.save(OUT / "Body.png")
+    body_mask.save(OUT / "Body_m.png")
+    tips.save(OUT / "WingTips.png")
     body_views.shadow(img).save(OUT / "Shadow.png")
     img.resize((256, 256), Image.LANCZOS).save(OUT / "BuildIcon.png")
     if len(sys.argv) > 1:                       # optional check image with the grid names

@@ -637,13 +637,15 @@
 				<rotorSustainerPitchSpeedForMax>0.3</rotorSustainerPitchSpeedForMax>
 				<rotorSustainerPitchSmoothTicks>45</rotorSustainerPitchSmoothTicks>
 				<rotors>
-					<!-- The Hog has no rotor. VTOL Vehicle is built around rotors and its code isn't public, so
-					     one invisible, non-spinning rotor stands in to keep it on the tested path. -->
+					<!-- The Hog has no rotor. VTOL Vehicle is built around rotors and its code isn't public, so one non-spinning
+					     rotor stands in to keep it on the tested path. It also carries the wing tips: Body.png stops at the
+					     footprint's edge, and VTOL Vehicle fades this in as the engines spool up and out after shutdown. Same size
+					     and centre as the body, so the two line up. -->
 					<li>
 						<stoppedTexturePath>HogShuttle/Transparent</stoppedTexturePath>
-						<spinningTexturePath>HogShuttle/Transparent</spinningTexturePath>
+						<spinningTexturePath>HogShuttle/WingTips</spinningTexturePath>
 						<localOffset>(0, 0)</localOffset>
-						<drawSize>(1, 1)</drawSize>
+						<drawSize>(7, 7)</drawSize>
 						<scale>1</scale>
 						<altitudeOffset>0.01</altitudeOffset>
 						<rotationSpeed>0</rotationSpeed>
