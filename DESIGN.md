@@ -192,7 +192,7 @@ speed per tick, like building.
   door gun. Turret def in `Defs/TurretDefs/HogShuttle_TwinAutocannon.xml`.
 
   The weapon is vanilla's autocannon turret (`Turret_Autocannon`, `Gun_AutocannonTurret`; with CE, CE's version of it),
-  doubled where two barrels change the number.
+  doubled where two barrels change the number, then with range cut by 10% and the magazine raised by 50% for balance.
 
   | Stat | Without CE | Vanilla turret | With CE | CE's turret |
   |---|---|---|---|---|
@@ -200,17 +200,17 @@ speed per tick, like building.
   | Ticks between rounds | **9** | 17 | **4** | 7 |
   | Between bursts | 210 ticks (3.5 s) | Same | 60 ticks (1 s) | Same |
   | Warm-up | None | Same | 2.3 s | Same |
-  | Range | 8.9 to 32.9 | Same | 0 to 78 | Same |
+  | Range | 8.9 to **29.6** | 8.9 to 32.9 | 0 to **70.2** | 0 to 78 |
   | Shell | `Bullet_AutocannonTurret`: 27 damage, speed 88 | Same | `Bullet_20x102mmNATO_AP` by default: 44 damage, 30 sharp AP, speed 182 | Same |
-  | Magazine | **180** rounds | 90 shots per barrel | **200** rounds | 100 |
-  | Ammo | 2 steel per round (360 to fill) | Same | 20x102mm NATO | Same |
+  | Magazine | **270** rounds | 90 shots per barrel | **300** rounds | 100 |
+  | Ammo | 2 steel per round (540 to fill) | Same | 20x102mm NATO | Same |
   | Reload | 10 s | A pawn changes the barrel | 7.8 s | Same |
   | Accuracy | Spread 1 | 0.28 / 0.72 / 0.66 / 0.5 | Sway 1.61, spread 0.01 | Same |
   | Arc | Fixed forward, 6° either side | Full turret | Same | Full turret |
 
   Choices:
   - Each barrel keeps the original's rhythm, so the gun fires twice the rounds in about the same burst time: twice the
-    damage over time. Half of 17 and of 7 aren't whole ticks, so they round up. Damage per round and range don't double.
+    damage over time. Half of 17 and of 7 aren't whole ticks, so they round up. Damage per round and range don't double. The magazine is the doubled number +50% (90 × 2 × 1.5, 100 × 2 × 1.5).
   - Vehicle Framework has no accuracy stats, so spread 1 stands in without CE.
   - CE recoil is 0, like the Hind's: Vehicle Framework multiplies it by the shot number, and these bursts are long.
 

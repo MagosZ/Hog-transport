@@ -108,9 +108,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       or passenger, or on a Hog without the gun.
 - [ ] A pacifist pilot hovering with enemies near: see whether the nose still turns to them with the gun dead (VTOL's
       combat hover may ignore the gun's state).
-- [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 32.9, 27 damage, 180 rounds at 2 steel each. Shots
+- [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 29.6, 27 damage, 270 rounds at 2 steel each. Shots
       and the muzzle flash leave from the two muzzles in turn.
-- [ ] With CE: 20x102mm shells (AP by default), 200 rounds, range 78, 20-round bursts every second or so, 2.3 s warm-up; the
+- [ ] With CE: 20x102mm shells (AP by default), 300 rounds, range 70.2, 20-round bursts every second or so, 2.3 s warm-up; the
       shots land on the target, including close targets now the muzzles are further out.
 - [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can
       only reach 6 degrees either side of the nose.
