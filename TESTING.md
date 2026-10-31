@@ -96,7 +96,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Cargo capacity drops by 50 kg when fitted (950; with plasteel armour 750; with the cargo outfit 1950; with
       both 1750) and comes back when removed.
 - [ ] Fitted: the mount draws on the roof behind the cockpit, on the centre line, barrels side by side over the cockpit,
-      muzzles about 1.3 cells past the nose, at any heading, parked and in flight. Without the upgrade, no gun shows.
+      muzzles about a third of a cell past the nose, at any heading, parked and in flight. Without the upgrade, no gun shows.
 - [ ] A newly fitted gun on a Hog parked facing east or west: it may point north until the pilot boards (the Hind
       needed extra code for this; the Hog has none).
 - [ ] Pilot capable of violence: the gun fires, with no extra seat. Nobody in the pilot's seat: it doesn't, and its button

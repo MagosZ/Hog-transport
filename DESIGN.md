@@ -218,7 +218,7 @@ speed per tick, like building.
     block, an ammo drum on each side, barrels almost touching). Two fire points, 0.17 of a cell apart, `LoopPerShot`:
     half the rounds from each barrel.
   - Mounted on the **roof behind the cockpit** (B2-C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
-    airframe (`drawLayer` 1). The barrels run over the cockpit roof and clear the nose by 1.32 cells (art and fire points only, no hitbox). It's
+    airframe (`drawLayer` 1). The barrels run over the cockpit roof and clear the nose by about a third of a cell (art and fire points only, no hitbox). It's
     a separate turret image because it only shows once fitted, and because the muzzles reach past the body texture.
   - The **pilot** controls it. Vehicle Framework bars pawns incapable of violence from any seat with Turret handling,
     so the seat stays Movement only and no role lists the turret. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`):
@@ -304,9 +304,9 @@ cast down-right onto lower surfaces.
   root (A2 / D2), and navigation lights at the tips (red port, green starboard).
 - **Skids:** hidden under the hull and wings.
 - Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
-- **Twin-linked autocannon** (`TwinAutocannon.png`, 6 cells square, `twin_autocannon()` in `body_views.py`): own drawing
+- **Twin-linked autocannon** (`TwinAutocannon.png`, 4 cells square, `twin_autocannon()` in `body_views.py`): own drawing
   after VFE Security's double autocannon. A mounting ring on the roof, the breech block, an ammo drum on each side, and
-  two ribbed barrels lying lengthwise with straps binding them together. Unpainted.
+  two barrels lying lengthwise: a short ribbed jacket with straps binding them together, then a long bare tip section and a muzzle brake. Unpainted.
 
 `python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
 Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.

@@ -37,7 +37,7 @@
 		<motes>
 			<li>
 				<moteDef>Mote_CannonFlash</moteDef>
-				<offset>(0, 0, 2.98)</offset>
+				<offset>(0, 0, 1.98)</offset>
 				<scale>0.45</scale>
 			</li>
 		</motes>
@@ -53,11 +53,11 @@
 			</li>
 		</fireModes>
 
-		<!-- Square, 6 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
+		<!-- Square, 4 cells, the same pixels per cell as the body; the image's centre is the pivot. -->
 		<graphicData>
 			<texPath>HogShuttle/TwinAutocannon</texPath>
 			<graphicClass>Vehicles.Graphic_Turret</graphicClass>
-			<drawSize>(6, 6)</drawSize>
+			<drawSize>(4, 4)</drawSize>
 		</graphicData>
 	</Vehicles.VehicleTurretDef>
 </Defs>
