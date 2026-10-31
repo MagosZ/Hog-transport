@@ -322,6 +322,9 @@ cast down-right onto lower surfaces.
 - **Hull:** one roof from row 2 to the tail, with lit west and shaded east chamfers and a shaded tail edge. Row 7
   (B7–C7; A7 and D7 are empty) is ordinary roof; the rear door is a vertical face at the tail, so it isn't
   visible from above.
+- **Gaps, after the kit photo:** wing and hull don't join. A 0.12-cell slit of open air runs between them; the turbofans
+  bridge it in rows 3–5, and a strut crosses it in row 2 and in row 6. The cockpit box is also narrower than the hull,
+  with B1 and C1 losing their outer edge, so it stands clear of the empty corners. All art only, no hitbox change.
 - **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
 - **Roof details**, after the kit photo: a raised sensor housing with a grille and a red dome right behind the
   cockpit (B2–C2), then the cabin hatch; the fuel tank bay's two filler plates (B3–C4); the vent grille (B5–C5);

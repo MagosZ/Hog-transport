@@ -131,9 +131,12 @@ class Canvas:
         return self.img.resize(size, Image.LANCZOS), self.mask.resize(size, Image.NEAREST)
 
 
+WING_GAP = 0.12           # open air between the hull's side and the wing, as on the kit: they join only at the struts
+
+
 def wing_outline(side):
-    """Port (-1) or starboard (+1) wing: rows 2-6, from under the hull out to one cell past the footprint."""
-    root, tip = (B - 0.05, A - 0.95) if side < 0 else (D + 0.05, END + 0.95)
+    """Port (-1) or starboard (+1) wing: rows 2-6, from just off the hull out to one cell past the footprint."""
+    root, tip = (B - 0.15 - WING_GAP, A - 0.95) if side < 0 else (D + 0.15 + WING_GAP, END + 0.95)
     back = tip - side * 0.45
     return [(root, 1.1), (tip, 2.35), (tip, 5.2), (back, 5.95), (root, 5.95)], root, tip
 
@@ -154,7 +157,7 @@ def top():
         v.line([pts[3], pts[4]], 112, 0.035)                                # trailing edge
         for y in (2.95, 3.6, 4.25):
             v.groove([(root, y), (tip, y)], 168)
-        mid = (root + tip) / 2
+        mid = A if side < 0 else END                                        # a plate seam where the tip folds
         v.groove([(mid, 1.75), (mid, 5.9)], 168)
         for y in (2.75, 3.4, 4.05):                                         # rivet rows along the plate seams
             for k in (1, 2, 4, 5):                                          # k = 3 would sit on the cut (split_wings)
@@ -168,7 +171,7 @@ def top():
                  ey + (0.16 if k % 2 == 0 else 0.07) * math.sin(k * math.pi / 8)) for k in range(16)]
         v.d.polygon(v.pts(star), outline=(235, 235, 235, 255), width=v.w(0.016))
         # Caged landing light near the wing root's front (row 2): a dome, so it shows from above.
-        lx, ly = root + side * 0.42, 1.62                                  # outboard of the hull, on the wing
+        lx, ly = root + side * 0.25, 1.62                                  # outboard of the hull, on the wing
         v.dot(lx, ly, 0.11, 70, NONE)
         v.dot(lx, ly, 0.085, LAMP_CYAN, NONE)
         v.dot(lx - 0.03, ly - 0.03, 0.03, (225, 250, 255), NONE)
@@ -176,6 +179,10 @@ def top():
             r = math.radians(a)
             v.line([(lx - 0.11 * math.cos(r), ly - 0.11 * math.sin(r)),
                     (lx + 0.11 * math.cos(r), ly + 0.11 * math.sin(r))], 60, 0.012)
+        # Struts across the gap to the hull, at the two places the turbofan doesn't bridge it.
+        for y in (1.68, 5.3):
+            x0, x1 = (root - 0.03, root + WING_GAP + 0.03) if side < 0 else (root - WING_GAP - 0.03, root + 0.03)
+            v.rect(x0, y, x1, y + 0.1, 92, NONE)
         # Navigation light at the tip.
         tx = tip - side * 0.14
         v.dot(tx, 5.12, 0.075, NAV_RED if side < 0 else NAV_GREEN)
@@ -210,20 +217,20 @@ def top():
 
     # 3. Cockpit, B1-C1: a riveted armoured box, lower than the hull behind it. Roof with chamfers, the sloped
     #    windscreen foreshortened at the front (three panes), a roof hatch, small lamp domes at the rear corners.
-    ck = [(B + 0.22, 0.04), (D - 0.22, 0.04), (D - 0.05, 0.25), (D - 0.05, 1.02), (B + 0.05, 1.02), (B + 0.05, 0.25)]
+    ck = [(B + 0.37, 0.04), (D - 0.37, 0.04), (D - 0.2, 0.25), (D - 0.2, 1.02), (B + 0.2, 1.02), (B + 0.2, 0.25)]
     v.poly(ck, 180, ARMOUR)
-    v.poly([(B + 0.05, 0.25), (B + 0.2, 0.32), (B + 0.2, 1.02), (B + 0.05, 1.02)], 206, ARMOUR, outline=False)
-    v.poly([(D - 0.05, 0.25), (D - 0.2, 0.32), (D - 0.2, 1.02), (D - 0.05, 1.02)], 140, ARMOUR, outline=False)
-    v.poly([(B + 0.3, 0.1), (D - 0.3, 0.1), (D - 0.24, 0.42), (B + 0.24, 0.42)], GLASS, NONE)
+    v.poly([(B + 0.2, 0.25), (B + 0.33, 0.32), (B + 0.33, 1.02), (B + 0.2, 1.02)], 206, ARMOUR, outline=False)
+    v.poly([(D - 0.2, 0.25), (D - 0.33, 0.32), (D - 0.33, 1.02), (D - 0.2, 1.02)], 140, ARMOUR, outline=False)
+    v.poly([(B + 0.44, 0.1), (D - 0.44, 0.1), (D - 0.38, 0.42), (B + 0.38, 0.42)], GLASS, NONE)
     v.line([(B + 0.78, 0.1), (B + 0.74, 0.42)], OUTLINE, 0.03)             # windscreen frames: three panes
     v.line([(D - 0.78, 0.1), (D - 0.74, 0.42)], OUTLINE, 0.03)
-    v.line([(B + 0.36, 0.17), (B + 0.66, 0.17)], GLASS_HI, 0.022)          # reflection
-    v.line([(B + 0.05, 1.02), (D - 0.05, 1.02)], 110, 0.03)                  # step up to the hull roof
+    v.line([(B + 0.5, 0.17), (B + 0.7, 0.17)], GLASS_HI, 0.022)            # reflection
+    v.line([(B + 0.2, 1.02), (D - 0.2, 1.02)], 110, 0.03)                    # step up to the hull roof
     v.rect(C - 0.25, 0.55, C + 0.25, 0.9, 168, ARMOUR)                      # roof escape hatch
     v.groove([(C - 0.25, 0.9), (C - 0.25, 0.55), (C + 0.25, 0.55)], 168)
-    for k in range(10):
-        v.rivet(B + 0.12 + 0.196 * k, 0.47)
-    for x, col in ((B + 0.2, NAV_RED), (D - 0.2, NAV_GREEN)):
+    for k in range(9):
+        v.rivet(B + 0.28 + 0.18 * k, 0.47)
+    for x, col in ((B + 0.42, NAV_RED), (D - 0.42, NAV_GREEN)):
         v.dot(x, 0.88, 0.05, col)
         v.dot(x - 0.012, 0.868, 0.015, (255, 240, 230))
 
