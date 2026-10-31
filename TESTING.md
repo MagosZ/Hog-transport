@@ -16,7 +16,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Blueprint appears in the Vehicles architect tab after the research.
 - [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines.
 - [ ] Cost without Odyssey: the same but 9 advanced components and no shuttle engine.
-- [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it (Draw hitbox).
+- [ ] Footprint is 3×7 and rotates to 7×3; the placeholder art lines up with it (Draw hitbox).
 - [ ] Parked and in flight, at any heading: the top-down view turns with the aircraft; the wings reach one
       cell past the footprint on each side.
 - [ ] Painting / patterns: hull and nacelles, cockpit armour + wing stripe, and wings take colours one, two and
@@ -60,8 +60,8 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.
-- [ ] Health tab lists all 16 parts (DESIGN.md table). A1, D1, A7 and D7 have no part: check what a hit there does
-      (Vehicle Framework may pass it to the nearest part; under CE, the Hind notes such hits do no damage). Shots at the sides (A2-A6, D2-D6) hit the wings, and in
+- [ ] Health tab lists all 16 parts (DESIGN.md table). A1, C1, A7 and C7 have no part: check what a hit there does
+      (Vehicle Framework may pass it to the nearest part; under CE, the Hind notes such hits do no damage). Shots at the sides (A2-A6, C2-C6) hit the wings, and in
       rows 3-5 also the turbofans (rows 4-5 the rear skids); shots at the tail hit the rear door; the fuel tank sits in the centre (it leaks
       when hit). Damaged turbofans, wings, skids, fuel intake or fuel pumps lower flight speed or
       control; badly damaged turbofans cap both, and they never explode.
@@ -110,6 +110,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       combat hover may ignore the gun's state).
 - [ ] Without CE: 6-round bursts, a burst every 3.5 s or so, range 8.9 to 29.6, 27 damage, 270 rounds at 2 steel each. Shots
       and the muzzle flash leave from the two muzzles in turn.
+- [ ] Firing east or west under CE: do the shells still bow in a curve? The Hog went to 3 wide over this; the Hind (3
+      wide) was reported to fly straight. If it still bends, the next difference to look at is the fire points: the
+      Hind's nose cannon has none.
 - [ ] With CE: 20x102mm shells (AP by default), 300 rounds, range 70.2, 20-round bursts every second or so, 2.3 s warm-up; the
       shots land on the target, including close targets.
 - [ ] Airborne, targeting something off the nose by hand: the nose turns to it, then the gun fires. Parked, it can
