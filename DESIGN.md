@@ -18,8 +18,7 @@ the cabin.
 
 - Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
   east or west it takes 7×4.
-- Roles: pilot ×1 (Movement, needed to fly, Intellectual 6+ unless the flight computer is fitted; see Pilot
-  skill; also fires the roof autocannon if fitted), co-pilot ×1 (no handling, optional), passenger ×8.
+- Roles: pilot ×1 (Movement, needed to fly; also fires the front gun if one is fitted), co-pilot ×1 (no handling, optional), passenger ×8.
 - Cargo 1000 kg, mass 1800, flight speed 30.
 - Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
@@ -137,27 +136,17 @@ tick their contents (stasis). The Hog keeps Vehicle Framework's way and seals th
 - Known Vehicle Framework bug: a passenger who dies aboard throws "Collection was modified" in
   `TickHandlers`. The sealed cabin prevents the deaths that triggered it.
 
-### Pilot skill
-
-- The pilot seat (`Pilot` role) only counts a pawn with **Intellectual 6** or more (`PilotSkillExtension` on the
-  Hog: `role`, `skill`, `minLevel`, `waivedByUpgradeNode`). A postfix on Vehicle Framework's per-seat check,
-  `VehicleRoleHandler.CanOperateRole(Pawn)`, refuses anyone below that. A pawn with the skill disabled, or no
-  skills at all, is refused too.
-- That check decides whether the seat is crewed (`RoleFulfilled` → `HasEnoughOperators`), so an under-skilled
-  pilot leaves the Hog unable to move or fly. It also decides seat picking, so boarding pawns aren't given the
-  pilot seat. The co-pilot and passenger seats have no requirement.
-- The auxiliary flight computer upgrade waives it.
-- Untested: VTOL Vehicle's own "board nearby" might still seat an under-skilled pawn as pilot (the Hind needed
-  extra code for a similar case). The Hog then stays grounded, which is safe; move the pawn by hand.
-
 ### Upgrades (`Defs/HogShuttle_UpgradeTree.xml`)
 
 Upgrade nodes have no Vehicle Framework effect of their own; HogShuttle.dll checks whether they're installed.
 Vehicle Framework's removal defaults apply: 50% refund, 30% of the work. Upgrade work is spent at construction
 speed per tick, like building.
 
-- `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Lets anyone who can fly a vehicle pilot the
-  shuttle, whatever their Intellectual skill."* 1 advanced component, work 200. Waives the pilot skill check.
+- `HogShuttle_FlightComputer`: "Auxiliary flight computer", *"Plots more efficient courses: 20% less fuel for travel on the
+  world map and to and from space."* 1 advanced component, work 200. `StatUpgrade` on Vehicle Framework's
+  `FuelConsumptionRate` category, -60 of the rate 300. The launch cost and in-flight burn follow the rate, and
+  `OrbitTransitExtension.TransitFuel` scales the layer-change fee with it (50 to 40). So: 1.33 fuel per tile and 900 tiles in
+  the air; 13.3 per tile for legs ending in space. VTOL Vehicle's hover burn on the local map is unaffected.
 - `HogShuttle_PlasteelArmour`: "Plasteel armour", *"Plasteel plates over the whole airframe: about 20% more
   armour on every part, at the cost of 200 kg of cargo space."* 150 plasteel + 4 components, work 6000 (the
   Hind Gunship's Plasteel Armour price and work). Unlike the Hind's, it plates the cockpit too. Vehicle

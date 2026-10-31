@@ -51,17 +51,14 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Save mid-flight to orbit, load: no second 50 is taken.
 - [ ] Other Vehicle Framework aircraft (VVE, the Hind) keep their old fuel costs.
 
-## Pilot skill and flight computer
-- [ ] A pilot with Intellectual 5 or less: the Hog can't move, take off or launch (Vehicle Framework's "not
-      enough crew" state). With Intellectual 6+: it flies.
-- [ ] Boarding through Vehicle Framework (the gizmo, a caravan) never puts an under-skilled pawn in the pilot
-      seat; they take the co-pilot or passenger seats.
-- [ ] VTOL Vehicle's "board nearby": check whether it can still seat an under-skilled pilot (the Hog should
-      then just stay grounded).
+## Flight computer
+- [ ] Any pilot can fly, whatever their Intellectual skill. No error about `HogShuttle.PilotSkillExtension` when loading.
 - [ ] The Upgrades tab has "Auxiliary flight computer": 1 advanced component, 200 work, placeholder icon.
-- [ ] With it installed, a pilot below Intellectual 6 can fly. If the state doesn't update at once, check
-      after the pilot gets out and back in (Vehicle Framework may cache it).
-- [ ] Removing it brings the requirement back. Co-pilot and passengers never need the skill.
+- [ ] Installed: the launch targeter reaches about 900 tiles on a full tank instead of 720 (1.33 fuel per tile), and about
+      40 fuel, not 50, straight up to an orbital target; a hop between orbital sites costs about 13 per tile. The fuel
+      spent matches what the targeter showed, and the tank drains 20% slower in flight.
+- [ ] Hovering on the local map burns the same as before.
+- [ ] Removing it brings the old costs back.
 
 ## Plasteel armour
 - [ ] The Upgrades tab has "Plasteel armour": 150 plasteel, 4 components, 6000 work, placeholder icon.

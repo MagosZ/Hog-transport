@@ -22,8 +22,16 @@ namespace HogShuttle
         public float transitFuel = 50f;
         public float spaceDistanceFactor = 20f;
 
+        /// <summary>The fee for changing layer, in step with whatever an upgrade does to the fuel rate (the flight
+        /// computer). The distance cost follows the rate by itself.</summary>
+        public float TransitFuel(VehiclePawn vehicle)
+        {
+            CompFueledTravel fuel = vehicle.CompFueledTravel;
+            return fuel == null ? transitFuel : transitFuel * fuel.FuelEfficiency / fuel.Props.fuelConsumptionRate;
+        }
+
         /// <summary>Fuel for one leg to <paramref name="to"/>, from Vehicle Framework's distance cost.</summary>
-        public float LegCost(float distanceCost, PlanetLayer fromLayer, PlanetTile to)
+        public float LegCost(VehiclePawn vehicle, float distanceCost, PlanetLayer fromLayer, PlanetTile to)
         {
             if (!to.Valid)
             {
@@ -32,7 +40,7 @@ namespace HogShuttle
             float cost = to.LayerDef.isSpace ? distanceCost * spaceDistanceFactor : distanceCost;
             if (fromLayer != null && fromLayer != to.Layer)
             {
-                cost += transitFuel;
+                cost += TransitFuel(vehicle);
             }
             return cost;
         }
@@ -55,7 +63,7 @@ namespace HogShuttle
             OrbitTransitExtension orbit = OrbitTransit.For(__instance.Vehicle);
             if (orbit != null)
             {
-                __result = orbit.LegCost(__result, OrbitTransit.LayerOf(__instance.Tile), destination);
+                __result = orbit.LegCost(__instance.Vehicle, __result, OrbitTransit.LayerOf(__instance.Tile), destination);
             }
         }
     }
@@ -103,8 +111,8 @@ namespace HogShuttle
             ref PlanetLayer fromLayer, PlanetTile tile)
         {
             Vector3 to = WorldHelper.GetTilePos(tile);
-            float cost = orbit.LegCost(comp.FuelNeededToLaunchAtDist(Ext_Math.SphericalDistance(from, to)), fromLayer,
-                tile);
+            float cost = orbit.LegCost(comp.Vehicle, comp.FuelNeededToLaunchAtDist(Ext_Math.SphericalDistance(from, to)),
+                fromLayer, tile);
             from = to;
             fromLayer = OrbitTransit.LayerOf(tile);
             return cost;
@@ -178,7 +186,7 @@ namespace HogShuttle
             {
                 return;
             }
-            vehicle.CompFueledTravel?.ConsumeFuel(orbit.transitFuel);
+            vehicle.CompFueledTravel?.ConsumeFuel(orbit.TransitFuel(vehicle));
         }
     }
 

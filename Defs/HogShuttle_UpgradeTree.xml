@@ -8,18 +8,29 @@
 	<Vehicles.UpgradeTreeDef>
 		<defName>HogShuttle_UpgradeTree</defName>
 		<nodes>
-			<!-- Waives the pilot's Intellectual requirement (PilotSkillExtension on the Hog). -->
+			<!-- 20% less fuel for world-map travel: the fuel rate 300 less 60. Vehicle Framework's launch cost and in-flight burn
+			     follow the rate, and HogShuttle.dll scales the fee for changing layer with it. VTOL Vehicle's hover burn on the local
+			     map is its own, so this doesn't touch it. -->
 			<li>
 				<key>HogShuttle_FlightComputer</key>
 				<label>Auxiliary flight computer</label>
-				<description>Lets anyone who can fly a vehicle pilot the shuttle, whatever their Intellectual skill.</description>
+				<description>Plots more efficient courses: 20% less fuel for travel on the world map and to and from space.</description>
 				<icon>HogShuttle/Upgrade_FlightComputer</icon>
 				<gridCoordinate>(4, 4)</gridCoordinate>
 				<work>200</work>
 				<ingredients>
 					<ComponentSpacer>1</ComponentSpacer>
 				</ingredients>
-				<upgrades />
+				<upgrades>
+					<li Class="Vehicles.StatUpgrade">
+						<statCategories>
+							<li>
+								<def>FuelConsumptionRate</def>
+								<value>-60</value>
+							</li>
+						</statCategories>
+					</li>
+				</upgrades>
 			</li>
 
 			<!-- Like the Hind Gunship's Plasteel Armour (same cost and work), but the cockpit is plated too. Adds 20% of
