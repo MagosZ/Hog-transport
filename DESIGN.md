@@ -301,7 +301,7 @@ a one-cell-wide target).
 Placeholder, from `Source/Art/body_views.py` (run `make_textures.py`): **one top-down view**, `Body.png`, at
 128 px per cell, with its paint mask `Body_m.png`. VTOL Vehicle turns that one picture to the aircraft's heading
 (the Hind ships one top-down view too). A three-view VVE-style set (`_north/_south/_east`) was tried and dropped,
-since in game only the top-down view is used (user). Mask: red = hull and nacelles, green = cockpit armour and the
+since in game only the top-down view is used (user). Mask: red = hull and engine armour, green = cockpit armour and the
 wing stripe, blue = wings. Glass, brass intake lips, exhaust rims, the grille, the fuel cap and lights are
 unpainted. `CutoutComplexPattern`, default colours grey / green / grey. Square drawSize (7,7), like the Hind's.
 The wings are painted one cell past their component (A2–A6 / D2–D6) on each side, an outer cell that is art
@@ -313,37 +313,29 @@ running. Rotor textures take no paint mask, so the tips are baked in the default
 seam at the footprint's edge. `Shadow` and `BuildIcon` keep the full wings. A hinge runs along each wing just inside the footprint's edge
 (barrel, knuckles, riveted leaf, unpainted), so the parked body shows where the tips fold. `Shadow` is the silhouette, `BuildIcon` the view scaled down.
 
-Drawn as seen from straight above: only upward-facing surfaces show, with light from the north-west and shadows
-cast down-right onto lower surfaces.
-- **Turbofans** (A3–A5 / D3–D5): they face forward, so each is a cylinder lying lengthwise, shaded across its
-  width. The intake lip shows as a thin brass band at the front, with rib bands round the housing and the exhaust
-  rim at the back. The fan isn't visible. They cast shadows onto the wings. In the art they sit half a cell in from
-  their component cells, half on the wing and half on the roof.
-- **Hull:** one roof from row 2 to the tail, with lit west and shaded east chamfers and a shaded tail edge. Row 7
-  (B7–C7; A7 and D7 are empty) is ordinary roof; the rear door is a vertical face at the tail, so it isn't
-  visible from above.
-- **Gaps, after the kit photo:** wing and hull don't join. A 0.12-cell slit of open air runs between them; the turbofans
-  bridge it in rows 3–5, and a strut crosses it in row 2 and in row 6. The cockpit box is also narrower than the hull,
-  with B1 and C1 losing their outer edge, so it stands clear of the empty corners. All art only, no hitbox change.
-- **Cockpit** (B1–C1): an armoured roof, with the sloped windscreen foreshortened at the front.
-- **Roof details**, after the kit photo: a raised sensor housing with a grille and a red dome right behind the
-  cockpit (B2–C2), then the cabin hatch; the fuel tank bay's two filler plates (B3–C4); the vent grille (B5–C5);
-  the refuelling cap at the front of B6 with roof vents behind it in B6 and C6; the green dorsal fin on the
-  centre line (C6–C7), seen edge-on as a thin strip with its shadow; rivets along the seams. The filler plates and grille fit between the
-  turbofans.
-- **Cockpit:** riveted green armour, a three-pane windscreen, a roof escape hatch, red (port) and green
-  (starboard) lamp domes at its rear corners.
-- **Turbofans:** mounting straps and a copper fuel line along the top of each nacelle; soot streaks behind the exhausts, over the wing and the roof's edge.
-- **Wings:** rivet rows along the plate seams, the green band with a star emblem, a caged landing light near each
-  root (A2 / D2), and navigation lights at the tips (red port, green starboard).
+Drawn as seen from straight above and modelled on the Arvus lighter kit: only upward-facing surfaces show, with light
+from the north-west and shadows cast down-right onto lower surfaces.
+- **Cockpit** (B1–C1): a green armoured box narrower than the hull, with a thin front window and a larger sloped window
+  behind a thick frame, a roof plate, and red and green lamp domes. Grey sensor pods sit against its sides; their lenses
+  face forward, so they don't show.
+- **Turbofans** (art half a cell in from their cells A3–A5 / D3–D5, over the wing and the roof's edge), nose to tail: two
+  brass intake rings, a short duct, an arched yoke, the coil machinery on a dark core with side braces, a second yoke, a
+  ribbed neck, then an armoured exhaust with a blue heat-stained nozzle rim. The fan faces forward, so it isn't visible.
+- **Roof:** a raised sensor block with two lens domes behind the cockpit, then the cabin hatch (under the autocannon's
+  mount if fitted); copper pipes on the shoulders ahead of the engines; the yokes reach in to a raised eight-sided plate
+  with the tank fillers (rows 3–4); then a stepped plate with the vent grille, refuelling cap and an access panel (rows
+  5–6), and a rear hatch with an antenna post (rows 6–7). The tail's corners are cut. Row 7 is ordinary roof; the rear door
+  below it is a vertical face, so it isn't visible from above.
+- **Gaps:** wing and hull don't join. A 0.12-cell slit of open air runs between them; the turbofans bridge it in rows
+  3–5, and a strut crosses it in row 2 and in row 6. All art only, no hitbox change.
+- **Wings:** panel lines and rivets, with a green band along the outer edge, a white line, a stencil of three crossed
+  arrows, a ring and a caged lamp at the leading corner. The band and its details are on the wing tips, so they show only
+  while the engines run; the hinge and inner wing stay with the parked body.
 - **Skids:** hidden under the hull and wings.
-- Domes, caps and lamps facing up show from above; lenses facing forward don't, so none are drawn.
-- **Twin-linked autocannon** (`TwinAutocannon.png`, 4 cells square, `twin_autocannon()` in `body_views.py`): own drawing
-  after VFE Security's double autocannon. A mounting ring on the roof, the breech block, an ammo drum on each side, and
-  two barrels lying lengthwise: a short ribbed jacket with straps binding them together, then a bare tip section half a cell longer than the first drawing's, and a muzzle brake. Unpainted.
+- Soot behind the exhausts, lightly over the wing and the roof's edge.
 
 `python make_textures.py <path.png>` also writes a check image with the grid names over the view (not shipped).
-Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter.
+Reference: the Warhammer Community and ifelix.net pictures of the Arvus lighter, and a painted model's rear view.
 
 ## 5. Later
 

@@ -23,6 +23,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       they fade out.
 - [ ] The flight shadow keeps its wings, and doesn't show under a parked Hog.
 - [ ] Repainted wings: a colour change stops at the footprint's edge (the tips keep the default paint; expected).
+- [ ] The art at game zoom: the engines, yokes and roof plates read clearly, not as noise.
 - [ ] Painting / patterns: hull and nacelles, cockpit armour + wing stripe, and wings take colours one, two and
       three.
 
