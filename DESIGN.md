@@ -188,9 +188,9 @@ speed per tick, like building.
 
   | Stat | Without CE | Vanilla turret | With CE | CE's turret |
   |---|---|---|---|---|
-  | Rounds per burst | 3 | Same | 10 | Same |
+  | Fire modes | **Single 1, Burst 3, Auto 6** | Burst 3 | **Single 1, Burst 10, Auto 20** | Burst 10 |
   | Ticks between rounds | 17 | Same | 7 | Same |
-  | Between bursts | 210 ticks (3.5 s) | Same | 60 ticks (1 s) | Same |
+  | Between bursts | 210 ticks (3.5 s); Single 60 ticks | 210 ticks | 60 ticks (1 s) | Same |
   | Warm-up | None | Same | 2.3 s | Same |
   | Range | 8.9 to **29.6** | 8.9 to 32.9 | 0 to **70.2** | 0 to 78 |
   | Shell | `Bullet_AutocannonTurret`: 27 damage, speed 88 | Same | `Bullet_20x102mmNATO_AP` by default: 44 damage, 30 sharp AP, speed 182 | Same |
@@ -202,7 +202,8 @@ speed per tick, like building.
 
   - A real turret, on the roof behind the cockpit (B2–C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). Its image is separate and turns about its centre; the round mounting ring looks fixed to the
-    roof. It swings on its own at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is off.
+    roof. It swings at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is on, so the shuttle
+    turns to keep the target in the arc. It shares the key `frontGun` with the minigun.
   - No fire points, since those made shells curve under CE. Shots leave from the muzzle (`projectileOffset` 1.48).
   - CE recoil is 0, like the Hind's.
 - `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. **Conflicts
@@ -223,16 +224,23 @@ speed per tick, like building.
 
   - Mounted beside the cockpit (north offset (1.2, 1.95)) and drawn below the airframe (`drawLayer` −8, the Hind's chin
     turret value), so the wing covers the receiver and only the barrel shows, through the empty corner D1.
-  - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, and the AircraftProperties' combat hover is
-    on with `combatDirectionalHoverTurretKey` = `frontGun`, the minigun's key. That turret only exists once this upgrade
-    is fitted; the autocannon has its own key (`autocannon`) so it doesn't steer the nose.
+  - The pilot aims by turning the shuttle: `rotateVehicleToTargetWhileTargeting`, with the key `frontGun` (see below).
 - **Fitted guns face their default direction.** Vehicle Framework treats a new turret's default angle as a world angle (0 =
   north), and VTOL Vehicle only swings an idle gun back once it's crewed. `FittedGunsAlignExtension` on the Hog
   (`Source/FittedGuns.cs`): a postfix on `CompVehicleTurrets.AddTurret` sets a gun added by an upgrade to the aircraft's
   heading plus its `defaultAngleRotated`: forward for the front guns, backward for the door guns (180).
+- **The front gun steers the shuttle.** The AircraftProperties' combat hover is on with `combatDirectionalHoverTurretKey` =
+  `frontGun`, the key of whichever gun is fitted. `SteadyFrontGunExtension` on the Hog (`Source/FrontGunHover.cs`) adds two postfixes
+  on VTOL's flight controller, whose method names come from the Hind's source. `ShouldApplyCombatDirectionalHoverFacing`: VTOL
+  lets go of the combat facing once lined up and the nose wanders back to the move order's, so it stays applied.
+  `BestVehicleTurretAutoTarget`: only the front gun's target counts, so a door gun's target can't swing the nose, and with no
+  front gun, or a pacifist pilot, the nose stays free.
+- **UI pictures show the bare hull.** `BareHullIconsExtension` (`Source/BareHullIcons.cs`): a postfix on `BlitRequest.For(VehiclePawn)`
+  drops the turrets. That request draws the "before" side of the Upgrades tab's comparison and other UI icons; the "after" side
+  builds its own request, so it still shows the guns.
 - **Pilot fires the front gun.** Vehicle Framework bars pawns incapable of violence from any seat with Turret handling, so
   the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`,
-  `turrets` = `autocannon`, `frontGun`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
+  `turrets` = `frontGun`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
   crewed pilot's seat and a pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with
   a reason. A caution message appears when a pacifist takes the seat (keyed `HogShuttle_PacifistPilot`), once per vehicle;
   the first check of a vehicle only records the pilot, so loading a save says nothing.

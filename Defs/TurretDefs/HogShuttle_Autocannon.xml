@@ -3,12 +3,13 @@
 	<!-- The roof gun, fitted by the HogShuttle_Autocannon upgrade (Defs/HogShuttle_UpgradeTree.xml). Vanilla's autocannon turret
 	     (Turret_Autocannon, Gun_AutocannonTurret): burst 3, 17 ticks apart, cooldown 3.5 s (210 ticks), no warm-up, minimum
 	     range 8.9, the shell, and 2 steel per round. Range is 10% under the original's 32.9 (29.6), and the magazine 50% over its
-	     barrel durability of 90 (135). Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. It traverses
-	     on its own, so its image turns about its centre; the rotation values are the Hind's chin turret's. -->
+	     barrel durability of 90 (135). Vehicle Framework has no accuracy stats, so spreadRadius stands in for them. Single is
+	     1 round a second, and Auto double the Burst, as the CE minigun's modes go. It traverses, so its image turns about its
+	     centre; the rotation values are the Hind's chin turret's. -->
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_Autocannon</defName>
 		<label>autocannon</label>
-		<description>An autocannon in a roof turret, fed from a 135-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with steel.</description>
+		<description>An autocannon in a roof turret, fed from a 135-round magazine. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. Worked by the pilot. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<gizmoIconTexPath>HogShuttle/Upgrade_Autocannon</gizmoIconTexPath>
 
@@ -44,12 +45,28 @@
 
 		<fireModes>
 			<li>
+				<shotsPerBurst>1</shotsPerBurst>
+				<ticksBetweenShots>17</ticksBetweenShots>
+				<ticksBetweenBursts>60</ticksBetweenBursts>
+				<spreadRadius>1</spreadRadius>
+				<label>Single</label>
+				<texPath>UI/Gizmos/FireRate_Single</texPath>
+			</li>
+			<li>
 				<shotsPerBurst>3</shotsPerBurst>
 				<ticksBetweenShots>17</ticksBetweenShots>
 				<ticksBetweenBursts>210</ticksBetweenBursts>
 				<spreadRadius>1</spreadRadius>
 				<label>Burst</label>
 				<texPath>UI/Gizmos/FireRate_Burst</texPath>
+			</li>
+			<li>
+				<shotsPerBurst>6</shotsPerBurst>
+				<ticksBetweenShots>17</ticksBetweenShots>
+				<ticksBetweenBursts>210</ticksBetweenBursts>
+				<spreadRadius>1</spreadRadius>
+				<label>Auto</label>
+				<texPath>UI/Gizmos/FireRate_Auto</texPath>
 			</li>
 		</fireModes>
 

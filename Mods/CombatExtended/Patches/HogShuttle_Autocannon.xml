@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Loaded only when Combat Extended is active (see LoadFolders.xml). CE's version of vanilla's autocannon turret: burst 10, 7
-     ticks apart, no minimum range, warm-up 2.3 s, cooldown 1 s, reload 7.8 s, 20x102mm NATO ammo, sway 1.61, spread 0.01. Range is
+     ticks apart (with Single and a double Auto added, as the CE minigun's modes go), no minimum range, warm-up 2.3 s, cooldown 1 s, reload 7.8 s, 20x102mm NATO ammo, sway 1.61, spread 0.01. Range is
      10% under the original's 78 (70.2), and the magazine 50% over its 100 (150). Recoil is 0 like the Hind's. Speed: that ammo's
      base speed. -->
 <Patch>
@@ -41,21 +41,31 @@
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/shotsPerBurst</xpath>
+		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes</xpath>
 		<value>
-			<shotsPerBurst>10</shotsPerBurst>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/ticksBetweenShots</xpath>
-		<value>
-			<ticksBetweenShots>7</ticksBetweenShots>
-		</value>
-	</Operation>
-	<Operation Class="PatchOperationReplace">
-		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/fireModes/li/ticksBetweenBursts</xpath>
-		<value>
-			<ticksBetweenBursts>60</ticksBetweenBursts>
+			<fireModes>
+				<li>
+					<shotsPerBurst>1</shotsPerBurst>
+					<ticksBetweenShots>7</ticksBetweenShots>
+					<ticksBetweenBursts>60</ticksBetweenBursts>
+					<label>Single</label>
+					<texPath>UI/Gizmos/FireRate_Single</texPath>
+				</li>
+				<li>
+					<shotsPerBurst>10</shotsPerBurst>
+					<ticksBetweenShots>7</ticksBetweenShots>
+					<ticksBetweenBursts>60</ticksBetweenBursts>
+					<label>Burst</label>
+					<texPath>UI/Gizmos/FireRate_Burst</texPath>
+				</li>
+				<li>
+					<shotsPerBurst>20</shotsPerBurst>
+					<ticksBetweenShots>7</ticksBetweenShots>
+					<ticksBetweenBursts>60</ticksBetweenBursts>
+					<label>Auto</label>
+					<texPath>UI/Gizmos/FireRate_Auto</texPath>
+				</li>
+			</fireModes>
 		</value>
 	</Operation>
 	<Operation Class="PatchOperationAddModExtension">
@@ -74,7 +84,7 @@
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/description</xpath>
 		<value>
-			<description>An autocannon in a roof turret, fed from a 150-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with 20x102mm shells.</description>
+			<description>An autocannon in a roof turret, fed from a 150-round magazine. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. Worked by the pilot. Reloads with 20x102mm shells.</description>
 		</value>
 	</Operation>
 </Patch>

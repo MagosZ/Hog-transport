@@ -405,14 +405,15 @@
 				</upgrades>
 			</li>
 
-			<!-- A single autocannon in a roof turret behind the cockpit (Defs/TurretDefs/HogShuttle_Autocannon.xml). It traverses on its
-			     own, 30 degrees either side of the nose, without steering the airframe, like the Hind's chin turret. No fire points,
+			<!-- A single autocannon in a roof turret behind the cockpit (Defs/TurretDefs/HogShuttle_Autocannon.xml). It traverses 30
+			     degrees either side of the nose, and the shuttle turns to bring its target to bear. It shares the key frontGun with the
+			     minigun (they can't be fitted together), which is the one VTOL's combat hover follows. No fire points,
 			     which made shells curve under CE. No role lists the turret, so pawns incapable of violence can still fly;
 			     PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it. Conflicts with the front minigun. -->
 			<li>
 				<key>HogShuttle_Autocannon</key>
 				<label>Autocannon</label>
-				<description>An autocannon in a roof turret, at the cost of 30 kg of cargo space. Traverses 30 degrees either side of the nose. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
+				<description>An autocannon in a roof turret, at the cost of 30 kg of cargo space. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
 				<icon>HogShuttle/Upgrade_Autocannon</icon>
 				<gridCoordinate>(22, 10)</gridCoordinate>
 				<work>3000</work>
@@ -444,10 +445,10 @@
 								<gizmoLabel>Autocannon</gizmoLabel>
 								<aimPieOffset>(0, 3.32)</aimPieOffset>
 								<angleRestricted>(-30, 30)</angleRestricted>
-								<rotateVehicleToTargetWhileTargeting>false</rotateVehicleToTargetWhileTargeting>
+								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
 								<returnToDefaultAfterTicks>180</returnToDefaultAfterTicks>
 								<drawLayer>1</drawLayer>
-								<key>autocannon</key>
+								<key>frontGun</key>
 							</li>
 						</turrets>
 					</li>

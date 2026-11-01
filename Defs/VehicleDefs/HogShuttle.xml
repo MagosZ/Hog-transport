@@ -514,12 +514,17 @@
 			<li Class="HogShuttle.PilotGunExtension">
 				<role>Pilot</role>
 				<turrets>
-					<li>autocannon</li>
 					<li>frontGun</li>
 				</turrets>
 			</li>
 			<!-- Guns fitted by an upgrade start out facing their default direction, relative to the aircraft (HogShuttle.dll). -->
 			<li Class="HogShuttle.FittedGunsAlignExtension" />
+			<!-- VTOL's combat hover answers only to the front gun and holds the nose on its target (HogShuttle.dll). -->
+			<li Class="HogShuttle.SteadyFrontGunExtension">
+				<turret>frontGun</turret>
+			</li>
+			<!-- UI pictures of the shuttle leave out its guns (HogShuttle.dll). -->
+			<li Class="HogShuttle.BareHullIconsExtension" />
 			<!-- What the flight computer does to the fuel rate also applies to the burn while airborne on the map (HogShuttle.dll). -->
 			<li Class="HogShuttle.HoverFuelFollowsRateExtension" />
 			<!-- Orbit costs (HogShuttle.dll): 50 fuel per change between surface and space, and legs that end in
@@ -555,8 +560,8 @@
 				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
 				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
 				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
-				<!-- Hovering in combat, the nose turns to the target for the fixed front minigun, as on the Hind's nose cannon. The
-				     turret only exists once that upgrade is fitted. The autocannon traverses, so it has its own key. -->
+				<!-- Hovering in combat, the nose turns to the front gun's target, as on the Hind's nose cannon. The turret only exists
+				     once an upgrade is fitted: the autocannon or the minigun, which share this key. -->
 				<combatDirectionalHoverEnabled>true</combatDirectionalHoverEnabled>
 				<combatDirectionalHoverTurretKey>frontGun</combatDirectionalHoverTurretKey>
 				<takeoffDrawCurve>
