@@ -193,7 +193,7 @@
 			</li>
 
 			<!-- Like the Hind Gunship's Cabin Modification / Cargo Conversion: editing the Passenger role's slots (editKey)
-			     and adding cargo. Stacks with the plasteel armour (1000 - 200 + 1000 = 1800 kg). Vehicle Framework
+			     and adding cargo. Stacks with the plasteel armour (1500 - 200 + 1000 = 2300 kg). Vehicle Framework
 			     doesn't unload pawns when a role edit lowers the slots, so unload passengers before fitting it. -->
 			<li>
 				<key>HogShuttle_CargoOutfit</key>
@@ -406,14 +406,14 @@
 			</li>
 
 			<!-- A single autocannon in a roof turret behind the cockpit (Defs/TurretDefs/HogShuttle_Autocannon.xml). It traverses 30
-			     degrees either side of the nose, and the shuttle turns to bring its target to bear. It shares the key frontGun with the
-			     minigun (they can't be fitted together), which is the one VTOL's combat hover follows. No fire points,
+			     degrees either side of the nose, and the shuttle turns to bring its target to bear, unless the front minigun is fitted too:
+			     that one drives then (SteadyFrontGunExtension on the Hog, HogShuttle.dll), and this one only traverses. No fire points,
 			     which made shells curve under CE. No role lists the turret, so pawns incapable of violence can still fly;
-			     PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it. Conflicts with the front minigun. -->
+			     PilotGunExtension on the Hog (HogShuttle.dll) stops them firing it. Can be fitted with the front minigun. -->
 			<li>
 				<key>HogShuttle_Autocannon</key>
 				<label>Autocannon</label>
-				<description>An autocannon in a roof turret, at the cost of 30 kg of cargo space. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
+				<description>An autocannon in a roof turret, at the cost of 30 kg of cargo space. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc, unless a front minigun is fitted to steer by. The pilot fires it. A pilot incapable of violence can fly, but can't fire it.</description>
 				<icon>HogShuttle/Upgrade_Autocannon</icon>
 				<gridCoordinate>(22, 10)</gridCoordinate>
 				<work>3000</work>
@@ -422,9 +422,6 @@
 					<Plasteel>15</Plasteel>
 					<ComponentIndustrial>3</ComponentIndustrial>
 				</ingredients>
-				<disableIfUpgradeNodesEnabled>
-					<li>HogShuttle_FrontMinigun</li>
-				</disableIfUpgradeNodesEnabled>
 				<upgrades>
 					<li Class="Vehicles.StatUpgrade">
 						<vehicleStats>
@@ -448,7 +445,7 @@
 								<rotateVehicleToTargetWhileTargeting>true</rotateVehicleToTargetWhileTargeting>
 								<returnToDefaultAfterTicks>180</returnToDefaultAfterTicks>
 								<drawLayer>1</drawLayer>
-								<key>frontGun</key>
+								<key>autocannon</key>
 							</li>
 						</turrets>
 					</li>
@@ -457,11 +454,12 @@
 
 			<!-- One minigun under the starboard wing beside the cockpit (Defs/TurretDefs/HogShuttle_FrontMinigun.xml). Fixed forward: the
 			     pilot fires it (PilotGunExtension on the Hog) and aims by turning the shuttle, and VTOL's combat hover steers for it
-			     (key frontGun). Half the price and work of the pair of door miniguns on the Louie. Conflicts with the autocannon. -->
+			     (key frontGun). When both front guns are fitted it is the one that steers. Half the price and work of the pair of door
+			     miniguns on the Louie. Can be fitted with the autocannon. -->
 			<li>
 				<key>HogShuttle_FrontMinigun</key>
 				<label>Front minigun</label>
-				<description>A minigun slung under the starboard wing beside the cockpit. Fixed forward: the pilot fires it and aims by turning the shuttle. A pilot incapable of violence can fly, but can't fire it.</description>
+				<description>A minigun slung under the starboard wing beside the cockpit. Fixed forward: the pilot fires it and aims by turning the shuttle, also with the autocannon fitted. A pilot incapable of violence can fly, but can't fire it.</description>
 				<icon>TGBM_ThirdParty_UI/VVEU_Upgrade_Turret</icon>
 				<gridCoordinate>(22, 16)</gridCoordinate>
 				<work>5000</work>
@@ -469,9 +467,6 @@
 					<Steel>135</Steel>
 					<ComponentIndustrial>11</ComponentIndustrial>
 				</ingredients>
-				<disableIfUpgradeNodesEnabled>
-					<li>HogShuttle_Autocannon</li>
-				</disableIfUpgradeNodesEnabled>
 				<upgrades>
 					<li Class="Vehicles.TurretUpgrade">
 						<turrets>

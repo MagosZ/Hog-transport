@@ -11,9 +11,9 @@
 
 THE SHUTTLE
 - Footprint 4×7 (the body is a box once its wings are out). Lands on three skids.
-- Crew: 1 pilot (required) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,000 kg.
+- Crew: 1 pilot (required) and 1 co-pilot (optional). Passengers: 8. Cargo: about 1,500 kg.
 - Fuel: chemfuel.
-- Armament: none built in; a rear door gun and a front weapon, a roof autocannon or one minigun, can be fitted (see UPGRADES).
+- Armament: none built in; a rear door gun, a roof autocannon and a front minigun can be fitted (see UPGRADES).
 
 FLIGHT
 - Hovers on the local map (VTOL): take off, fly, land, auto-land on a saved spot, board nearby colonists.
@@ -23,11 +23,11 @@ FLIGHT
 
 UPGRADES
 - Auxiliary flight computer: 1 advanced component, 200 work. 20% less fuel for hovering, for travel on the world map, and to and from space.
-- Plasteel armour: 150 plasteel, 4 components, 6000 work. About 20% more armour on every part, cockpit included, but 200 kg less cargo (800 kg).
-- Cargo outfit: no cost, 500 work. 2 passenger seats instead of 8, and 1000 kg more cargo (2000 kg; 1800 kg with the plasteel armour).
+- Plasteel armour: 150 plasteel, 4 components, 6000 work. About 20% more armour on every part, cockpit included, but 200 kg less cargo (1300 kg).
+- Cargo outfit: no cost, 500 work. 2 passenger seats instead of 8, and 1000 kg more cargo (2500 kg; 2300 kg with the plasteel armour).
 - Rear door gun, one of three: medium machine gun (150 steel, 5 components), heavy machine gun (205 steel, 6 components) or minigun (135 steel, 11 components); 5000 work. Adds a door gunner seat; fires 60 degrees either side of straight back. The guns are the door guns of VVE - Secondary Weapons (required), with its art, sounds and Combat Extended support.
 - Autocannon: 100 steel, 15 plasteel, 3 components, 3000 work, 30 kg less cargo. A roof turret with vanilla's autocannon turret gun: range 29.6, 3-round bursts, 135 rounds (with Combat Extended: range 70, 10-round bursts, 150 20x102mm shells). Traverses 30 degrees either side of the nose, with Single, Burst and Auto fire, and the shuttle turns to keep its target in the arc. The pilot fires it. A pilot incapable of violence can fly but can't fire it, and you get a message when one takes the seat.
-- Front minigun (instead of the autocannon): 135 steel, 11 components, 5000 work. One minigun under the starboard wing beside the cockpit, range 30.9. Fixed forward; the pilot fires it and aims by turning the shuttle.
+- Front minigun (with or without the autocannon): 135 steel, 11 components, 5000 work. One minigun under the starboard wing beside the cockpit, range 30.9. Fixed forward; the pilot fires it and aims by turning the shuttle. With both front guns fitted, the shuttle steers by the minigun and the autocannon traverses on its own.
 - Chemical toilet (with Dubs Bad Hygiene): 10 steel, 10 neutroamine, as much work as a wooden wall. Keeps the bladder of everyone aboard satisfied.
 
 COMBAT EXTENDED

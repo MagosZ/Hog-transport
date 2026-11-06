@@ -6,7 +6,7 @@
 	<Vehicles.VehicleDef ParentName="BaseVehiclePawn">
 		<defName>HogShuttle</defName>
 		<label>Hog shuttle</label>
-		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1500 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
 		<thingClass>VTOLVehicle.VtolVehiclePawn</thingClass>
 		<buildDef>HogShuttle_Blueprint</buildDef>
 
@@ -42,7 +42,7 @@
 
 		<vehicleStats>
 			<Mass>1800</Mass>
-			<CargoCapacity>1000</CargoCapacity>
+			<CargoCapacity>1500</CargoCapacity>
 			<RepairRate>1</RepairRate>
 			<FlightSpeed>30</FlightSpeed>
 		</vehicleStats>
@@ -509,19 +509,24 @@
 			<li Class="HogShuttle.SealedCabinExtension">
 				<temperature>21</temperature>
 			</li>
-			<!-- The front gun, the roof autocannon or the starboard minigun (HogShuttle.dll): the pilot fires it, if capable of
-			     violence. Those who aren't can still fly; the player gets a message when one takes the seat. -->
+			<!-- The front guns, the roof autocannon and the starboard minigun (HogShuttle.dll): the pilot fires them, if capable
+			     of violence. Those who aren't can still fly; the player gets a message when one takes the seat. -->
 			<li Class="HogShuttle.PilotGunExtension">
 				<role>Pilot</role>
 				<turrets>
 					<li>frontGun</li>
+					<li>autocannon</li>
 				</turrets>
 			</li>
 			<!-- Guns fitted by an upgrade start out facing their default direction, relative to the aircraft (HogShuttle.dll). -->
 			<li Class="HogShuttle.FittedGunsAlignExtension" />
-			<!-- VTOL's combat hover answers only to the front gun and holds the nose on its target (HogShuttle.dll). -->
+			<!-- The first front gun fitted, in this order, drives: VTOL's combat hover answers only to it and holds the nose on
+			     its target, and only it turns the shuttle for a target given by hand (HogShuttle.dll). -->
 			<li Class="HogShuttle.SteadyFrontGunExtension">
-				<turret>frontGun</turret>
+				<turrets>
+					<li>frontGun</li>
+					<li>autocannon</li>
+				</turrets>
 			</li>
 			<!-- UI pictures of the shuttle leave out its guns (HogShuttle.dll). -->
 			<li Class="HogShuttle.BareHullIconsExtension" />
@@ -560,8 +565,8 @@
 				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
 				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
 				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
-				<!-- Hovering in combat, the nose turns to the front gun's target, as on the Hind's nose cannon. The turret only exists
-				     once an upgrade is fitted: the autocannon or the minigun, which share this key. -->
+				<!-- Hovering in combat, the nose turns to the driving front gun's target, as on the Hind's nose cannon. HogShuttle.dll
+				     sets this key to that gun's before each step of the flight controller; this is the default. -->
 				<combatDirectionalHoverEnabled>true</combatDirectionalHoverEnabled>
 				<combatDirectionalHoverTurretKey>frontGun</combatDirectionalHoverTurretKey>
 				<takeoffDrawCurve>
@@ -672,7 +677,7 @@
 	<Vehicles.VehicleBuildDef ParentName="VehicleBaseBuildable">
 		<defName>HogShuttle_Blueprint</defName>
 		<label>Hog shuttle</label>
-		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1000 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
+		<description>A small, boxy spacer shuttle. Its thrusters let it hover over the ground like a VTOL aircraft, and its sealed hull carries crew and passengers between the surface and orbit.\n\n&lt;color=#bb8f04&gt;Crew:&lt;/color&gt; Pilot x1, co-pilot x1 (optional)\n&lt;color=#bb8f04&gt;Passengers:&lt;/color&gt; 8\n&lt;color=#bb8f04&gt;Cargo:&lt;/color&gt; 1500 kg\n&lt;color=#bb8f04&gt;Fuel type:&lt;/color&gt; Chemfuel</description>
 		<uiIconPath>HogShuttle/BuildIcon</uiIconPath>
 
 		<graphicData>
@@ -701,7 +706,6 @@
 			<Plasteel>250</Plasteel>
 			<ComponentIndustrial>10</ComponentIndustrial>
 			<ComponentSpacer>28</ComponentSpacer>
-			<VVE_EngineBlock>2</VVE_EngineBlock>
 			<VVE_CarAlternator>4</VVE_CarAlternator>
 			<VVE_CarExhaust>4</VVE_CarExhaust>
 			<VVE_CarSuspension>3</VVE_CarSuspension>

@@ -15,7 +15,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 ## Building
 - [ ] Blueprint appears in the Vehicles architect tab after the research.
 - [ ] Cost with Odyssey: 450 steel, 250 plasteel, 10 components, 3 advanced components, 2 shuttle engines, and the VVE parts:
-      2 engine blocks, 4 alternators, 4 exhausts, 3 suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks.
+      4 alternators, 4 exhausts, 3 suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks.
 - [ ] Cost without Odyssey: the same but 28 advanced components and no shuttle engine.
 - [ ] All the VVE parts can be crafted by the time the Hog's research is done.
 - [ ] Footprint is 4×7 and rotates to 7×4; the placeholder art lines up with it (Draw hitbox).
@@ -31,7 +31,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Crew and cargo
 - [ ] Pilot seat needed to fly; co-pilot optional; 8 passenger seats.
-- [ ] Cargo capacity about 1000 kg.
+- [ ] Cargo capacity about 1500 kg.
 
 ## Local-map flight (VTOL Vehicle)
 - [ ] Take off, fly to a cell, land here, land at a cell, save a landing spot and auto-land.
@@ -71,15 +71,15 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       when hit). Damaged turbofans, wings, skids, fuel intake or fuel pumps lower flight speed or
       control; badly damaged turbofans cap both, and they never explode.
 - [ ] Installed: every part's armour rises by about 20% in the
-      Health tab, and cargo capacity drops from 1000 to 800 kg.
+      Health tab, and cargo capacity drops from 1500 to 1300 kg.
 - [ ] Removed: armour and cargo return to normal; half the cost is refunded.
 - [ ] Without CE: vanilla ratings (hull 0.50 / 0.90). With CE: CE ratings (hull 22.5 / 11.6) and the
       upgrade adds the CE amounts. No patch errors either way.
 
 ## Cargo outfit
 - [ ] The Upgrades tab has "Cargo outfit": no ingredients, 500 work, placeholder icon.
-- [ ] Installed: 2 passenger seats (pilot and co-pilot unchanged), cargo 2000 kg; with plasteel armour too,
-      1800 kg. Removed: 8 seats and 1000 kg again.
+- [ ] Installed: 2 passenger seats (pilot and co-pilot unchanged), cargo 2500 kg; with plasteel armour too,
+      2300 kg. Removed: 8 seats and 1500 kg again.
 - [ ] Fitting it with more than 2 passengers aboard: see what Vehicle Framework does with the extra pawns.
       Expected: nothing ejects them; they stay until they get out.
 
@@ -97,9 +97,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 ## Autocannon
 - [ ] Log: no Harmony error for `MagosZ.HogShuttle`, and no error about `HogShuttle.PilotGunExtension`.
 - [ ] The Upgrades tab has "Autocannon": 100 steel, 15 plasteel, 3 components, 3000 work. It can be fitted together with
-      a door gun, not with the front minigun.
-- [ ] Cargo capacity drops by 30 kg when fitted (970; with plasteel armour 770; with the cargo outfit 1970; with
-      both 1770) and comes back when removed.
+      a door gun and the front minigun.
+- [ ] Cargo capacity drops by 30 kg when fitted (1470; with plasteel armour 1270; with the cargo outfit 2470; with
+      both 2270) and comes back when removed.
 - [ ] Fitted: the turret draws on the roof behind the cockpit, on the centre line, at any heading, parked and in flight.
       Without the upgrade, no gun shows.
 - [ ] Airborne with a target, by hand or on auto-target: the nose turns to it and stays on it, without wandering back to the
@@ -116,12 +116,14 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 
 ## Front minigun
 - [ ] The Upgrades tab has "Front minigun": 135 steel, 11 components, 5000 work. Cargo capacity doesn't change. It can be
-      fitted together with a door gun, not with the autocannon.
+      fitted together with a door gun and the autocannon.
 - [ ] Fitted: only the barrel shows, on the starboard side beside the cockpit, with the receiver hidden under the wing.
       Parked and in flight, at any heading.
 - [ ] Its arc is 6 degrees either side of the nose. Airborne with a target by hand: the nose turns to it. Parked, it can
       only reach what's nearly straight ahead.
 - [ ] Hovering on auto-target: the nose turns to enemies (VTOL's combat hover, key `frontGun`).
+- [ ] Both front guns fitted: the shuttle steers by the minigun, by hand and on auto-target; the autocannon only traverses
+      within its 30 degrees and fires at what it can reach. Remove the minigun: the autocannon steers again.
 - [ ] Without CE: 25-round bursts, range 30.9, 200 rounds, steel. Accuracy doesn't change with the pilot's Shooting skill.
 - [ ] With CE: Single / Burst / Auto, range 62, 2000 rounds of 7.62×51 NATO; the shells fly straight.
 

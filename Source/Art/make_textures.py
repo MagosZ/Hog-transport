@@ -24,16 +24,59 @@ OUTLINE = (30, 30, 34, 255)
 
 
 def toilet_icon():
-    """Upgrade icon: a chemical toilet seen from the side."""
-    img = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    """Upgrade icon: a compact chemical toilet in three-quarter view, with its tank of blue chemical, and a jerrycan of
+    the chemical beside it. Drawn at 4x and scaled down, so the curves come out smooth."""
+    k = 4
+    img = Image.new("RGBA", (128 * k, 128 * k), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    d.rectangle([30, 14, 62, 66], fill=PANEL, outline=OUTLINE, width=4)        # tank
-    d.rectangle([38, 24, 54, 32], fill=(90, 180, 110, 255))                    # chemical gauge
-    d.rectangle([40, 62, 64, 112], fill=HULL, outline=OUTLINE, width=4)        # base
-    d.ellipse([40, 54, 104, 78], fill=HULL_DARK, outline=OUTLINE, width=4)     # seat
-    d.ellipse([52, 60, 92, 72], fill=(60, 110, 160, 255))                      # bowl
-    d.rectangle([34, 110, 74, 118], fill=OUTLINE)                              # foot
-    return img
+
+    def box(x0, y0, x1, y1):
+        return [round(x0 * k), round(y0 * k), round(x1 * k), round(y1 * k)]
+
+    def shade(x0, y0, x1, y1, light, dark, radius=0):
+        """A rounded block lit from the left: a column-by-column blend from light to dark, then the outline."""
+        layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        ld = ImageDraw.Draw(layer)
+        steps = max(1, round((x1 - x0) * k))
+        for i in range(steps):
+            t = i / max(1, steps - 1)
+            c = tuple(round(light[j] + (dark[j] - light[j]) * t) for j in range(3)) + (255,)
+            ld.line([(round(x0 * k) + i, round(y0 * k)), (round(x0 * k) + i, round(y1 * k))], fill=c)
+        maskimg = Image.new("L", img.size, 0)
+        ImageDraw.Draw(maskimg).rounded_rectangle(box(x0, y0, x1, y1), radius=round(radius * k), fill=255)
+        img.paste(layer, (0, 0), maskimg)
+        d.rounded_rectangle(box(x0, y0, x1, y1), radius=round(radius * k), outline=OUTLINE, width=3 * k)
+
+    ceramic, ceramic_dark = (236, 238, 240), (150, 156, 164)
+    # Floor shadow.
+    d.ellipse(box(14, 104, 104, 118), fill=(0, 0, 0, 70))
+    # Cistern, with the chemical gauge and the flush button.
+    shade(22, 10, 74, 58, ceramic, ceramic_dark, radius=7)
+    d.rounded_rectangle(box(20, 6, 76, 16), radius=4 * k, fill=(214, 218, 222), outline=OUTLINE, width=3 * k)
+    d.ellipse(box(42, 8, 54, 13), fill=(120, 126, 134), outline=OUTLINE, width=2 * k)
+    d.rounded_rectangle(box(30, 24, 44, 52), radius=3 * k, fill=(40, 46, 54), outline=OUTLINE, width=2 * k)
+    d.rounded_rectangle(box(32, 34, 42, 50), radius=2 * k, fill=(60, 150, 210))
+    d.line([box(33, 36, 33, 49)[0:2], box(33, 36, 33, 49)[2:4]], fill=(170, 220, 250), width=2 * k)
+    for y in (29, 33):
+        d.line([box(46, y, 66, y)[0:2], box(46, y, 66, y)[2:4]], fill=(160, 166, 174), width=2 * k)
+    # Pedestal.
+    d.polygon([(30 * k, 70 * k), (66 * k, 70 * k), (62 * k, 108 * k), (34 * k, 108 * k)], fill=(206, 210, 214),
+              outline=OUTLINE, width=3 * k)
+    d.polygon([(54 * k, 72 * k), (64 * k, 72 * k), (61 * k, 106 * k), (54 * k, 106 * k)], fill=(170, 176, 184))
+    # Bowl and seat, seen from above at an angle: an ellipse ring with blue chemical inside.
+    d.ellipse(box(10, 54, 86, 82), fill=(196, 200, 206), outline=OUTLINE, width=3 * k)
+    d.ellipse(box(12, 52, 84, 78), fill=(244, 246, 248), outline=OUTLINE, width=3 * k)
+    d.ellipse(box(22, 57, 74, 73), fill=(36, 96, 150), outline=OUTLINE, width=2 * k)
+    d.ellipse(box(26, 59, 68, 70), fill=(60, 150, 210))
+    d.arc(box(30, 60, 58, 68), 200, 300, fill=(190, 230, 250), width=2 * k)
+    # Jerrycan of the chemical: green, with a handle and a white drop.
+    shade(78, 70, 110, 112, (110, 170, 120), (52, 96, 62), radius=4)
+    d.rounded_rectangle(box(84, 62, 104, 72), radius=3 * k, outline=OUTLINE, width=3 * k)
+    d.rectangle(box(80, 66, 86, 72), fill=(70, 72, 78), outline=OUTLINE, width=2 * k)
+    drop = [(94 * k, 80 * k), (100 * k, 92 * k), (99 * k, 96 * k), (94 * k, 99 * k), (89 * k, 96 * k), (88 * k, 92 * k)]
+    d.polygon(drop, fill=(240, 244, 246))
+    d.line([(84 * k, 104 * k), (104 * k, 104 * k)], fill=(40, 70, 46), width=2 * k)
+    return img.resize((128, 128), Image.LANCZOS)
 
 
 def flight_computer_icon():

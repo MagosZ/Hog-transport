@@ -19,7 +19,7 @@ the cabin.
 - Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
   east or west it takes 7×4.
 - Roles: pilot ×1 (Movement, needed to fly; also fires the front gun if one is fitted), co-pilot ×1 (no handling, optional), passenger ×8.
-- Cargo 1000 kg, mass 1800, flight speed 30.
+- Cargo 1500 kg, mass 1800, flight speed 30.
 - Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
   it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
@@ -158,7 +158,7 @@ speed per tick, like building.
 - `HogShuttle_CargoOutfit`: "Cargo outfit", *"Swaps six of the passenger seats for tie-down points: 2
   passenger seats, 1000 kg more cargo space."* No cost, work 500. `VehicleUpgrade` role edit
   (`editKey` Passenger, slots 2), like the Hind's Cabin Modification; `StatUpgrade` CargoCapacity +1000. Stacks
-  with the plasteel armour (1000 − 200 + 1000 = 1800 kg). Vehicle Framework doesn't unload pawns when a role edit
+  with the plasteel armour (1500 − 200 + 1000 = 2300 kg). Vehicle Framework doesn't unload pawns when a role edit
   lowers the slots (`VehicleRole.AddUpgrade` only records it), so unload passengers before fitting it.
 - **Rear door gun** (only one can be fitted): `HogShuttle_DoorGunMMG` / `HogShuttle_DoorGunHMG` /
   `HogShuttle_DoorGunMinigun`. These are the Louie's three door-gun options in "VVE - Secondary Weapons"
@@ -179,8 +179,7 @@ speed per tick, like building.
   all come from VVE - Secondary Weapons, so they follow its updates. The Hog has an empty `CompProperties_VehicleTurrets` for
   the upgrade to fill, and every upgrade node has an `<upgrades>` list, even an empty one, because Vehicle
   Framework's turret code reads it without a null check.
-- `HogShuttle_Autocannon`: "Autocannon". 100 steel, 15 plasteel, 3 components, work 3000, and `StatUpgrade` CargoCapacity -30. **Conflicts with the front minigun**; can be fitted
-  with a door gun. Turret def in `Defs/TurretDefs/HogShuttle_Autocannon.xml`, CE in
+- `HogShuttle_Autocannon`: "Autocannon". 100 steel, 15 plasteel, 3 components, work 3000, and `StatUpgrade` CargoCapacity -30. Can be fitted with the front minigun and a door gun. Turret def in `Defs/TurretDefs/HogShuttle_Autocannon.xml`, CE in
   `Mods/CombatExtended/Patches/HogShuttle_Autocannon.xml`.
 
   The weapon is vanilla's autocannon turret (`Turret_Autocannon`, `Gun_AutocannonTurret`; with CE, CE's version of it), with
@@ -203,11 +202,11 @@ speed per tick, like building.
   - A real turret, on the roof behind the cockpit (B2–C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). Its image is separate and turns about its centre; the round mounting ring looks fixed to the
     roof. It swings at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is on, so the shuttle
-    turns to keep the target in the arc. It shares the key `frontGun` with the minigun.
+    turns to keep the target in the arc, unless the minigun is fitted too (see below). Its key is `autocannon`.
   - No fire points, since those made shells curve under CE. Shots leave from the muzzle (`projectileOffset` 1.48).
   - CE recoil is 0, like the Hind's.
-- `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. **Conflicts
-  with the autocannon**; can be fitted with a door gun. One turret, on the starboard side only.
+- `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. Can be fitted with
+  the autocannon and a door gun. One turret, on the starboard side only.
 
   The numbers and art are `TGBM_ExposedMinigun`'s, on a def of its own, because that one's accuracy can draw on its
   crew and this one has no gunner seat. `spreadRadius` 1 gives a fixed accuracy.
@@ -229,18 +228,21 @@ speed per tick, like building.
   north), and VTOL Vehicle only swings an idle gun back once it's crewed. `FittedGunsAlignExtension` on the Hog
   (`Source/FittedGuns.cs`): a postfix on `CompVehicleTurrets.AddTurret` sets a gun added by an upgrade to the aircraft's
   heading plus its `defaultAngleRotated`: forward for the front guns, backward for the door guns (180).
-- **The front gun steers the shuttle.** The AircraftProperties' combat hover is on with `combatDirectionalHoverTurretKey` =
-  `frontGun`, the key of whichever gun is fitted. `SteadyFrontGunExtension` on the Hog (`Source/FrontGunHover.cs`) adds two postfixes
-  on VTOL's flight controller, whose method names come from the Hind's source. `ShouldApplyCombatDirectionalHoverFacing`: VTOL
+- **One front gun steers the shuttle.** `SteadyFrontGunExtension` on the Hog (`Source/FrontGunHover.cs`, `turrets` = `frontGun`,
+  `autocannon`): the first one fitted drives, so the minigun when it's there, else the autocannon. Before each of the flight
+  controller's steps that look at it, a prefix sets the AircraftProperties' `combatDirectionalHoverTurretKey` to the driver's
+  key (the def's value, `frontGun`, is the default) and lets only the driver steer for a target given by hand
+  (`rotateVehicleToTargetWhileTargeting` on the turret instances). Two postfixes on the controller, whose method names come
+  from the Hind's source. `ShouldApplyCombatDirectionalHoverFacing`: VTOL
   lets go of the combat facing once lined up and the nose wanders back to the move order's, so it stays applied.
-  `BestVehicleTurretAutoTarget`: only the front gun's target counts, so a door gun's target can't swing the nose, and with no
+  `BestVehicleTurretAutoTarget`: only the driver's target counts, so a door gun's target can't swing the nose, and with no
   front gun, or a pacifist pilot, the nose stays free.
 - **UI pictures show the bare hull.** `BareHullIconsExtension` (`Source/BareHullIcons.cs`): a postfix on `BlitRequest.For(VehiclePawn)`
   drops the turrets. That request draws the "before" side of the Upgrades tab's comparison and other UI icons; the "after" side
   builds its own request, so it still shows the guns.
 - **Pilot fires the front gun.** Vehicle Framework bars pawns incapable of violence from any seat with Turret handling, so
   the seat stays Movement only and no role lists the front guns. `PilotGunExtension` on the Hog (`Source/PilotGun.cs`,
-  `turrets` = `frontGun`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
+  `turrets` = `frontGun`, `autocannon`): a postfix on `VehicleTurret.RecacheMannedStatus` counts the gun as manned only with a
   crewed pilot's seat and a pilot capable of violence, and a postfix on `VehicleTurret.IsDisabled` greys out its button with
   a reason. A caution message appears when a pacifist takes the seat (keyed `HogShuttle_PacifistPilot`), once per vehicle;
   the first check of a vehicle only records the pilot, so loading a save says nothing.
@@ -274,10 +276,9 @@ a one-cell-wide target).
 
 ## 3. Building and research
 
-- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components, and VVE parts: 2 engine blocks, 4 alternators, 4 exhausts, 3
-  suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks. With Odyssey, 3 advanced components + 2 shuttle engines;
-  without Odyssey, 28 advanced components. Work 48000 (58000 more to craft the parts), construction 10.
-  Both come to a market value of 11915, a little over VVE's Cherokee (11744), its most expensive helicopter. The base def
+- `HogShuttle_Blueprint`: 450 steel, 250 plasteel, 10 components, and VVE parts: 4 alternators, 4 exhausts, 3 suspensions, 2 transmissions, 4 wirings, 2 batteries, 2 fuel tanks. With Odyssey, 3 advanced components + 2 shuttle engines;
+  without Odyssey, 28 advanced components. Work 48000 (48000 more to craft the parts), construction 10.
+  Both come to a market value of 11265, a little under VVE's Cherokee (11744), its most expensive helicopter. The base def
   has the no-Odyssey cost; `Mods/Odyssey/Patches/HogShuttle_Cost.xml` (loaded only with Odyssey via LoadFolders.xml) replaces
   the 28 advanced components with 3 + 2 shuttle engines.
 - `HogShuttle_Research` in VVE's `Vehicles` tab at (3, 0): Spacer, 3000, hi-tech research bench and
