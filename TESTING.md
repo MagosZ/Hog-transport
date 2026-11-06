@@ -102,11 +102,9 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
       both 2270) and comes back when removed.
 - [ ] Fitted: the turret draws on the roof behind the cockpit, on the centre line, at any heading, parked and in flight.
       Without the upgrade, no gun shows.
-- [ ] Airborne with a target, by hand or on auto-target: the nose turns to it and stays on it, without wandering back to the
-      last move order's facing, while the head and barrel track within 30 degrees and the mounting ring looks fixed. After
-      firing it swings back to face forward.
-- [ ] Moving while a target is held: the shuttle still goes where it's ordered.
-- [ ] A door gun's target behind the shuttle doesn't swing the nose round. With no front gun, the nose never turns by itself.
+- [ ] Airborne with a target, by hand or on auto-target: the head and barrel track it within 30 degrees, the mounting ring
+      looks fixed, and the nose doesn't turn for it. After firing it swings back to face forward.
+- [ ] A door gun's or the autocannon's target doesn't swing the nose round. With no minigun, the nose never turns by itself.
 - [ ] Fire modes: Single, Burst and Auto on its button.
 - [ ] A newly fitted gun on a Hog parked facing east or west: it points forward straight away, with nobody aboard.
 - [ ] Without CE: Single (1 round a second), Burst 3 and Auto 6 (every 3.5 s or so), range 8.9 to 29.6, 27 damage, 135 rounds at 2 steel each. Shots and the
@@ -122,8 +120,10 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Its arc is 6 degrees either side of the nose. Airborne with a target by hand: the nose turns to it. Parked, it can
       only reach what's nearly straight ahead.
 - [ ] Hovering on auto-target: the nose turns to enemies (VTOL's combat hover, key `frontGun`).
-- [ ] Both front guns fitted: the shuttle steers by the minigun, by hand and on auto-target; the autocannon only traverses
-      within its 30 degrees and fires at what it can reach. Remove the minigun: the autocannon steers again.
+- [ ] Hovering with a target: the nose stays on it, without wandering back to the last move order's facing; moving while
+      it's held, the shuttle still goes where it's ordered.
+- [ ] Both front guns fitted: the shuttle steers by the minigun; the autocannon traverses within its 30 degrees and fires at
+      what it can reach.
 - [ ] Without CE: 25-round bursts, range 30.9, 200 rounds, steel. Accuracy doesn't change with the pilot's Shooting skill.
 - [ ] With CE: Single / Burst / Auto, range 62, 2000 rounds of 7.62×51 NATO; the shells fly straight.
 

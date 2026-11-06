@@ -84,7 +84,7 @@
 	<Operation Class="PatchOperationReplace">
 		<xpath>Defs/Vehicles.VehicleTurretDef[defName="HogShuttle_Autocannon"]/description</xpath>
 		<value>
-			<description>An autocannon in a roof turret, fed from a 150-round magazine. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. Worked by the pilot. Reloads with 20x102mm shells.</description>
+			<description>An autocannon in a roof turret, fed from a 150-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with 20x102mm shells.</description>
 		</value>
 	</Operation>
 </Patch>

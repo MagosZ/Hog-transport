@@ -9,7 +9,7 @@
 	<Vehicles.VehicleTurretDef ParentName="VehicleTurretBase">
 		<defName>HogShuttle_Autocannon</defName>
 		<label>autocannon</label>
-		<description>An autocannon in a roof turret, fed from a 135-round magazine. Traverses 30 degrees either side of the nose, and the shuttle turns to keep its target in the arc. Worked by the pilot. Reloads with steel.</description>
+		<description>An autocannon in a roof turret, fed from a 135-round magazine. Traverses 30 degrees either side of the nose. Worked by the pilot. Reloads with steel.</description>
 		<turretType>Rotatable</turretType>
 		<gizmoIconTexPath>HogShuttle/Upgrade_Autocannon</gizmoIconTexPath>
 

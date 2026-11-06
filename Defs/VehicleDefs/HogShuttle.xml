@@ -520,13 +520,10 @@
 			</li>
 			<!-- Guns fitted by an upgrade start out facing their default direction, relative to the aircraft (HogShuttle.dll). -->
 			<li Class="HogShuttle.FittedGunsAlignExtension" />
-			<!-- The first front gun fitted, in this order, drives: VTOL's combat hover answers only to it and holds the nose on
-			     its target, and only it turns the shuttle for a target given by hand (HogShuttle.dll). -->
+			<!-- Only the front minigun drives: VTOL's combat hover answers only to it and holds the nose on its target
+			     (HogShuttle.dll). The autocannon traverses on its own and never turns the shuttle. -->
 			<li Class="HogShuttle.SteadyFrontGunExtension">
-				<turrets>
-					<li>frontGun</li>
-					<li>autocannon</li>
-				</turrets>
+				<turret>frontGun</turret>
 			</li>
 			<!-- UI pictures of the shuttle leave out its guns (HogShuttle.dll). -->
 			<li Class="HogShuttle.BareHullIconsExtension" />
@@ -565,8 +562,8 @@
 				<microMoveMaxSpeed>0.03</microMoveMaxSpeed>
 				<microMoveAccelerationPerTick>0.00006</microMoveAccelerationPerTick>
 				<microMoveDecelerationPerTick>0.00006</microMoveDecelerationPerTick>
-				<!-- Hovering in combat, the nose turns to the driving front gun's target, as on the Hind's nose cannon. HogShuttle.dll
-				     sets this key to that gun's before each step of the flight controller; this is the default. -->
+				<!-- Hovering in combat, the nose turns to the front minigun's target, as on the Hind's nose cannon. The turret only
+				     exists once that upgrade is fitted. -->
 				<combatDirectionalHoverEnabled>true</combatDirectionalHoverEnabled>
 				<combatDirectionalHoverTurretKey>frontGun</combatDirectionalHoverTurretKey>
 				<takeoffDrawCurve>

@@ -202,7 +202,7 @@ speed per tick, like building.
   - A real turret, on the roof behind the cockpit (B2–C2, centre line, pivot north offset (0, 1.84)), drawn on top of the
     airframe (`drawLayer` 1). Its image is separate and turns about its centre; the round mounting ring looks fixed to the
     roof. It swings at the Hind chin turret's rotation values, and `rotateVehicleToTargetWhileTargeting` is on, so the shuttle
-    turns to keep the target in the arc, unless the minigun is fitted too (see below). Its key is `autocannon`.
+    never turns: `rotateVehicleToTargetWhileTargeting` is off, like the Hind's chin turret. Its key is `autocannon`.
   - No fire points, since those made shells curve under CE. Shots leave from the muzzle (`projectileOffset` 1.48).
   - CE recoil is 0, like the Hind's.
 - `HogShuttle_FrontMinigun`: "Front minigun". 135 steel, 11 components, work 5000 (a door gun minigun), no cargo cost. Can be fitted with
@@ -228,15 +228,13 @@ speed per tick, like building.
   north), and VTOL Vehicle only swings an idle gun back once it's crewed. `FittedGunsAlignExtension` on the Hog
   (`Source/FittedGuns.cs`): a postfix on `CompVehicleTurrets.AddTurret` sets a gun added by an upgrade to the aircraft's
   heading plus its `defaultAngleRotated`: forward for the front guns, backward for the door guns (180).
-- **One front gun steers the shuttle.** `SteadyFrontGunExtension` on the Hog (`Source/FrontGunHover.cs`, `turrets` = `frontGun`,
-  `autocannon`): the first one fitted drives, so the minigun when it's there, else the autocannon. Before each of the flight
-  controller's steps that look at it, a prefix sets the AircraftProperties' `combatDirectionalHoverTurretKey` to the driver's
-  key (the def's value, `frontGun`, is the default) and lets only the driver steer for a target given by hand
-  (`rotateVehicleToTargetWhileTargeting` on the turret instances). Two postfixes on the controller, whose method names come
-  from the Hind's source. `ShouldApplyCombatDirectionalHoverFacing`: VTOL
+- **Only the minigun steers the shuttle.** The autocannon has `rotateVehicleToTargetWhileTargeting` off and traverses on its
+  own. The AircraftProperties' combat hover is on with `combatDirectionalHoverTurretKey` = `frontGun`, the minigun's key.
+  `SteadyFrontGunExtension` on the Hog (`Source/FrontGunHover.cs`, `turret` = `frontGun`) adds two postfixes on VTOL's flight
+  controller, whose method names come from the Hind's source. `ShouldApplyCombatDirectionalHoverFacing`: VTOL
   lets go of the combat facing once lined up and the nose wanders back to the move order's, so it stays applied.
-  `BestVehicleTurretAutoTarget`: only the driver's target counts, so a door gun's target can't swing the nose, and with no
-  front gun, or a pacifist pilot, the nose stays free.
+  `BestVehicleTurretAutoTarget`: only the minigun's target counts, so neither a door gun's nor the autocannon's can swing the
+  nose, and with no minigun, or a pacifist pilot, the nose stays free.
 - **UI pictures show the bare hull.** `BareHullIconsExtension` (`Source/BareHullIcons.cs`): a postfix on `BlitRequest.For(VehiclePawn)`
   drops the turrets. That request draws the "before" side of the Upgrades tab's comparison and other UI icons; the "after" side
   builds its own request, so it still shows the guns.

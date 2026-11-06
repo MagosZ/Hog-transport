@@ -9,27 +9,22 @@ using Verse.AI;
 
 namespace HogShuttle
 {
-    /// <summary>On a VehicleDef: of the front guns in <see cref="turrets"/>, the first one fitted drives: VTOL Vehicle's
-    /// combat hover answers only to it and holds the nose on its target, and only it turns the shuttle for a target given by
-    /// hand. The others still fire, within their own arcs.</summary>
+    /// <summary>On a VehicleDef: the gun with key <see cref="turret"/> drives: VTOL Vehicle's combat hover answers only to it
+    /// and holds the nose on its target. Other guns never turn the shuttle.</summary>
     public class SteadyFrontGunExtension : DefModExtension
     {
-        public List<string> turrets;
+        public string turret;
 
         public VehicleTurret Driver(VehiclePawn vehicle)
         {
             IReadOnlyList<VehicleTurret> fitted = vehicle.CompVehicleTurrets?.Turrets;
-            if (fitted == null || turrets == null)
+            if (fitted != null)
             {
-                return null;
-            }
-            foreach (string key in turrets)
-            {
-                foreach (VehicleTurret turret in fitted)
+                foreach (VehicleTurret candidate in fitted)
                 {
-                    if (turret.key == key)
+                    if (candidate.key == turret)
                     {
-                        return turret;
+                        return candidate;
                     }
                 }
             }
@@ -43,70 +38,10 @@ namespace HogShuttle
     {
         public static readonly Type Controller = AccessTools.TypeByName("VTOLVehicle.VtolFlightController");
         public static readonly FieldInfo ControllerVehicle = Controller == null ? null : AccessTools.Field(Controller, "vehicle");
-        public static readonly MethodInfo ControllerProps = Controller == null ? null : AccessTools.PropertyGetter(Controller, "Props");
-        public static readonly FieldInfo HoverTurretKey =
-            AccessTools.Field(AccessTools.TypeByName("VTOLVehicle.AircraftProperties"), "combatDirectionalHoverTurretKey");
-        public static readonly FieldInfo SteersAirframe =
-            AccessTools.Field(AccessTools.TypeByName("VTOLVehicle.VtolVehicleTurret"), "rotateVehicleToTargetWhileTargeting");
 
         public static MethodInfo Method(string name) => Controller == null ? null : AccessTools.Method(Controller, name);
 
         public static VehiclePawn VehicleOf(object controller) => ControllerVehicle?.GetValue(controller) as VehiclePawn;
-
-        /// <summary>Points the hover at the driving gun and lets only that one steer for targets given by hand. The key is
-        /// on the def's AircraftProperties, shared by every Hog, so it is set again before each of this controller's steps.</summary>
-        public static void SetDriver(object controller)
-        {
-            VehiclePawn vehicle = VehicleOf(controller);
-            SteadyFrontGunExtension steady = vehicle?.def.GetModExtension<SteadyFrontGunExtension>();
-            if (steady?.turrets == null)
-            {
-                return;
-            }
-            VehicleTurret driver = steady.Driver(vehicle);
-            object props = ControllerProps?.Invoke(controller, null);
-            if (props != null && HoverTurretKey != null)
-            {
-                HoverTurretKey.SetValue(props, driver?.key ?? steady.turrets[0]);
-            }
-            if (SteersAirframe == null)
-            {
-                return;
-            }
-            foreach (VehicleTurret turret in vehicle.CompVehicleTurrets.Turrets)
-            {
-                if (steady.turrets.Contains(turret.key) && SteersAirframe.DeclaringType.IsInstanceOfType(turret))
-                {
-                    SteersAirframe.SetValue(turret, turret == driver);
-                }
-            }
-        }
-    }
-
-    /// <summary>Sets the driving gun before each of the controller's steps that look at it.</summary>
-    [HarmonyPatch]
-    public static class Patch_VtolFlightController_SetDriver
-    {
-        private static readonly string[] Steps =
-        {
-            "TickMovement", "TryGetTurretCombatFacing", "TryManualTurretTargetFacing", "BestVehicleTurretAutoTarget",
-        };
-
-        public static bool Prepare() => Vtol.ControllerVehicle != null && Vtol.HoverTurretKey != null;
-
-        public static IEnumerable<MethodBase> TargetMethods()
-        {
-            foreach (string step in Steps)
-            {
-                MethodInfo method = Vtol.Method(step);
-                if (method != null)
-                {
-                    yield return method;
-                }
-            }
-        }
-
-        public static void Prefix(object __instance) => Vtol.SetDriver(__instance);
     }
 
     /// <summary>VTOL Vehicle stops applying the combat facing once the hovering aircraft has lined up, and hands the nose back
@@ -129,8 +64,8 @@ namespace HogShuttle
     }
 
     /// <summary>VTOL Vehicle's combat hover turns the nose to the best target of any auto-targeting gun, so a door gun's
-    /// target behind the shuttle would swing the front gun away from its own. Only the driving gun's target counts, and
-    /// with no front gun, or one that can't fire, the nose stays free.</summary>
+    /// target behind the shuttle, or the autocannon's, would swing the nose. Only the minigun's target counts, and with no
+    /// minigun, or one that can't fire, the nose stays free.</summary>
     [HarmonyPatch]
     public static class Patch_VtolFlightController_BestAutoTarget
     {
