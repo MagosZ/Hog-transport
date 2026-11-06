@@ -120,6 +120,7 @@ Nothing here has been tested in game yet. Check `Player.log` for errors mentioni
 - [ ] Its arc is 6 degrees either side of the nose. Airborne with a target by hand: the nose turns to it. Parked, it can
       only reach what's nearly straight ahead.
 - [ ] Hovering on auto-target: the nose turns to enemies (VTOL's combat hover, key `frontGun`).
+- [ ] Hovering, give the minigun a target well off the nose by hand: the nose turns to it straight away, then the gun fires.
 - [ ] Hovering with a target: the nose stays on it, without wandering back to the last move order's facing; moving while
       it's held, the shuttle still goes where it's ordered.
 - [ ] Both front guns fitted: the shuttle steers by the minigun; the autocannon traverses within its 30 degrees and fires at

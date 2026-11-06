@@ -39,9 +39,64 @@ namespace HogShuttle
         public static readonly Type Controller = AccessTools.TypeByName("VTOLVehicle.VtolFlightController");
         public static readonly FieldInfo ControllerVehicle = Controller == null ? null : AccessTools.Field(Controller, "vehicle");
 
+        public static readonly Type Turret = AccessTools.TypeByName("VTOLVehicle.VtolVehicleTurret");
+        public static readonly MethodInfo IsValidHoverTarget =
+            Controller == null ? null : AccessTools.Method(Controller, "IsValidCombatDirectionalHoverTarget");
+
         public static MethodInfo Method(string name) => Controller == null ? null : AccessTools.Method(Controller, name);
 
         public static VehiclePawn VehicleOf(object controller) => ControllerVehicle?.GetValue(controller) as VehiclePawn;
+    }
+
+    /// <summary>VTOL Vehicle's combat facing only follows a gun's current target. A fixed gun can't take a target outside its
+    /// narrow arc, so a target given by hand off the nose stays a request (LastVtolTargetRequest) and the nose never turns
+    /// to it; the gun only got there if the target happened to cross its arc. So the minigun's own target comes first, then
+    /// the one asked for by hand, and the nose turns to whichever it is. With neither, VTOL picks as usual.</summary>
+    [HarmonyPatch]
+    public static class Patch_VtolFlightController_CombatFacing
+    {
+        private static readonly MethodInfo LastRequest =
+            Vtol.Turret == null ? null : AccessTools.PropertyGetter(Vtol.Turret, "LastVtolTargetRequest");
+        private static readonly MethodInfo FacingFor =
+            Vtol.Turret == null ? null : AccessTools.Method(Vtol.Turret, "TryGetVehicleFacingForTarget");
+
+        public static bool Prepare() => TargetMethod() != null && Vtol.ControllerVehicle != null &&
+            Vtol.IsValidHoverTarget != null && LastRequest != null && FacingFor != null;
+
+        public static MethodBase TargetMethod() => Vtol.Method("TryGetTurretCombatFacing");
+
+        public static bool Prefix(object __instance, ref bool __result, ref float facingAngle, ref Thing target)
+        {
+            VehiclePawn vehicle = Vtol.VehicleOf(__instance);
+            VehicleTurret driver = vehicle?.def.GetModExtension<SteadyFrontGunExtension>()?.Driver(vehicle);
+            if (driver == null || driver.TurretDisabled || !Vtol.Turret.IsInstanceOfType(driver))
+            {
+                return true;
+            }
+            Thing aim = driver.targetInfo.Thing;
+            if (!Usable(__instance, driver, aim))
+            {
+                aim = ((LocalTargetInfo)LastRequest.Invoke(driver, null)).Thing;
+                if (!Usable(__instance, driver, aim))
+                {
+                    return true;
+                }
+            }
+            object[] args = { aim.DrawPos, 0f };
+            if (!(bool)FacingFor.Invoke(driver, args))
+            {
+                return true;
+            }
+            facingAngle = (float)args[1];
+            target = aim;
+            __result = true;
+            return false;
+        }
+
+        private static bool Usable(object controller, VehicleTurret turret, Thing thing) =>
+            thing != null && thing.Spawned && !thing.Destroyed &&
+            (bool)Vtol.IsValidHoverTarget.Invoke(controller, new object[] { thing, true }) &&
+            turret.InRange(new LocalTargetInfo(thing));
     }
 
     /// <summary>VTOL Vehicle stops applying the combat facing once the hovering aircraft has lined up, and hands the nose back
@@ -72,7 +127,7 @@ namespace HogShuttle
         // VTOL Vehicle's own scan flag for these searches, which looks past the gun's arc.
         private const TargetScanFlags HoverScan = (TargetScanFlags)256;
 
-        private static readonly MethodInfo IsValid = Vtol.Method("IsValidCombatDirectionalHoverTarget");
+        private static readonly MethodInfo IsValid = Vtol.IsValidHoverTarget;
 
         public static bool Prepare() => TargetMethod() != null && Vtol.ControllerVehicle != null && IsValid != null;
 
