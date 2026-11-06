@@ -236,8 +236,7 @@ speed per tick, like building.
   `TryGetTurretCombatFacing` (a prefix): VTOL's combat facing only follows a gun's current target, and a fixed gun can't take
   a target outside its arc, so a target given by hand off the nose stayed a request and the nose didn't turn to it. The
   minigun's own target comes first, then the one asked for by hand (`LastVtolTargetRequest`, as the Hind uses it). The facing is held on (`ShouldApplyCombatDirectionalHoverFacing`) only
-  while the minigun has such a target, so VTOL's own steering for a target given by hand isn't shut out. In development mode the
-  steps are logged (`[HogShuttle]` lines, once a second), and the VTOL hooks found are listed once at startup.
+  while the minigun has such a target, so VTOL's own steering for a target given by hand isn't shut out.
   `BestVehicleTurretAutoTarget`: only the minigun's target counts, so neither a door gun's nor the autocannon's can swing the
   nose, and with no minigun, or a pacifist pilot, the nose stays free.
 - **UI pictures show the bare hull.** `BareHullIconsExtension` (`Source/BareHullIcons.cs`): a postfix on `BlitRequest.For(VehiclePawn)`

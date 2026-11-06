@@ -83,41 +83,6 @@ namespace HogShuttle
             turret.InRange(new LocalTargetInfo(thing));
     }
 
-    /// <summary>Diagnostics for the steering, in development mode only, at most once a second per vehicle and step. VTOL
-    /// Vehicle is closed source, so this is how its steps can be seen. The hooks found are listed once at startup.</summary>
-    [StaticConstructorOnStartup]
-    internal static class SteerLog
-    {
-        private static readonly Dictionary<string, int> Last = new Dictionary<string, int>();
-
-        static SteerLog()
-        {
-            string Found(MethodInfo m) => m != null ? "yes" : "NO";
-            Log.Message("[HogShuttle] VTOL steering hooks: TryGetTurretCombatFacing " + Found(Vtol.Method("TryGetTurretCombatFacing")) +
-                ", ShouldApplyCombatDirectionalHoverFacing " + Found(Vtol.Method("ShouldApplyCombatDirectionalHoverFacing")) +
-                ", TryManualTurretTargetFacing " + Found(Vtol.Method("TryManualTurretTargetFacing")) +
-                ", BestVehicleTurretAutoTarget " + Found(Vtol.Method("BestVehicleTurretAutoTarget")) +
-                ", IsValidCombatDirectionalHoverTarget " + Found(Vtol.IsValidHoverTarget) +
-                ", LastVtolTargetRequest " + Found(Vtol.LastRequest) + ", TryGetVehicleFacingForTarget " + Found(Vtol.FacingFor));
-        }
-
-        public static void Note(VehiclePawn vehicle, string step, string text)
-        {
-            if (!Prefs.DevMode || vehicle == null)
-            {
-                return;
-            }
-            string key = vehicle.thingIDNumber + step;
-            int now = Find.TickManager.TicksGame;
-            if (Last.TryGetValue(key, out int last) && now - last < 60)
-            {
-                return;
-            }
-            Last[key] = now;
-            Log.Message($"[HogShuttle] {vehicle.LabelShort} {step}: {text}");
-        }
-    }
-
     /// <summary>VTOL Vehicle's combat facing only follows a gun's current target. A fixed gun can't take a target outside its
     /// narrow arc, so a target given by hand off the nose stays a request (LastVtolTargetRequest) and the nose never turns
     /// to it. So the minigun's own target comes first, then the one asked for by hand, and the nose turns to whichever it
@@ -136,64 +101,17 @@ namespace HogShuttle
             Thing aim = Vtol.Aim(__instance, driver);
             if (aim == null)
             {
-                SteerLog.Note(driver?.vehicle, "combat facing", driver == null ? "no minigun, VTOL picks" :
-                    $"nothing to aim at (own {driver.targetInfo}, asked {Vtol.Request(driver)?.LabelShort ?? "none"}), VTOL picks");
                 return true;
             }
             object[] args = { aim.DrawPos, 0f };
             if (!(bool)Vtol.FacingFor.Invoke(driver, args))
             {
-                SteerLog.Note(driver.vehicle, "combat facing", $"no facing for {aim.LabelShort}, VTOL picks");
                 return true;
             }
             facingAngle = (float)args[1];
             target = aim;
             __result = true;
-            SteerLog.Note(driver.vehicle, "combat facing", $"facing {facingAngle:0} for {aim.LabelShort}");
             return false;
-        }
-    }
-
-    /// <summary>For the log only: what VTOL Vehicle's own steering for a target given by hand comes up with.</summary>
-    [HarmonyPatch]
-    public static class Patch_VtolFlightController_ManualFacing_Log
-    {
-        public static bool Prepare() => TargetMethod() != null && Vtol.ControllerVehicle != null;
-
-        public static MethodBase TargetMethod() => Vtol.Method("TryManualTurretTargetFacing");
-
-        public static void Postfix(object __instance, bool __result, float facingAngle, Thing target)
-        {
-            if (Prefs.DevMode && Vtol.VehicleOf(__instance)?.def.GetModExtension<SteadyFrontGunExtension>() != null)
-            {
-                SteerLog.Note(Vtol.VehicleOf(__instance), "manual facing",
-                    __result ? $"facing {facingAngle:0} for {target?.LabelShort ?? "a cell"}" : "none");
-            }
-        }
-    }
-
-    /// <summary>For the log only: what a target given to the minigun becomes.</summary>
-    [HarmonyPatch]
-    public static class Patch_VehicleTurret_SetTarget_Log
-    {
-        public static IEnumerable<MethodBase> TargetMethods()
-        {
-            yield return AccessTools.Method(typeof(VehicleTurret), nameof(VehicleTurret.SetTarget), new[] { typeof(LocalTargetInfo) });
-            MethodInfo vtol = Vtol.Turret == null ? null : AccessTools.DeclaredMethod(Vtol.Turret, "SetTarget", new[] { typeof(LocalTargetInfo) });
-            if (vtol != null)
-            {
-                yield return vtol;
-            }
-        }
-
-        public static void Postfix(VehicleTurret __instance, LocalTargetInfo target)
-        {
-            if (!Prefs.DevMode || !target.IsValid || __instance.vehicle?.def.GetModExtension<SteadyFrontGunExtension>() == null)
-            {
-                return;
-            }
-            Log.Message($"[HogShuttle] {__instance.vehicle.LabelShort} {__instance.key} asked for {target}: now has {__instance.targetInfo}, " +
-                $"request {Vtol.Request(__instance)?.LabelShort ?? "none"}");
         }
     }
 
@@ -214,11 +132,9 @@ namespace HogShuttle
                 return;
             }
             // Only while the minigun is after something, so VTOL's own steering for a target given by hand isn't shut out.
-            VehicleTurret driver = Vtol.DriverOf(__instance);
-            if (Vtol.Aim(__instance, driver) != null)
+            if (Vtol.Aim(__instance, Vtol.DriverOf(__instance)) != null)
             {
                 __result = true;
-                SteerLog.Note(driver.vehicle, "hold facing", "kept on");
             }
         }
     }
