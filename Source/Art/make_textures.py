@@ -3,16 +3,18 @@
 Run from anywhere: python make_textures.py [check-image path]
 Writes Textures/HogShuttle/: Body and its mask Body_m (the top-down view clipped to the footprint, from body_views.py),
 WingTips (the rest of the wings, shown while the engines run), Shadow and BuildIcon (with the full wings),
-Transparent, the upgrade icons, and the Autocannon roof turret with its icon.
+Transparent, the upgrade icons, and the Autocannon roof turret with its icon; and the Workshop preview,
+About/Preview.png.
 """
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 import body_views
 
 OUT = Path(__file__).resolve().parents[2] / "Textures" / "HogShuttle"
+ABOUT = Path(__file__).resolve().parents[2] / "About"
 
 HULL = (120, 124, 130, 255)
 HULL_DARK = (82, 86, 92, 255)
@@ -119,6 +121,50 @@ def cargo_icon():
     return img
 
 
+def font(name, size):
+    """A Windows font if there is one, else Pillow's own."""
+    try:
+        return ImageFont.truetype(f"C:/Windows/Fonts/{name}", size)
+    except OSError:
+        return ImageFont.load_default()
+
+
+def preview(img, mask, gun):
+    """The Workshop preview, About/Preview.png, 1280x720: the Hog in flight, painted in its default colours, wings out and
+    the autocannon on the roof, over a dark sky, with its name."""
+    w, h = 1280, 720
+    out = Image.new("RGBA", (w, h))
+    d = ImageDraw.Draw(out)
+    for y in range(h):                                      # sky: dark slate at the top, a little lighter below
+        t = y / h
+        d.line([(0, y), (w, y)], fill=(round(20 + 26 * t), round(26 + 28 * t), round(36 + 30 * t), 255))
+    import random
+    rng = random.Random(7)
+    for _ in range(160):                                    # a few faint stars
+        x, y, r = rng.randrange(w), rng.randrange(h), rng.choice((1, 1, 1, 2))
+        v = rng.randrange(90, 200)
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(v, v, v + 20, 255))
+
+    hog = body_views.paint(img, mask)
+    hog.alpha_composite(gun, (round(3.5 * body_views.PX - gun.width / 2), round(body_views.GUN_PIVOT_Y * body_views.PX - gun.height / 2)))
+    hog = hog.resize((560, 560), Image.LANCZOS).rotate(-22, resample=Image.BICUBIC, expand=True)
+    cx, cy = 960, 372
+    pos = (cx - hog.width // 2, cy - hog.height // 2)
+    shade = Image.new("RGBA", hog.size, (0, 0, 0, 0))
+    shade.putalpha(hog.getchannel("A").point(lambda a: 120 if a > 20 else 0).filter(ImageFilter.GaussianBlur(14)))
+    out.alpha_composite(shade, (pos[0] + 60, pos[1] + 70))
+    out.alpha_composite(hog, pos)
+
+    d = ImageDraw.Draw(out)
+    d.text((70, 226), "HOG SHUTTLE", font=font("bahnschrift.ttf", 80), fill=(236, 238, 240, 255))
+    d.line([(74, 326), (440, 326)], fill=(86, 160, 104, 255), width=5)
+    lines = ["A boxy spacer shuttle that hovers", "like a VTOL, crosses the world map", "and flies to orbit and back."]
+    for i, line in enumerate(lines):
+        d.text((72, 348 + i * 38), line, font=font("segoeui.ttf", 28), fill=(196, 202, 210, 255))
+    d.text((72, 482), "Vehicle Framework  \u00b7  VTOL Vehicle  \u00b7  VVE", font=font("segoeuib.ttf", 22), fill=(150, 196, 160, 255))
+    return out.convert("RGB")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     img, mask = body_views.top()
@@ -138,6 +184,7 @@ def main():
     gun = body_views.autocannon()
     gun.save(OUT / "Autocannon.png")
     body_views.gun_icon(gun).save(OUT / "Upgrade_Autocannon.png")
+    preview(img, mask, gun).save(ABOUT / "Preview.png", optimize=True)
     if len(sys.argv) > 2:                       # optional check image of the gun on the body
         body_views.with_gun(img, gun).save(sys.argv[2])
     print("wrote", sorted(p.name for p in OUT.glob("*.png")))

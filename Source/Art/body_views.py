@@ -373,6 +373,21 @@ def top():
 DEFAULT_PAINT = ((176, 178, 182), (86, 128, 98), (150, 152, 156))
 
 
+def paint(img, mask, colours=DEFAULT_PAINT):
+    """The view as the game paints it: each pixel times its mask channel's colour, as the CutoutComplexPattern shader."""
+    out = img.copy()
+    pixels, mask_pixels = out.load(), mask.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = pixels[x, y]
+            weights = mask_pixels[x, y]
+            total = sum(weights)
+            if a and total:
+                tint = [sum(w * colour[c] for w, colour in zip(weights, colours)) / total for c in range(3)]
+                pixels[x, y] = (round(r * tint[0] / 255), round(g * tint[1] / 255), round(b * tint[2] / 255), a)
+    return out
+
+
 def split_wings(img, mask):
     """Cut the full view at the footprint's edges. Returns the body and its mask, parked exactly 4 cells wide, and
     the wing tips, the parts outside the footprint, which VTOL Vehicle's rotor code fades in when the engines run

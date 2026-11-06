@@ -37,7 +37,11 @@ RESEARCH
 - "Hog shuttle" in the Vehicles research tab (Vanilla Vehicles Expanded). Needs aerial vehicles and, with Odyssey, shuttle.
 - Spacer tech, hi-tech research bench and multi-analyzer.
 
-Placeholder art for now.</description>
+CREDITS
+- The Hind Gunship mod: the example that showed how VTOL Vehicle is set up, and the base for this mod's Combat Extended armour ratings.
+- VVE - Secondary Weapons: the door guns, and the front minigun's sprite and numbers.
+- Vanilla Furniture Expanded - Security and Vanilla Factions Expanded - Empire: their double autocannons inspired the roof autocannon.
+- Vehicle Framework, VTOL Vehicle and Vanilla Vehicles Expanded, which this mod is built on.</description>
 	<modDependencies>
 		<li>
 			<packageId>brrainz.harmony</packageId>

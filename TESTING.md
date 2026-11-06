@@ -1,6 +1,7 @@
 # Hog Shuttle: in-game checks
 
-Nothing here has been tested in game yet. Check `Player.log` for errors mentioning `HogShuttle` first.
+Played on RimWorld 1.7 during development; ticked items are confirmed, unticked ones haven't been checked one by one.
+Check `Player.log` for errors mentioning `HogShuttle` first.
 
 ## Loading
 - [ ] No config or XML errors for `HogShuttle`, `HogShuttle_Blueprint` or `HogShuttle_Research`.
