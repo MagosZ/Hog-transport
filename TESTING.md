@@ -1,6 +1,6 @@
 # Hog Shuttle: in-game checks
 
-Played on RimWorld 1.7 during development; ticked items are confirmed, unticked ones haven't been checked one by one.
+Played on RimWorld 1.7 during development. This is the full checklist; not every item has been checked one by one.
 Check `Player.log` for errors mentioning `HogShuttle` first.
 
 ## Loading
