@@ -10,7 +10,7 @@ door guns and the minigun). Odyssey, Dubs Bad Hygiene and Combat Extended are op
 
 - Design: [DESIGN.md](DESIGN.md)
 - In-game checks: [TESTING.md](TESTING.md)
-- Art: `python Source/Art/make_textures.py` writes the textures, icons and `About/Preview.png`;
+- Art (needs Pillow and numpy): `python Source/Art/make_textures.py` writes the textures, icons and `About/Preview.png`;
   `python Source/Art/components.py` writes the parts and their armour.
 - DLL (sealed cabin, orbit fuel, flight computer, front guns, fitted guns' facing, UI pictures):
   `dotnet build Source/HogShuttle.csproj -c Release` (net48; set `VFDir` in the .csproj to your Vehicle Framework

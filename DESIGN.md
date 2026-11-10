@@ -322,6 +322,17 @@ from the north-west and shadows cast down-right onto lower surfaces.
   arrows, a ring and a caged lamp at the leading corner. The band and its details are on the wing tips, so they show only
   while the engines run; the hinge and inner wing stay with the parked body.
 - **Skids:** hidden under the hull and wings.
+- **Detail pass** (2026-11-10, after a review against the kit): raised plates with bevelled edges lit from the north-west,
+  rivet rows along the roof's edges and chamfers, bolts, hatches with handles and hinges, louvred vents, ribbed conduits
+  along the spine, hoses from the sensor block to the engines, a warning ring round the refuelling cap, stiffener ribs, the
+  door's hinge and two lamp domes at the tail. Cockpit: a lip under the nose, a centre bar in the canopy, quarter windows,
+  lens barrels on the sensor pods. Engines: bolted intake rings, an access plate and sight glass on the duct, coil banks and
+  pistons round the brass coil block, a clamp on the neck, plates on the exhaust housing, a longer nozzle that runs steel to
+  blue to straw with a notched rim. Wings: inspection plates, a flap seam with hinge knuckles, rivets along the white line,
+  and the number 07 with more stencilling on the band.
+- **Wear** (`weather()` in `body_views.py`, at the final size, the same on every run): grain and blotches on the greys, grime
+  round recesses, streaks running aft, bare metal chipped along painted edges and a few rust runs. Chips and rust are
+  unpainted, so they keep their colour under any paint. Needs numpy as well as Pillow.
 - **Autocannon** (`Autocannon.png`, 4 cells square, `autocannon()` in `body_views.py`): a separate image that turns about its
   centre: a round mounting ring, the head, one ammo drum, and one barrel with a short ribbed jacket, a bare tip section and
   a muzzle brake. Unpainted.
