@@ -318,9 +318,13 @@ from the north-west and shadows cast down-right onto lower surfaces.
   below it is a vertical face, so it isn't visible from above.
 - **Gaps:** wing and hull don't join. A 0.12-cell slit of open air runs between them; the turbofans bridge it in rows
   3–5, and a strut crosses it in row 2 and in row 6. All art only, no hitbox change.
-- **Wings:** panel lines and rivets, with a green band along the outer edge, a white line, a stencil of three crossed
-  arrows, a ring and a caged lamp at the leading corner. The band and its details are on the wing tips, so they show only
-  while the engines run; the hinge and inner wing stay with the parked body.
+- **Wings** (`wing_outline()`): the kit's shape from above. The leading edge runs almost straight out from behind the
+  cockpit, a little forward, to a cut front corner that carries the caged lamp in an eight-sided pod. The outer edge is
+  straight, and the trailing edge is one long diagonal, so the wing is a cell longer at the hull than at the tip, with a
+  flap seam and hinge knuckles along it. The outer panel, green by default, turns down a little: lit on the port side,
+  shaded on the starboard. It carries the white line, a ring towards the front, the number 07 and stencilling. That
+  panel, the lamp pod and the tip are on the wing tips, so they show only while the engines run; the hinge and inner wing
+  stay with the parked body. Before 2026-11-10 the leading edge swept back from the root, unlike the kit's.
 - **Skids:** hidden under the hull and wings.
 - **Detail pass** (2026-11-10, after a review against the kit): raised plates with bevelled edges lit from the north-west,
   rivet rows along the roof's edges and chamfers, bolts, hatches with handles and hinges, louvred vents, ribbed conduits

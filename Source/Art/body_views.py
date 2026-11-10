@@ -248,13 +248,28 @@ class Canvas:
 
 
 WING_GAP = 0.12           # open air between the hull's side and the wing, as on the kit: they join only at the struts
+WING_CORNER = 0.34        # how far in from the tip the front corner is cut
 
 
 def wing_outline(side):
-    """Port (-1) or starboard (+1) wing: rows 2-6, from just off the hull out to one cell past the footprint."""
+    """Port (-1) or starboard (+1) wing, as the kit's from above: a slab standing off the hull's side, one cell past the
+    footprint. The leading edge runs almost straight out, a little forward, to a cut front corner; the outer edge is
+    straight; the trailing edge is one long diagonal, so the wing is a cell longer at the hull than at the tip.
+    Returns the outline, the root and tip x, and the leading and trailing edges as functions of x."""
     root, tip = (B - 0.15 - WING_GAP, A - 0.95) if side < 0 else (D + 0.15 + WING_GAP, END + 0.95)
-    back = tip - side * 0.45
-    return [(root, 1.1), (tip, 2.35), (tip, 5.2), (back, 5.95), (root, 5.95)], root, tip
+    span = abs(tip - root)
+    corner = span - WING_CORNER
+
+    def lead(x):
+        u = abs(x - root)
+        return 1.52 - 0.2 * u / corner if u <= corner else 1.32 + (u - corner) / WING_CORNER * 0.36
+
+    def trail(x):
+        return 5.95 - abs(x - root) / span
+
+    pts = [(root, lead(root)), (root + side * corner, lead(root + side * corner)), (tip, lead(tip)), (tip, trail(tip)),
+           (root, trail(root))]
+    return pts, root, tip, lead, trail
 
 
 TAIL = 6.96
@@ -263,58 +278,79 @@ HULL_PTS = [(B - 0.15, 1.0), (D + 0.15, 1.0), (D + 0.15, 6.68), (D - 0.1, TAIL),
 
 
 def wing(v, side):
-    """One wing, the lowest surface: plates with seams and rivets, inspection plates, a flap at the trailing edge, the
-    hinge the tip folds on, and the band along the outer edge with its white line, number, stencil, ring and caged lamp."""
-    pts, root, tip = wing_outline(side)
+    """One wing, the lowest surface: plates with seams and rivets, inspection plates, a flap along the trailing edge, the
+    hinge the tip folds on, and the outer panel, turned down a little, with its white line, number, stencil and ring.
+    The caged lamp sits in a pod at the front corner."""
+    pts, root, tip, lead, trail = wing_outline(side)
     v.poly(pts, 168, WING)
-    seams = (2.95, 3.6, 4.25, 5.0)
+
+    def within(x, y, margin=0.05):
+        return lead(x) + margin < y < trail(x) - margin
+
+    def reach(y):
+        """How far out a line across the wing at y can run before it meets the trailing edge."""
+        return tip if y < trail(tip) else root + side * (5.95 - y) * abs(tip - root)
+
+    seams = (2.3, 2.95, 3.6, 4.25, 4.9)
     for y in seams:
-        v.groove([(root, y), (tip, y)], 168)
+        v.groove([(root, y), (reach(y + 0.03), y)], 168)
     fold = A if side < 0 else END                                           # a plate seam where the tip folds
-    v.groove([(fold, 1.75), (fold, 5.9)], 168)
-    for y in (2.75, 3.4, 4.05, 4.8, 5.55):                                  # rivet rows along the plate seams
+    v.groove([(fold, lead(fold) + 0.04), (fold, trail(fold) - 0.04)], 168)
+    for y in (2.1, 2.75, 3.4, 4.05, 4.7, 5.3):                              # rivet rows along the plate seams
         for k in (1, 2, 4, 5):
-            v.rivet(root + (tip - root) * k / 6, y + 0.12)
-    # The flap: a seam ahead of the trailing edge with three hinge knuckles, between the hull side and the fold.
-    v.groove([(root, 5.66), (fold, 5.66)], 168)
-    for k in (0.2, 0.5, 0.8):
-        hx = root + (fold - root) * k
-        v.rect(hx - 0.045, 5.63, hx + 0.045, 5.7, 118, NONE, outline=False)
-        v.line([(hx - 0.045, 5.635), (hx + 0.045, 5.635)], 216, 0.01)
-    # Inspection plates on the strip between the band and the hinge.
+            x = root + (tip - root) * k / 6
+            if within(x, y + 0.12, 0.1):
+                v.rivet(x, y + 0.12)
+    # The flap: a seam a little ahead of the trailing edge, with hinge knuckles along it.
+    v.groove([(root, trail(root) - 0.3), (tip, trail(tip) - 0.3)], 168)
+    for k in (0.12, 0.3, 0.52, 0.7, 0.9):
+        hx = root + (tip - root) * k
+        hy = trail(hx) - 0.3
+        v.rect(hx - 0.045, hy - 0.03, hx + 0.045, hy + 0.04, 118, NONE, outline=False)
+        v.line([(hx - 0.045, hy - 0.025), (hx + 0.045, hy - 0.025)], 216, 0.01)
+    # Inspection plates on the strip between the outer panel and the hinge.
     sx = fold - side * 0.34
-    for y in (3.06, 4.36):
+    for y in (3.06, 4.3):
         v.hatch(min(sx, sx + side * 0.22), y, max(sx, sx + side * 0.22), y + 0.44, 176, WING, across=False, hinges="x")
-    # The band: from the wing's edge in to bx, following the leading edge and the rear chamfer.
+    # The outer panel: the strip along the outer edge, which turns down, so it's lit on the port side and shaded on
+    # the starboard. Green by default.
     bx = tip - side * 0.6
-    lead = 1.1 + (bx - root) / (tip - root) * 1.25
-    band = [(bx, lead), pts[1], pts[2], pts[3], (bx, 5.95)]
-    v.poly(band, 186, ARMOUR, outline=False)
+    band = [(bx, lead(bx)), pts[2], pts[3], (bx, trail(bx))]
+    if abs(bx - root) < abs(pts[1][0] - root):                              # the panel starts inboard of the cut corner
+        band.insert(1, pts[1])
+    v.poly(band, 198 if side < 0 else 170, ARMOUR, outline=False)
     for y in seams:
-        v.groove([(bx, y), (tip, y)], 186)
+        if y < trail(bx) - 0.05:
+            v.groove([(bx, y), (reach(y + 0.03), y)], 186)
+    v.groove([(bx, trail(bx) - 0.3), (tip, trail(tip) - 0.3)], 186)
 
     def stencil(points, width=0.022):
         v.line(points, WHITE_LINE, width)
         v.m.line(v.pts(points), fill=NONE, width=v.w(width))
 
-    stencil([(bx, lead), (bx, 5.95)], 0.045)                                # the white line
-    v.rivets(bx + side * 0.07, lead + 0.2, bx + side * 0.07, 5.8, 15)
+    stencil([(bx, lead(bx)), (bx, trail(bx))], 0.045)                       # the white line
+    v.rivets(bx + side * 0.07, lead(bx) + 0.22, bx + side * 0.07, trail(bx) - 0.42, 14)
     ex = tip - side * 0.3
-    v.text(ex, 3.27, "07", 0.3, angle=-90 * side)                           # the number reads from outboard
+    v.d.ellipse([v.p(ex - 0.09, 2.38), v.p(ex + 0.09, 2.56)], outline=(44, 56, 48, 255), width=v.w(0.018))
+    v.dot(ex, 2.47, 0.03, (44, 56, 48), None)                               # the ring, towards the front as on the kit
+    v.text(ex, 3.02, "07", 0.3, angle=-90 * side)                           # the number reads from outboard
     for dx in (-0.1, 0, 0.1):                                               # stencil: three arrows, crossed
-        stencil([(ex - dx, 3.74), (ex + dx, 4.14)])
-    stencil([(ex - 0.1, 4.3), (ex - 0.02, 4.3)], 0.05)
-    stencil([(ex + 0.02, 4.3), (ex + 0.1, 4.3)], 0.05)
-    for y in (4.52, 4.6, 4.68):                                             # a block of stencilled lines
-        stencil([(ex - 0.12, y), (ex + 0.12 - 0.05 * (y > 4.6), y)], 0.014)
-    v.d.ellipse([v.p(ex - 0.09, 5.2), v.p(ex + 0.09, 5.38)], outline=(44, 56, 48, 255), width=v.w(0.018))
-    v.dot(ex, 5.29, 0.03, (44, 56, 48), None)
-    v.line([pts[0], pts[1]], 216, 0.034)                                    # leading edge catches the light
+        stencil([(ex - dx, 3.5), (ex + dx, 3.9)])
+    stencil([(ex - 0.1, 4.06), (ex - 0.02, 4.06)], 0.05)
+    stencil([(ex + 0.02, 4.06), (ex + 0.1, 4.06)], 0.05)
+    for y in (4.28, 4.36, 4.44):                                            # a block of stencilled lines
+        stencil([(ex - 0.12, y), (ex + 0.12 - 0.05 * (y > 4.3), y)], 0.014)
+    # Edges: the leading edge and the cut corner catch the light, the trailing edge is in shade.
+    v.line([pts[0], pts[1]], 216, 0.034)
     v.line([(pts[0][0], pts[0][1] + 0.04), (pts[1][0], pts[1][1] + 0.04)], 132, 0.012)
-    v.line([pts[3], pts[4]], 108, 0.035)                                    # trailing edge
-    v.line([pts[1], pts[2]], 140 if side > 0 else 204, 0.022)               # the outer edge
-    # Caged lamp at the leading corner: a dome, so it shows from above.
-    lx, ly = ex, 2.62
+    v.line([pts[1], pts[2]], 222 if side < 0 else 186, 0.03)
+    v.line([pts[2], pts[3]], 140 if side > 0 else 204, 0.022)               # the outer edge
+    v.line([pts[3], pts[4]], 108, 0.035)                                    # the trailing edge
+    # The lamp pod at the front corner: a housing that stands a little ahead of the leading edge, and the caged dome.
+    lx, ly = pts[1][0] + side * 0.08, pts[1][1] + 0.16
+    pod = [(lx + 0.185 * math.cos(math.radians(22.5 + 45 * k)), ly - 0.02 + 0.185 * math.sin(math.radians(22.5 + 45 * k)))
+           for k in range(8)]
+    v.plate(pod, 150, HULL, lift=0.04, shade=0.35, bevel=0.02)
     v.dot(lx, ly, 0.135, 44, NONE)
     v.dot(lx, ly, 0.12, 84, NONE)
     v.dot(lx, ly, 0.092, LAMP_CYAN, NONE)
@@ -332,7 +368,7 @@ def wing(v, side):
     # barrel lying lengthwise, cut into knuckles, with a riveted leaf on the wing side. Unpainted.
     hx = A if side < 0 else END - 0.1
     leaf = A + 0.1 if side < 0 else END - 0.17
-    y0, y1 = 1.85, 5.85
+    y0, y1 = lead(fold) + 0.1, trail(fold - side * 0.17) - 0.1
     v.rect(leaf, y0, leaf + 0.07, y1, 128, NONE, outline=False)
     for k in range(8):
         v.rivet(leaf + 0.035, y0 + 0.2 + k * (y1 - y0 - 0.4) / 7)
