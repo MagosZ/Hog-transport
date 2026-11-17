@@ -41,7 +41,9 @@
 		</graphicData>
 
 		<vehicleStats>
-			<Mass>1800</Mass>
+			<!-- Empty mass, in the range of a medium helicopter that carries the same load (a UH-60 is about 5 to 6 t empty),
+			     heavier for the sealed hull and the engines that reach orbit. -->
+			<Mass>15000</Mass>
 			<CargoCapacity>1500</CargoCapacity>
 			<RepairRate>1</RepairRate>
 			<FlightSpeed>30</FlightSpeed>

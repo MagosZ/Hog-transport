@@ -19,7 +19,9 @@ the cabin.
 - Footprint 4×7 (`size (4,7)`, was 4×8 until row 2 was cut); the body is a box once its wings are out. Facing
   east or west it takes 7×4.
 - Roles: pilot ×1 (Movement, needed to fly; also fires the front gun if one is fitted), co-pilot ×1 (no handling, optional), passenger ×8.
-- Cargo 1500 kg, mass 1800, flight speed 30.
+- Cargo 1500 kg, mass 15000 (15 t empty; it was 1800, a third of an empty UH-60, which carries a similar load), flight
+  speed 30. Vehicle Framework uses a vehicle's mass for the damage when it runs into a pawn (`CalculateImpactDamage`) and
+  shows it in transfer lists; it doesn't enter the fuel or cargo sums.
 - Components: 16 parts, generated from one table by `Source/Art/components.py` (cells written as grid names).
   The script writes the components, the armour upgrade's entries and the CE patch, so edit the table and re-run
   it. The parts follow VVE's helicopters (Mosquito, Louie, Cherokee), turned into spacecraft parts, with health at
