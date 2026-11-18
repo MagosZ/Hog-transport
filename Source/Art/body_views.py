@@ -309,57 +309,79 @@ class Canvas:
         return self.img.resize(size, Image.LANCZOS), self.mask.resize(size, Image.NEAREST)
 
 
-WING_GAP = 0.06           # tight structural recess between the hull's side and the wing root, bridged by box struts
-WING_CORNER = 0.32        # how far in from the tip the front corner is clipped
+WING_GAP = 0.46           # open gap between the hull side (2.34 / 4.66) and the wing inner edge (1.88 / 5.12)
+WING_CORNER = 0.24        # small front-outer corner clip for the lamp pod
 
 
 def wing_outline(side):
-    """Port (-1) or starboard (+1) wing, as the W40k Arvus Lighter from above: a stubby trapezoidal wing emerging from
-    underneath the engine nacelle and extending one cell past the footprint. The leading edge sweeps back to a clipped
-    front-outer corner housing an armoured lamp pod; the outer tip edge is straight and vertical; the trailing edge
-    tapers forward toward the tip."""
-    root, tip = (B - 0.16 - WING_GAP, A - 0.95) if side < 0 else (D + 0.16 + WING_GAP, END + 0.95)
+    """Port (-1) or starboard (+1) wing, filling the outer strip of A2-A7 / D2-D7 out to the canvas edge:
+    - Front: inner edge starts at (0.00, 1.42) along x = 1.88 / 5.12 and angles in a triangle up to (u_band, 0.62)
+      at the white line, then runs flat across the green band to (corner, 0.62) and bevels to (span, 0.86).
+    - Back: flat across the grey wing (0.00..u_band) at y = 6.88, then angled diagonally from (u_band, 6.88)
+      to (span, 6.20) across the green outer panel."""
+    root, tip = (B - 0.16 - WING_GAP, 0.02) if side < 0 else (D + 0.16 + WING_GAP, SIZE - 0.02)
     span = abs(tip - root)
     corner = span - WING_CORNER
+    u_band = span - 0.88
+
+    front_profile = [
+        (0.00, 1.42),
+        (u_band, 0.62),
+        (corner, 0.62),
+        (span, 0.86),
+    ]
+    rear_profile = [
+        (0.00, 6.88),
+        (u_band, 6.88),
+        (span, 6.20),
+    ]
+
+    def interp(profile, u):
+        u = max(0.0, min(span, u))
+        for (u0, y0), (u1, y1) in zip(profile, profile[1:]):
+            if u <= u1 and u1 > u0:
+                t = (u - u0) / (u1 - u0)
+                return y0 + (y1 - y0) * t
+        return profile[-1][1]
 
     def lead(x):
-        u = abs(x - root)
-        return 1.62 + 0.52 * u / corner if u <= corner else 2.14 + (u - corner) / WING_CORNER * 0.34
+        return interp(front_profile, abs(x - root))
 
     def trail(x):
-        return 5.82 - 0.90 * abs(x - root) / span
+        return interp(rear_profile, abs(x - root))
 
-    pts = [(root, lead(root)), (root + side * corner, lead(root + side * corner)), (tip, lead(tip)), (tip, trail(tip)),
-           (root, trail(root))]
+    pts = (
+        [(root + side * u, y) for u, y in front_profile]
+        + [(root + side * u, y) for u, y in reversed(rear_profile)]
+    )
     return pts, root, tip, lead, trail
 
 
 TAIL = 6.96
-# The four corner cells stay empty; the forward hull steps in to cradle the rear of the cockpit like the Arvus hull.
+# The four corner cells stay empty; the forward hull steps in to cradle the cockpit and the sides reach y = 6.88.
 HULL_PTS = [
     (B + 0.16, 0.88), (D - 0.16, 0.88),
-    (D + 0.16, 1.08), (D + 0.16, 6.66),
-    (D - 0.10, TAIL), (B + 0.10, TAIL),
-    (B - 0.16, 6.66), (B - 0.16, 1.08),
+    (D + 0.16, 1.08), (D + 0.16, 6.88),
+    (D - 0.08, TAIL), (B + 0.08, TAIL),
+    (B - 0.16, 6.88), (B - 0.16, 1.08),
 ]
 
 
 def wing(v, side):
-    """One wing, the lowest surface: recessed structural sponson & box struts at the root, trapezoidal plates with seams
-    and rivets, a chordwise main spar, inspection hatches, trailing-edge flap with hinge actuators, the wing-fold barrel
-    hinge, downturned outer end-plate with white line, number, ring and stencils, and an integrated corner lamp housing."""
+    """One wing, the lowest surface: detached from the hull by WING_GAP with two thin struts, extended open front dent,
+    full-length rear trailing edge meeting the tail of the body, raised inner root pad, inspection hatches, trailing-edge
+    flap with hinge actuators, the wing-fold barrel hinge, downturned outer end-plate with white line, number, double
+    rings and stencils, and a corner lamp housing."""
     pts, root, tip, lead, trail = wing_outline(side)
     span = abs(tip - root)
     corner = span - WING_CORNER
+    u_fold = abs((A if side < 0 else END) - root)
 
-    # Wing-root structural sponson apron & heavy armoured box struts bridging to the hull side.
-    hx0, hx1 = (root - 0.02, B - 0.10) if side < 0 else (D + 0.10, root + 0.02)
-    v.rect(hx0, 1.66, hx1, 5.72, 62, NONE)
-    for y in (1.72, 3.32, 5.28):
-        sx0, sx1 = (root - 0.04, B - 0.06) if side < 0 else (D + 0.06, root + 0.04)
-        v.rect(sx0, y, sx1, y + 0.16, 102, NONE)
-        v.line([(sx0, y + 0.014), (sx1, y + 0.014)], 180, 0.01)
-        v.bolt((sx0 + sx1) / 2, y + 0.08, 0.02)
+    # Aft connecting strut across the detached wing gap between the hull side and the wing inner edge.
+    for y in (5.85,):
+        sx0, sx1 = (root - 0.02, root + WING_GAP + 0.04) if side < 0 else (root - WING_GAP - 0.04, root + 0.02)
+        v.rect(sx0, y, sx1, y + 0.09, 96, NONE)
+        v.line([(sx0, y + 0.012), (sx1, y + 0.012)], 174, 0.01)
 
     v.shaded_poly(pts, 176, 156, WING)
 
@@ -368,94 +390,94 @@ def wing(v, side):
 
     def span_u(y, u_min=0.0, margin=0.05, flap_margin=0.33):
         """Return (u0, u1) distances from root along a horizontal line at y inside the wing and ahead of the flap."""
-        if y <= 1.62 + margin or y >= 5.82 - flap_margin:
-            return None
-        if y <= 2.14 + margin:
-            u_lead = corner * (y - (1.62 + margin)) / 0.52
-        elif y <= 2.48 + margin:
-            u_lead = corner + WING_CORNER * (y - (2.14 + margin)) / 0.34
-        else:
-            u_lead = span
-        if y >= 4.92 - flap_margin:
-            u_trail = span * ((5.82 - flap_margin) - y) / 0.90
-        else:
-            u_trail = span
-        u0 = max(0.0, u_min)
-        u1 = min(span, u_lead, u_trail)
-        return (u0, u1) if u1 > u0 + 0.04 else None
+        steps = 160
+        inside = []
+        for k in range(steps + 1):
+            u = u_min + (span - u_min) * k / steps
+            x = root + side * u
+            if lead(x) + margin < y < trail(x) - flap_margin:
+                inside.append(u)
+        return (inside[0], inside[-1]) if inside and inside[-1] > inside[0] + 0.04 else None
 
-    seams = (2.36, 2.94, 3.52, 4.10, 4.68)
+    seams = (0.92, 1.56, 2.20, 2.84, 3.48, 4.12, 4.76, 5.40, 6.00)
     for y in seams:
         rng = span_u(y)
         if rng:
             v.groove([(root + side * rng[0], y), (root + side * rng[1], y)], 166)
-    mid_x = root + side * 0.62                                              # chordwise main spar seam
-    v.groove([(mid_x, lead(mid_x) + 0.05), (mid_x, trail(mid_x) - 0.32)], 166)
     fold = A if side < 0 else END                                           # a plate seam where the tip folds
     v.groove([(fold, lead(fold) + 0.04), (fold, trail(fold) - 0.04)], 166)
-    for y in (2.15, 2.75, 3.35, 3.95, 4.55, 5.15):                          # rivet rows along the plate seams
+    for y in (0.68, 1.32, 1.96, 2.60, 3.24, 3.88, 4.52, 5.16, 5.80):        # rivet rows along the plate seams
         for k in (1, 2, 4, 5):
             x = root + (tip - root) * k / 6
-            if within(x, y + 0.10, 0.10) and y + 0.10 < trail(x) - 0.34:
-                v.rivet(x, y + 0.10)
+            if within(x, y + 0.08, 0.10) and y + 0.08 < trail(x) - 0.34:
+                v.rivet(x, y + 0.08)
+
     # The flap: a seam a little ahead of the trailing edge, with chordwise ribs and hinge knuckles along it.
-    v.groove([(root, trail(root) - 0.3), (tip, trail(tip) - 0.3)], 162)
-    for k in range(1, 14):
-        fx = root + (tip - root) * k / 14
+    bx = tip - side * 0.88
+    v.groove([(root, 6.88 - 0.30), (bx, 6.88 - 0.30), (tip, 6.20 - 0.30)], 162)
+    for k in range(1, 15):
+        fx = root + (tip - root) * k / 15
         fy = trail(fx)
         v.line([(fx, fy - 0.27), (fx, fy - 0.05)], 138, 0.01)
-    for k in (0.12, 0.3, 0.52, 0.7, 0.9):
+    for k in (0.12, 0.30, 0.50, 0.70, 0.88):
         hx = root + (tip - root) * k
         hy = trail(hx) - 0.3
         v.rect(hx - 0.048, hy - 0.032, hx + 0.048, hy + 0.042, 118, NONE, outline=False)
         v.line([(hx - 0.048, hy - 0.026), (hx + 0.048, hy - 0.026)], 216, 0.01)
-    # Inspection plates on the strip between the outer panel and the hinge.
-    sx = fold - side * 0.34
-    for y in (2.98, 4.16):
-        v.hatch(min(sx, sx + side * 0.22), y, max(sx, sx + side * 0.22), y + 0.42, 176, WING, across=False, hinges="x")
+    # Inspection plates on the outer grey strip between the hinge and the white line.
+    sx = fold + side * 0.20
+    for y in (2.92, 4.20, 5.48):
+        v.hatch(min(sx, sx + side * 0.20), y, max(sx, sx + side * 0.20), y + 0.38, 176, WING, across=False, hinges="x")
     # The outer panel: the strip along the outer edge, which turns down, so it's lit on the port side and shaded on
     # the starboard. Green by default.
-    bx = tip - side * 0.6
-    band = [(bx, lead(bx)), pts[2], pts[3], (bx, trail(bx))]
-    if abs(bx - root) < abs(pts[1][0] - root):                              # the panel starts inboard of the cut corner
-        band.insert(1, pts[1])
+    p_corner_front = (root + side * corner, 0.62)
+    p_tip_front = (tip, 0.86)
+    p_tip_rear = (tip, 6.20)
+    band = [(bx, lead(bx)), p_corner_front, p_tip_front, p_tip_rear, (bx, trail(bx))]
     v.shaded_poly(band, 206 if side < 0 else 178, 184 if side < 0 else 158, ARMOUR, outline=False)
     u_band = abs(bx - root)
     for y in seams:
         rng = span_u(y, u_min=u_band)
         if rng:
             v.groove([(root + side * rng[0], y), (root + side * rng[1], y)], 182)
-    v.groove([(bx, trail(bx) - 0.3), (tip, trail(tip) - 0.3)], 182)
+    v.groove([(bx, 6.88 - 0.3), (tip, 6.20 - 0.3)], 182)
 
     def stencil(points, width=0.022):
         v.line(points, WHITE_LINE, width)
         v.m.line(v.pts(points), fill=NONE, width=v.w(width))
 
     stencil([(bx, lead(bx) + 0.02), (bx, trail(bx) - 0.02)], 0.045)         # the white line
-    v.rivets(bx + side * 0.07, lead(bx) + 0.20, bx + side * 0.07, trail(bx) - 0.38, 13)
-    ex = tip - side * 0.29
-    v.d.ellipse([v.p(ex - 0.09, 2.65), v.p(ex + 0.09, 2.83)], outline=(44, 56, 48, 255), width=v.w(0.018))
-    v.dot(ex, 2.74, 0.03, (44, 56, 48), None)                               # the ring, aft of the corner lamp
-    v.text(ex, 3.26, "07", 0.28, angle=-90 * side)                          # the number reads from outboard
+    v.rivets(bx + side * 0.07, lead(bx) + 0.18, bx + side * 0.07, trail(bx) - 0.38, 19)
+    ex = tip - side * 0.43
+    for rx, ry in ((ex - side * 0.14, 1.12), (ex + side * 0.04, 1.32)):     # twin circular markings towards the front
+        v.d.ellipse([v.p(rx - 0.075, ry - 0.075), v.p(rx + 0.075, ry + 0.075)],
+                    outline=(44, 56, 48, 255), width=v.w(0.016))
+        v.dot(rx, ry, 0.026, (44, 56, 48), None)
+    v.text(ex, 2.86, "07", 0.28, angle=-90 * side)                          # the number reads from outboard
     for dx in (-0.09, 0, 0.09):                                             # stencil: three arrows, crossed
-        stencil([(ex - dx, 3.68), (ex + dx, 4.02)])
-    stencil([(ex - 0.1, 4.18), (ex - 0.02, 4.18)], 0.05)
-    stencil([(ex + 0.02, 4.18), (ex + 0.1, 4.18)], 0.05)
-    for y in (4.36, 4.43, 4.50):                                            # a block of stencilled lines
-        stencil([(ex - 0.11, y), (ex + 0.11 - 0.045 * (y > 4.38), y)], 0.014)
+        stencil([(ex - dx, 3.46), (ex + dx, 3.90)])
+    stencil([(ex - 0.1, 4.12), (ex - 0.02, 4.12)], 0.05)
+    stencil([(ex + 0.02, 4.12), (ex + 0.1, 4.12)], 0.05)
+    for y in (4.36, 4.45, 4.54):                                            # a block of stencilled lines
+        stencil([(ex - 0.11, y), (ex + 0.11 - 0.045 * (y > 4.40), y)], 0.014)
     # Inset edge bevels inside the wing outline, then a crisp dark exterior outline around the whole wing.
-    v.line([(pts[0][0], pts[0][1] + 0.026), (pts[1][0], pts[1][1] + 0.026)], 220 if side < 0 else 200, 0.028)
-    v.line([(pts[0][0], pts[0][1] + 0.058), (pts[1][0], pts[1][1] + 0.058)], 132, 0.012)
-    v.line([(pts[1][0], pts[1][1] + 0.024), (pts[2][0] - side * 0.02, pts[2][1] + 0.024)],
+    v.line([(pts[6][0] + side * 0.022, pts[6][1] - 0.02), (pts[0][0] + side * 0.022, pts[0][1] + 0.02)],
+           136 if side < 0 else 214, 0.02)                                    # inner edge facing hull gap
+    v.line([(pts[0][0], pts[0][1] + 0.024), (pts[1][0], pts[1][1] + 0.024)],
+           176 if side < 0 else 228, 0.024)                                   # triangular tip slope
+    v.line([(pts[1][0], pts[1][1] + 0.024), (pts[2][0], pts[2][1] + 0.024)],
+           222, 0.026)
+    v.line([(pts[2][0], pts[2][1] + 0.056), (pts[1][0], pts[1][1] + 0.056)], 132, 0.012)
+    v.line([(pts[2][0], pts[2][1] + 0.022), (pts[3][0] - side * 0.02, pts[3][1] + 0.022)],
            232 if side < 0 else 178, 0.024)
-    v.line([(pts[2][0] - side * 0.022, pts[2][1] + 0.02), (pts[3][0] - side * 0.022, pts[3][1] - 0.02)],
+    v.line([(pts[3][0] - side * 0.022, pts[3][1] + 0.02), (pts[4][0] - side * 0.022, pts[4][1] - 0.02)],
            140 if side > 0 else 204, 0.02)                                   # the outer edge
-    v.line([(pts[3][0] - side * 0.015, pts[3][1] - 0.024), (pts[4][0], pts[4][1] - 0.024)],
-           108, 0.028)                                                       # the trailing edge
+    v.line([(pts[4][0] - side * 0.015, pts[4][1] - 0.024), (pts[5][0], pts[5][1] - 0.024),
+            (pts[6][0], pts[6][1] - 0.024)], 108, 0.026)                      # the trailing edge
     v.d.polygon(v.pts(pts), outline=OUTLINE + (255,), width=v.w(0.022))
     # Integrated armoured lamp housing tucked into the clipped front-outer wing corner.
-    lx = (pts[1][0] + pts[2][0]) / 2 - side * 0.04
-    ly = (pts[1][1] + pts[2][1]) / 2 + 0.05
+    lx = (p_corner_front[0] + p_tip_front[0]) / 2 - side * 0.03
+    ly = (p_corner_front[1] + p_tip_front[1]) / 2 + 0.04
     pod = [(lx + 0.145 * math.cos(math.radians(22.5 + 45 * k)), ly + 0.145 * math.sin(math.radians(22.5 + 45 * k)))
            for k in range(8)]
     v.plate(pod, 150, HULL, lift=0.035, shade=0.35, bevel=0.018)
@@ -472,17 +494,19 @@ def wing(v, side):
     # barrel lying lengthwise, cut into knuckles, with a riveted leaf on the wing side and latch brackets. Unpainted.
     hx = A if side < 0 else END - 0.1
     leaf = A + 0.1 if side < 0 else END - 0.17
-    y0, y1 = lead(fold) + 0.12, trail(fold - side * 0.17) - 0.12
-    v.shadow([(hx, y0), (hx + 0.1, y0), (hx + 0.1, y1), (hx, y1)], 0.03, 0.03, 0.35)
-    v.rect(leaf, y0, leaf + 0.07, y1, 128, NONE, outline=False)
-    for k in range(8):
-        v.rivet(leaf + 0.035, y0 + 0.18 + k * (y1 - y0 - 0.36) / 7)
-    v.cylinder(hx, y0, hx + 0.1, y1, 138, NONE)
-    for k in range(1, 14):
-        y = y0 + k * (y1 - y0) / 14
+    y0_hx = lead(fold - side * 0.10) + 0.06
+    y0_leaf = lead(fold - side * 0.17) + 0.06
+    y1 = 6.78
+    v.shadow([(hx, y0_hx), (hx + 0.1, y0_hx), (hx + 0.1, y1), (hx, y1)], 0.03, 0.03, 0.35)
+    v.rect(leaf, y0_leaf, leaf + 0.07, y1, 128, NONE, outline=False)
+    for k in range(12):
+        v.rivet(leaf + 0.035, y0_leaf + 0.16 + k * (y1 - y0_leaf - 0.32) / 11)
+    v.cylinder(hx, y0_hx, hx + 0.1, y1, 138, NONE)
+    for k in range(1, 17):
+        y = y0_hx + k * (y1 - y0_hx) / 17
         v.line([(hx, y), (hx + 0.1, y)], 48, 0.012)
-    for k in range(4):
-        ly_lat = y0 + 0.34 + k * (y1 - y0 - 0.68) / 3
+    for k in range(5):
+        ly_lat = y0_leaf + 0.30 + k * (y1 - y0_leaf - 0.60) / 4
         bx0 = hx - 0.02 if side < 0 else leaf - 0.01
         bx1 = leaf + 0.08 if side < 0 else hx + 0.12
         v.rect(bx0, ly_lat - 0.035, bx1, ly_lat + 0.035, 108, NONE)
@@ -493,20 +517,20 @@ def hull(v):
     """The hull, higher than the wings: its shadow, the roof with wide chamfered sides, a stepped forward glacis collar
     cradling the cockpit, external side buttress ribs, seams, rivet rows, the copper pipes on the shoulders, stiffener
     ribs and the door's hinge at the tail."""
-    v.shadow(HULL_PTS, 0.16, 0.16)
+    v.shadow(HULL_PTS, 0.07, 0.07)
     v.poly(HULL_PTS, 196, HULL)
     left, right = B + 0.14, D - 0.14
-    v.shaded_poly([(left, 1.12), (right, 1.12), (right, 6.58), (D - 0.18, 6.84), (B + 0.18, 6.84), (left, 6.58)],
+    v.shaded_poly([(left, 1.12), (right, 1.12), (right, 6.74), (D - 0.16, 6.90), (B + 0.16, 6.90), (left, 6.74)],
                   212, 194, HULL, outline=False)
-    v.shaded_poly([(B - 0.16, 1.08), (left, 1.12), (left, 6.58), (B + 0.18, 6.84), (B + 0.10, TAIL), (B - 0.16, 6.66)],
+    v.shaded_poly([(B - 0.16, 1.08), (left, 1.12), (left, 6.74), (B + 0.16, 6.90), (B + 0.08, TAIL), (B - 0.16, 6.88)],
                   234, 214, HULL, outline=False)
-    v.shaded_poly([(D + 0.16, 1.08), (right, 1.12), (right, 6.58), (D - 0.18, 6.84), (D - 0.10, TAIL), (D + 0.16, 6.66)],
+    v.shaded_poly([(D + 0.16, 1.08), (right, 1.12), (right, 6.74), (D - 0.16, 6.90), (D - 0.08, TAIL), (D + 0.16, 6.88)],
                   160, 140, HULL, outline=False)
     v.poly([(B + 0.16, 0.88), (D - 0.16, 0.88), (D + 0.16, 1.08), (right, 1.12), (left, 1.12), (B - 0.16, 1.08)],
            232, HULL, outline=False)
-    v.poly([(B + 0.10, TAIL), (D - 0.10, TAIL), (D - 0.18, 6.84), (B + 0.18, 6.84)], 140, HULL, outline=False)
-    v.line([(left, 1.12), (left, 6.58)], 176, 0.01)                          # the roof's edges
-    v.line([(right, 1.12), (right, 6.58)], 120, 0.01)
+    v.poly([(B + 0.08, TAIL), (D - 0.08, TAIL), (D - 0.16, 6.90), (B + 0.16, 6.90)], 140, HULL, outline=False)
+    v.line([(left, 1.12), (left, 6.74)], 176, 0.01)                          # the roof's edges
+    v.line([(right, 1.12), (right, 6.74)], 120, 0.01)
     for y in (2.04, 4.0, 5.68):                                             # seams across the roof
         v.groove([(left, y), (right, y)], 204)
     for y in (1.56, 5.22, 5.92, 6.42):                                      # and across the chamfers
@@ -526,7 +550,7 @@ def hull(v):
     v.rivets(B - 0.04, 1.2, B - 0.04, 6.6, 20)
     v.rivets(D + 0.04, 1.2, D + 0.04, 6.6, 20)
     # Copper pipes on the hull's shoulders, ahead of the engines, with socket rings, union nuts, and cast shadows.
-    for x0, out in ((B - 0.08, -1), (D - 0.02, 1)):
+    for x0, out in ((B - 0.14, -1), (D + 0.04, 1)):
         v.shadow([(x0, 1.16), (x0 + 0.1, 1.16), (x0 + 0.1, 1.96), (x0, 1.96)], 0.03, 0.03, 0.32)
         v.dot(x0 + 0.05 + out * 0.08, 1.2, 0.055, 52, NONE)
         v.cylinder(x0, 1.16, x0 + 0.1, 1.96, COPPER, NONE)
@@ -585,17 +609,10 @@ def cockpit(v):
     v.line([(B + 0.54, 0.605), (D - 0.54, 0.605)], (120, 178, 206), 0.014)     # subtle dash reflection strip
     v.poly([(left + 0.035, 0.36), (left + 0.105, 0.39), (left + 0.105, 0.62), (left + 0.035, 0.62)], (74, 130, 168), NONE)
     v.poly([(right - 0.035, 0.36), (right - 0.105, 0.39), (right - 0.105, 0.62), (right - 0.035, 0.62)], (38, 80, 112), NONE)
-    v.poly([(B + 0.44, 0.3), (C - 0.03, 0.3), (C - 0.03, 0.44), (B + 0.48, 0.44)], (92, 152, 188), None, outline=False)
+    v.poly([(B + 0.44, 0.3), (D - 0.44, 0.3), (D - 0.48, 0.44), (B + 0.48, 0.44)], (92, 152, 188), None, outline=False)
     v.line([(B + 0.54, 0.335), (C - 0.11, 0.335)], GLASS_HI, 0.022)         # specular reflection bands
     v.line([(B + 0.52, 0.385), (C - 0.26, 0.385)], (124, 178, 210), 0.01)
     v.line([(C + 0.1, 0.34), (C + 0.3, 0.34)], GLASS_HI, 0.012)
-    frame = (180, 180, 180)
-    v.line([(C, 0.09), (C, 0.64)], OUTLINE, 0.07)                           # the centre bar
-    v.line([(C, 0.1), (C, 0.63)], frame, 0.04)
-    v.m.line(v.pts([(C, 0.1), (C, 0.63)]), fill=ARMOUR, width=v.w(0.04))
-    for gy in (0.28, 0.62):                                                 # heavy Arvus canopy mullion gussets
-        v.rect(C - 0.09, gy - 0.025, C + 0.09, gy + 0.025, 168, ARMOUR)
-        v.bolt(C, gy, 0.014)
     v.rect(left + 0.13, 0.28, B + 0.36, 0.64, 184, ARMOUR, outline=False)   # heavy armoured cheek frames
     v.rect(D - 0.36, 0.28, right - 0.13, 0.64, 152, ARMOUR, outline=False)
     v.line([(B + 0.2, 1.02), (D - 0.2, 1.02)], 110, 0.03)                   # step up to the hull roof
@@ -648,16 +665,16 @@ def roof(v):
     conduit(2.02, 2.66)
     conduit(3.72, 4.06)
 
-    step = [(C - 0.62, 4.02), (C + 0.62, 4.02), (C + 0.82, 4.36), (C + 0.82, 5.3), (C + 0.56, 5.6), (C - 0.56, 5.6),
-            (C - 0.82, 5.3), (C - 0.82, 4.36)]
+    step = [(C - 0.48, 4.02), (C + 0.48, 4.02), (C + 0.58, 4.30), (C + 0.58, 5.34), (C + 0.48, 5.6), (C - 0.48, 5.6),
+            (C - 0.58, 5.34), (C - 0.58, 4.30)]
     v.plate(step, 210, HULL, lift=0.05, shade=0.36)
-    v.vent(C - 0.34, 4.26, C + 0.34, 4.9, 6)
-    for x in (C - 0.4, C + 0.4):
+    v.vent(C - 0.30, 4.26, C + 0.30, 4.9, 6)
+    for x in (C - 0.35, C + 0.35):
         for y in (4.22, 4.94):
             v.bolt(x, y, 0.02)
     for sx in (-1, 1):                                                      # narrow vents either side
-        x = C + sx * 0.6
-        v.vent(x - 0.1, 4.46, x + 0.1, 4.86, 4)
+        x = C + sx * 0.45
+        v.vent(x - 0.06, 4.46, x + 0.06, 4.86, 4)
     hx = C - 0.32                                                           # the refuelling cap in a warning ring
     v.rect(hx - 0.19, 5.02, hx + 0.19, 5.4, 150, HULL)
     for k in range(12):
@@ -716,15 +733,15 @@ def fuel_plate(v):
 
 
 def turbofan(v, nx):
-    """One engine, centred on nx, nose to tail as in the photos: two brass intake rings, the duct, the machinery on a
-    dark core (coil banks, a brass coil block, a piston each side), a ribbed neck, the armoured exhaust housing, and
-    the heat-stained petal nozzle with its notched rim. The fan faces forward, so it isn't visible."""
+    """One engine, centred on nx, expanded by 20% widthwise, nose to tail: two brass intake rings, the duct, the
+    machinery on a dark core (coil banks, a brass coil block, a piston each side), a ribbed neck, the armoured exhaust
+    housing, and the heat-stained petal nozzle with its notched rim. The fan faces forward, so it isn't visible."""
     # Feathered soot plume behind the exhaust, and the engine shadow on the wing and roof.
     for k in range(8):
-        v.shadow([(nx - 0.36 + k * 0.025, 4.98), (nx + 0.36 - k * 0.025, 4.98),
-                  (nx + 0.26 - k * 0.015, 6.05 - k * 0.06), (nx - 0.26 + k * 0.015, 6.05 - k * 0.06)],
+        v.shadow([(nx - 0.43 + k * 0.030, 5.01), (nx + 0.43 - k * 0.030, 5.01),
+                  (nx + 0.31 - k * 0.018, 6.08 - k * 0.06), (nx - 0.31 + k * 0.018, 6.08 - k * 0.06)],
                  0, 0, 0.026 - k * 0.0028, blur=0.05)
-    v.shadow([(nx - 0.45, 2.0), (nx + 0.45, 2.0), (nx + 0.45, 5.0), (nx - 0.45, 5.0)], 0.16, 0.16, 0.42)
+    v.shadow([(nx - 0.49, 1.95), (nx + 0.49, 1.95), (nx + 0.49, 5.05), (nx - 0.49, 5.05)], 0.08, 0.12, 0.42)
     # Heat-stained petal nozzle: smooth 10-slice metallic heat-tint gradient, 6 overlapping petals, and notched rim.
     heat_stops = [
         (0.0, (112, 114, 120)),
@@ -743,80 +760,80 @@ def turbofan(v, nx):
 
     slices = 10
     for s in range(slices):
-        ya = 4.72 + (5.03 - 4.72) * s / slices
-        yb = 4.72 + (5.03 - 4.72) * (s + 1) / slices
-        v.cylinder(nx - 0.33, ya, nx + 0.33, yb, heat_col((s + 0.5) / slices), NONE, outline=False)
+        ya = 4.72 + (5.06 - 4.72) * s / slices
+        yb = 4.72 + (5.06 - 4.72) * (s + 1) / slices
+        v.cylinder(nx - 0.372, ya, nx + 0.372, yb, heat_col((s + 0.5) / slices), NONE, outline=False)
     for k in range(6):
-        px0 = nx - 0.33 + k * 0.11
-        px1 = px0 + 0.11
+        px0 = nx - 0.372 + k * (0.744 / 6)
+        px1 = px0 + (0.744 / 6)
         pmid = (px0 + px1) / 2
-        v.line([(pmid - 0.015, 4.76), (pmid - 0.015, 4.99)], (160, 156, 178), 0.012)
+        v.line([(pmid - 0.018, 4.76), (pmid - 0.018, 5.02)], (160, 156, 178), 0.014)
         if k > 0:
-            v.line([(px0, 4.74), (px0, 5.02)], (28, 30, 44), 0.012)
-        v.rect(pmid - 0.022, 4.985, pmid + 0.022, 5.04, 24, NONE, outline=False)
-    v.d.rectangle([v.p(nx - 0.33, 4.72), v.p(nx + 0.33, 5.03)], outline=OUTLINE + (255,), width=v.w(0.018))
+            v.line([(px0, 4.74), (px0, 5.05)], (28, 30, 44), 0.014)
+        v.rect(pmid - 0.026, 5.01, pmid + 0.026, 5.07, 24, NONE, outline=False)
+    v.d.rectangle([v.p(nx - 0.372, 4.72), v.p(nx + 0.372, 5.06)], outline=OUTLINE + (255,), width=v.w(0.018))
     # The armoured exhaust housing: inspection plates, recessed cooling louvres, a band, and bolts.
-    v.cylinder(nx - 0.43, 4.18, nx + 0.43, 4.76, 158, HULL)
-    v.shadow([(nx - 0.41, 4.18), (nx + 0.41, 4.18), (nx + 0.41, 4.24), (nx - 0.41, 4.24)], 0, 0.01, 0.28, blur=0.018)
-    for x0 in (nx - 0.24, nx + 0.04):
-        v.rect(x0, 4.27, x0 + 0.2, 4.56, 172, HULL)
-        v.line([(x0, 4.27), (x0 + 0.2, 4.27)], 226, 0.01)
-        v.bolt(x0 + 0.1, 4.415, 0.022)
+    v.cylinder(nx - 0.468, 4.18, nx + 0.468, 4.76, 158, HULL)
+    v.shadow([(nx - 0.456, 4.18), (nx + 0.456, 4.18), (nx + 0.456, 4.24), (nx - 0.456, 4.24)], 0, 0.01, 0.28, blur=0.018)
+    for x0 in (nx - 0.264, nx + 0.048):
+        v.rect(x0, 4.27, x0 + 0.216, 4.56, 172, HULL)
+        v.line([(x0, 4.27), (x0 + 0.216, 4.27)], 226, 0.01)
+        v.bolt(x0 + 0.108, 4.415, 0.024)
     for sx in (-1, 1):
-        lx0 = nx + sx * 0.32 - 0.045
+        lx0 = nx + sx * 0.348 - 0.048
         for ky in range(4):
             y = 4.31 + ky * 0.06
-            v.line([(lx0, y), (lx0 + 0.09, y)], 48, 0.014)
-            v.line([(lx0, y + 0.013), (lx0 + 0.09, y + 0.013)], 200, 0.007)
-    v.cylinder(nx - 0.43, 4.62, nx + 0.43, 4.69, 112, HULL, outline=False)
-    v.rivets(nx - 0.36, 4.655, nx + 0.36, 4.655, 8)
-    v.rivets(nx - 0.36, 4.23, nx + 0.36, 4.23, 8)
+            v.line([(lx0, y), (lx0 + 0.096, y)], 48, 0.014)
+            v.line([(lx0, y + 0.013), (lx0 + 0.096, y + 0.013)], 200, 0.007)
+    v.cylinder(nx - 0.468, 4.62, nx + 0.468, 4.69, 112, HULL, outline=False)
+    v.rivets(nx - 0.396, 4.655, nx + 0.396, 4.655, 9)
+    v.rivets(nx - 0.396, 4.23, nx + 0.396, 4.23, 9)
     # Ribbed neck with a clamp.
-    v.cylinder(nx - 0.27, 3.66, nx + 0.27, 4.2, GUNMETAL, NONE)
+    v.cylinder(nx - 0.324, 3.66, nx + 0.324, 4.2, GUNMETAL, NONE)
     for k in range(9):
         y = 3.7 + k * 0.055
-        v.cylinder(nx - 0.27, y, nx + 0.27, y + 0.022, 150, NONE, outline=False)
-    v.cylinder(nx - 0.29, 3.9, nx + 0.29, 3.97, 72, NONE)
-    v.bolt(nx + 0.12, 3.935, 0.024)
+        v.cylinder(nx - 0.324, y, nx + 0.324, y + 0.022, 150, NONE, outline=False)
+    v.cylinder(nx - 0.348, 3.9, nx + 0.348, 3.97, 72, NONE)
+    v.bolt(nx + 0.144, 3.935, 0.026)
     # Dark core bay with interior overhang shadows and 3D brass coil block.
-    v.cylinder(nx - 0.31, 2.72, nx + 0.31, 3.68, 104, NONE)
-    v.shadow([(nx - 0.3, 2.72), (nx + 0.3, 2.72), (nx + 0.3, 2.84), (nx - 0.3, 2.84)], 0, 0, 0.38, blur=0.02)
-    v.shadow([(nx - 0.3, 3.52), (nx + 0.3, 3.52), (nx + 0.3, 3.68), (nx - 0.3, 3.68)], 0, 0, 0.32, blur=0.02)
+    v.cylinder(nx - 0.372, 2.72, nx + 0.372, 3.68, 104, NONE)
+    v.shadow([(nx - 0.36, 2.72), (nx + 0.36, 2.72), (nx + 0.36, 2.84), (nx - 0.36, 2.84)], 0, 0, 0.38, blur=0.02)
+    v.shadow([(nx - 0.36, 3.52), (nx + 0.36, 3.52), (nx + 0.36, 3.68), (nx - 0.36, 3.68)], 0, 0, 0.32, blur=0.02)
     for sx in (-1, 1):                                                      # a piston each side
-        px = nx + sx * 0.375
-        v.cylinder(px - 0.05, 2.98, px + 0.05, 3.46, 176, NONE)
-        v.rect(px - 0.06, 3.16, px + 0.06, 3.24, 84, NONE, outline=False)
-        v.rect(px - 0.06, 2.96, px + 0.06, 3.02, 64, NONE, outline=False)
-        v.rect(px - 0.06, 3.42, px + 0.06, 3.48, 64, NONE, outline=False)
-    v.cylinder(nx - 0.15, 2.90, nx + 0.15, 3.52, 56, NONE)                  # 3D shaded brass coil block
+        px = nx + sx * 0.426
+        v.cylinder(px - 0.06, 2.98, px + 0.06, 3.46, 176, NONE)
+        v.rect(px - 0.072, 3.16, px + 0.072, 3.24, 84, NONE, outline=False)
+        v.rect(px - 0.072, 2.96, px + 0.072, 3.02, 64, NONE, outline=False)
+        v.rect(px - 0.072, 3.42, px + 0.072, 3.48, 64, NONE, outline=False)
+    v.cylinder(nx - 0.18, 2.90, nx + 0.18, 3.52, 56, NONE)                  # 3D shaded brass coil block
     for k in range(12):
         y = 2.94 + k * 0.049
-        v.cylinder(nx - 0.135, y, nx + 0.135, y + 0.024, BRASS if k % 2 == 0 else BRASS_DARK, NONE, outline=False)
+        v.cylinder(nx - 0.162, y, nx + 0.162, y + 0.024, BRASS if k % 2 == 0 else BRASS_DARK, NONE, outline=False)
     for sx in (-1, 1):                                                      # longitudinal busbars & coil banks
-        v.rect(nx + sx * 0.15 - 0.018, 2.9, nx + sx * 0.15 + 0.018, 3.52, 134, NONE)
-        x0 = nx + sx * 0.235 - 0.045
-        v.coil(x0, 2.92, x0 + 0.09, 3.5, 11)
+        v.rect(nx + sx * 0.18 - 0.022, 2.9, nx + sx * 0.18 + 0.022, 3.52, 134, NONE)
+        x0 = nx + sx * 0.282 - 0.054
+        v.coil(x0, 2.92, x0 + 0.108, 3.5, 11)
     # Duct: cast shadow from rear intake ring, longitudinal cowling seams & bolts, access plate, and glowing sight glass.
-    v.cylinder(nx - 0.47, 2.14, nx + 0.47, 2.74, 178, HULL)
-    v.shadow([(nx - 0.47, 2.14), (nx + 0.47, 2.14), (nx + 0.47, 2.2), (nx - 0.47, 2.2)], 0, 0, 0.34, blur=0.015)
+    v.cylinder(nx - 0.492, 2.12, nx + 0.492, 2.74, 178, HULL)
+    v.shadow([(nx - 0.492, 2.12), (nx + 0.492, 2.12), (nx + 0.492, 2.18), (nx - 0.492, 2.18)], 0, 0, 0.34, blur=0.015)
     for sx in (-1, 1):
-        v.groove([(nx + sx * 0.25, 2.16), (nx + sx * 0.25, 2.72)], 178)
-        v.rivets(nx + sx * 0.36, 2.26, nx + sx * 0.36, 2.66, 4)
-    v.rivets(nx - 0.38, 2.25, nx + 0.38, 2.25, 7)
-    v.rect(nx - 0.14, 2.36, nx + 0.14, 2.58, 190, HULL)
-    v.line([(nx - 0.14, 2.36), (nx + 0.14, 2.36)], 238, 0.01)
-    for x, y in ((nx - 0.1, 2.4), (nx + 0.1, 2.4), (nx - 0.1, 2.54), (nx + 0.1, 2.54)):
-        v.bolt(x, y, 0.018)
-    v.dot(nx + 0.31, 2.47, 0.046, 40, NONE)
-    v.glow(nx + 0.31, 2.47, 0.06, (240, 175, 65), alpha=75)
-    v.dot(nx + 0.31, 2.47, 0.03, (240, 175, 65), NONE)
-    v.dot(nx + 0.30, 2.46, 0.012, (255, 235, 170), NONE)
+        v.groove([(nx + sx * 0.264, 2.14), (nx + sx * 0.264, 2.72)], 178)
+        v.rivets(nx + sx * 0.384, 2.24, nx + sx * 0.384, 2.66, 4)
+    v.rivets(nx - 0.396, 2.23, nx + 0.396, 2.23, 8)
+    v.rect(nx - 0.156, 2.36, nx + 0.156, 2.58, 190, HULL)
+    v.line([(nx - 0.156, 2.36), (nx + 0.156, 2.36)], 238, 0.01)
+    for x, y in ((nx - 0.108, 2.4), (nx + 0.108, 2.4), (nx - 0.108, 2.54), (nx + 0.108, 2.54)):
+        v.bolt(x, y, 0.020)
+    v.dot(nx + 0.324, 2.47, 0.053, 40, NONE)
+    v.glow(nx + 0.324, 2.47, 0.069, (240, 175, 65), alpha=75)
+    v.dot(nx + 0.324, 2.47, 0.035, (240, 175, 65), NONE)
+    v.dot(nx + 0.312, 2.458, 0.014, (255, 235, 170), NONE)
     # Recessed dark intake throat lip and the two brass intake rings, bolted round.
-    v.cylinder(nx - 0.48, 1.91, nx + 0.48, 1.96, 32, NONE)
-    v.cylinder(nx - 0.49, 2.05, nx + 0.49, 2.15, BRASS_DARK, NONE)
-    v.cylinder(nx - 0.51, 1.95, nx + 0.51, 2.06, BRASS, NONE)
-    for k in range(9):
-        v.dot(nx - 0.4 + k * 0.1, 2.005, 0.016, (92, 68, 36), None)
+    v.cylinder(nx - 0.504, 1.88, nx + 0.504, 1.94, 32, NONE)
+    v.cylinder(nx - 0.516, 2.03, nx + 0.516, 2.13, BRASS_DARK, NONE)
+    v.cylinder(nx - 0.528, 1.93, nx + 0.528, 2.04, BRASS, NONE)
+    for k in range(10):
+        v.dot(nx - 0.432 + k * 0.096, 1.985, 0.017, (92, 68, 36), None)
 
 
 def yoke(v, y, left, right, spine):
@@ -908,14 +925,13 @@ def top():
     hull(v)
     cockpit(v)
     roof(v)
-    # 5. Turbofans, half a cell in from their component cells (A3-A5 / D3-D5), over the wing and the roof's edge, with the
-    #    two yokes across each engine and tucked cleanly under the raised fuel plate.
-    nacelles = (A + 1.0, D)
+    # 5. Turbofans, moved 0.2 cells inside so their outer edges meet the filled wing strip at x = 1.88 / 5.12.
+    nacelles = (A + 0.91, END - 0.91)
     for nx in nacelles:
         turbofan(v, nx)
     for y in (2.7, 3.5):
-        yoke(v, y, nacelles[0] - 0.46, C - 0.3, 1)
-        yoke(v, y, C + 0.3, nacelles[1] + 0.46, -1)
+        yoke(v, y, nacelles[0] - 0.55, C - 0.3, 1)
+        yoke(v, y, C + 0.3, nacelles[1] + 0.55, -1)
     fuel_plate(v)
     return weather(*v.done())
 

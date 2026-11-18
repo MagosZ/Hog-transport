@@ -281,7 +281,7 @@ def preview(img, mask, gun):
     hog = body_views.paint(img, mask)
     hog.alpha_composite(gun, (round(3.5 * body_views.PX - gun.width / 2), round(body_views.GUN_PIVOT_Y * body_views.PX - gun.height / 2)))
     hog = hog.resize((560, 560), Image.LANCZOS).rotate(-22, resample=Image.BICUBIC, expand=True)
-    cx, cy = 960, 372
+    cx, cy = 925, 372
     pos = (cx - hog.width // 2, cy - hog.height // 2)
     shade = Image.new("RGBA", hog.size, (0, 0, 0, 0))
     shade.putalpha(hog.getchannel("A").point(lambda a: 120 if a > 20 else 0).filter(ImageFilter.GaussianBlur(14)))
